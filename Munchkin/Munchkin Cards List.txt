@@ -404,3 +404,4 @@ Not-Included:
 	_	Lose the Headgear You Are Wearing (1st)
 	_	Lose 1 Big Item (3rd)
 	_	Lose 1 Small Item (3rd)
+	_	Mr.Mime (blank)
