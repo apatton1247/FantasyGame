@@ -8,6 +8,7 @@ class Character(object):
     self.gender = gender
     #This initializes equipment (equipped items)
     self.equipment = {}
+    #This initializes equipment slots
     self.hand_slots = 2
     self.hand_slots_used = 0
     self.footgear_slots = 1
@@ -26,6 +27,22 @@ class Character(object):
     #This initializes curses
     self.curses = {}
     self.bad_stuff = {}
+  def open_door(in_the_room):
+    pass
+  def pick_up_treasure(treasure):
+    pass
+  def discard(thing):
+    pass
+  def equip(equipment):
+    pass
+  def unequip(equipment):
+    pass
+  def view_char(character):
+    pass
+  def view_hand(char_hand):
+    pass
+
+    
     
     
     
