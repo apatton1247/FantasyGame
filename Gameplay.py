@@ -34,7 +34,6 @@ def create_decks():
             door_card_list.append(door_card_file.readline().rstrip())
     print("Door card list: ", door_card_list)
     #TBD - create DoorCard objects
-    door_deck = []
     door_list_len = len(door_card_list)
     for x in range(door_list_len):
         next_card_index = randint(0, len(door_card_list)-1)
@@ -49,7 +48,6 @@ def create_decks():
             treasure_card_list.append(treasure_card_file.readline().rstrip())
     print("Treasure card list: ", treasure_card_list)
     #TBD - create TreasureCard objects
-    treasure_deck = []
     treasure_list_len = len(treasure_card_list)
     for x in range(treasure_list_len):
         next_card_index = randint(0, len(treasure_card_list)-1)
