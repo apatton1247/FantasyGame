@@ -103,6 +103,32 @@ def create_decks():
     print("Treasure deck: ", treasure_deck)
 
     return door_deck, treasure_deck
+
+def create_decks_2():
+    door_card_list = ["Mr. Bones", "Cat Girl", "Tentacle Demon", "Plutonium Dragon",
+                      "Lord Yahoo", "Were-Turtle", "Tequila Mockingbird",
+                      "Perfectly Ordinary Bunny Rabbit", "Rapier Twit", "Face Sucker",
+                      "Bigfoot", "Seven Year Lich", "Undead Horse", "Potted Plant",
+                      "Poison Ivy Kudzu", "Maul Rat", "Large Angry Chicken", "3,872 Orcs",
+                      "Plague Rats", "Shrieking Geek", "Scary Clowns", "Flying Frogs",
+                      "Auntie Paladin", "M.T. Suit", "Gazebo", "Male Chauvinist Pig",
+                      "The Dead Sea Trolls", "Frost Giant", "Hydrant", "Hungry Backpack"]
+    #TBD - create DoorCard objects
+    door_deck = []
+    for entry in door_card_list:
+        next_card_index = randint(0, len(door_card_list)-1)
+        door_deck.append(door_card_list.pop(next_card_index))
+    print("Door deck: ", door_deck)
+
+    treasure_card_list = []
+    #TBD - create TreasureCard objects
+    treasure_deck = []
+    for entry in treasure_card_list:
+        next_card_index = randint(0, len(treasure_card_list)-1)
+        treasure_deck.append(treasure_card_list.pop(next_card_index))
+    print("Treasure deck: ", treasure_deck)
+
+    return door_deck, treasure_deck
     
 #Whenever a character has to (re)supply at the garrison, this function places
 # 4 DoorCard objects and 4 TreasureCard objects in their backpack
@@ -124,7 +150,7 @@ def shuffle(discards):
 # and gives the characters their starting supplies
 def start_game():
     add_characters()
-    door_deck, treasure_deck = create_decks()
+    door_deck, treasure_deck = create_decks_2()
     for character in character_list:
         get_supplies(character, door_deck, treasure_deck)
 
