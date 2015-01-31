@@ -103,6 +103,13 @@ def create_decks():
     print("Treasure deck: ", treasure_deck)
 
     return door_deck, treasure_deck
+
+"Wishing Ring", "Reloaded Die", "Deus Ex Machinegun", "Invisibility Potion",
+"Instant Wall", "Feline Intervention", "Wishing Ring", "Itching Powder",
+"Loaded Die", "Flask of Glue", "Loaded Die", "Wishing Ring", "Wand of Dowsing",
+"Doppleganger", "Loaded Die", "Steal a Level", "Boots of Running Really Fast",
+"Ghoul Lash", "Foot-Mounted Mace", "Sword of Slaying Everything Except Squid",
+"Vorpal Blade"
     
 #Whenever a character has to (re)supply at the garrison, this function places
 # 4 DoorCard objects and 4 TreasureCard objects in their backpack
