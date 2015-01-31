@@ -23,12 +23,12 @@ class Character(object):
     self.big_item_slots_used = 0
     #This initializes backpack (hand)
     self.backpack_size = 5
-    self.backpack = {}
+    self.backpack = []
     #This initializes closet (unequipped items)
-    self.closet = {}
+    self.closet = []
     #This initializes curses
-    self.curses = {}
-    self.bad_stuff = {}
+    self.curses = []
+    self.bad_stuff = []
   def open_door(in_the_room):
     pass
   def pick_up_treasure(treasure):
@@ -81,7 +81,8 @@ def create_decks():
     print("Door card list: ", door_card_list)
     #TBD - create DoorCard objects
     door_deck = []
-    for entry in door_card_list:
+    door_list_len = len(door_card_list)
+    for x in range(door_list_len):
         next_card_index = randint(0, len(door_card_list)-1)
         door_deck.append(door_card_list.pop(next_card_index))
     if not door_card_file.closed:
@@ -95,7 +96,8 @@ def create_decks():
     print("Treasure card list: ", treasure_card_list)
     #TBD - create TreasureCard objects
     treasure_deck = []
-    for entry in treasure_card_list:
+    treasure_list_len = len(treasure_card_list)
+    for x in range(treasure_list_len):
         next_card_index = randint(0, len(treasure_card_list)-1)
         treasure_deck.append(treasure_card_list.pop(next_card_index))
     if not treasure_card_file.closed:
@@ -115,15 +117,23 @@ def create_decks_2():
                       "The Dead Sea Trolls", "Frost Giant", "Hydrant", "Hungry Backpack"]
     #TBD - create DoorCard objects
     door_deck = []
-    for entry in door_card_list:
+    door_list_len = len(door_card_list)
+    for x in range(door_list_len):
         next_card_index = randint(0, len(door_card_list)-1)
         door_deck.append(door_card_list.pop(next_card_index))
     print("Door deck: ", door_deck)
 
-    treasure_card_list = []
+    treasure_card_list = ["Wishing Ring", "Reloaded Die", "Deus Ex Machinegun",
+                          "Invisibility Potion", "Instant Wall", "Feline Intervention",
+                          "Wishing Ring", "Itching Powder", "Loaded Die", "Flask of Glue",
+                          "Loaded Die", "Wishing Ring", "Wand of Dowsing", "Doppleganger",
+                          "Loaded Die", "Steal a Level", "Boots of Running Really Fast",
+                          "Ghoul Lash", "Foot-Mounted Mace",
+                          "Sword of Slaying Everything Except Squid", "Vorpal Blade"]
     #TBD - create TreasureCard objects
     treasure_deck = []
-    for entry in treasure_card_list:
+    treasure_list_len = len(treasure_card_list)
+    for x in range(treasure_list_len):
         next_card_index = randint(0, len(treasure_card_list)-1)
         treasure_deck.append(treasure_card_list.pop(next_card_index))
     print("Treasure deck: ", treasure_deck)
@@ -136,8 +146,9 @@ def get_supplies(character, door_deck, treasure_deck):
 
     supplies = []
     for x in range(4):
-      supplies.append(door_deck.pop(x))
-      supplies.append(treasure_deck.pop(x))
+      supplies.append(door_deck.pop(0))
+    for x in range(4):
+      supplies.append(treasure_deck.pop(0))
     for thing in supplies:
         character.backpack.append(thing)
 
