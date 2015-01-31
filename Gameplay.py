@@ -73,43 +73,66 @@ def add_characters():
 
 #Reads in the card names from appropriate text files, creates card objects, and populates
 # the door and treasure decks with those card objects.
-def create_decks()
-    door_card_file = open(door_card_list.txt, "r")
+def create_decks():
     door_card_list = []
-    door_card_list.append(door_card_file.readline())
+    with open("door_card_list.txt", "r") as door_card_file:
+        for line in door_card_file:
+            door_card_list.append(door_card_file.readline().rstrip())
+    print("Door card list: ", door_card_list)
     #TBD - create DoorCard objects
     door_deck = []
-    next_card_index = randint(0, len(door_card_list)-1)
-    door_deck.append(door_card_list.pop(next_card_index))
+    for entry in door_card_list:
+        next_card_index = randint(0, len(door_card_list)-1)
+        door_deck.append(door_card_list.pop(next_card_index))
+    if not door_card_file.closed:
+        door_card_file.close()
+    print("Door deck: ", door_deck)
 
-    treasure_card_file = open(treasure_card_list.txt, "r")
     treasure_card_list = []
-    treasure_card_list.append(treasure_card_file.readline())
+    with open("treasure_card_list.txt", "r") as treasure_card_file:
+        for line in treasure_card_file:
+            treasure_card_list.append(treasure_card_file.readline().rstrip())
+    print("Treasure card list: ", treasure_card_list)
     #TBD - create TreasureCard objects
     treasure_deck = []
-    next_card_index = randint(0, len(treasure_card_list)-1)
-    treasure_deck.append(treasure_card_list.pop(next_card_index))
-
-    door_card_file.close()
-    treasure_card_file.close()
+    for entry in treasure_card_list:
+        next_card_index = randint(0, len(treasure_card_list)-1)
+        treasure_deck.append(treasure_card_list.pop(next_card_index))
+    if not treasure_card_file.closed:
+        treasure_card_file.close()
+    print("Treasure deck: ", treasure_deck)
 
     return door_deck, treasure_deck
     
 #Whenever a character has to (re)supply at the garrison, this function places
 # 4 DoorCard objects and 4 TreasureCard objects in their backpack
-def get_supplies(character):
+def get_supplies(character, door_deck, treasure_deck):
 
-    supplies = {}
+    supplies = []
+    for x in range(4):
+      supplies.append(door_deck.pop(x))
+      supplies.append(treasure_deck.pop(x))
     for thing in supplies:
         character.backpack.append(thing)
 
+#Shuffles a deck's discard pile if the deck is completely empty, returning a new draw deck
+def shuffle(discards):
+  #Once we have a discard deck, shuffle it similarly to how we shuffled the start decks
+  pass
+
 #Starts the game.  Adds characters to the character list, prepares the decks,
 # and gives the characters their starting supplies
-def start_game(deck):
+def start_game():
     add_characters()
     door_deck, treasure_deck = create_decks()
     for character in character_list:
-        get_supplies(character)
+        get_supplies(character, door_deck, treasure_deck)
+
+start_game()
+
+for character in character_list:
+  print("\n" + character.name)
+  print(character.backpack)
 
 #We used the double-commented lines below to test the game's add_characters function.
 #It totally worked as planned and we're awesome at coding.
