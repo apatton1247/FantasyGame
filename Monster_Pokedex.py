@@ -20,7 +20,7 @@ class Maul_Rat(Monster):
         self.fight = pass
         self.chase = pass
         self.enhancement = pass
-        self.bias = clerics(3, battle_dict)
+        self.bias = (clerics(battle_dict), update_monster(3))
         self.good_stuff = pass
 
 #An example of what could go in Monster Methods.
@@ -102,7 +102,7 @@ class Drooling_Slime(Monster):
         self.fight = pass
         self.chase = pass
         self.enhancement = pass
-        self.bias = elves(4, battle_dict)
+        self.bias = (elves(battle_dict), update_monster(4))
         self.good_stuff = pass
 
 ########## Level 2 ##########
@@ -177,7 +177,7 @@ class Large_Angry_Chicken(Monster):
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Very painful pecking. Lose a level."
         self.bad_stuff = lose_level(1)
-        self.fight = used_fire(#checks if item or one shot in battle dictionary has fire attribute)
+        self.fight = used_fire(battle_dict)#add fire and flame items/one-shots
         self.chase = pass
         self.enhancement = pass
         self.bias = pass
@@ -202,9 +202,83 @@ class Gelatinous_Octahedron(Monster):
         self.bias = pass
         self.good_stuff = pass
 
+########## Level 3 ##########
 
+class The_Mighty_Germ(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "The Mighty Germ"
+        self.level = 3
+        self.description = "Really small spec. Halflings can just stomp it, killing it automatically."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 1
+        self.bad_stuff_description = "Helpless sneezing causes items to fall out of your backpack. Discard 2 items (your choice) from your backpack."
+        self.bad_stuff = lose_backpack_item(2)
+        self.fight = (halfling(battle_dict), auto_kill())
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = pass
+        self.good_stuff = pass
 
+class Were_Turtle(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Were-Turtle"
+        self.level = 3
+        self.description = "A nerdy-looking turtle with a spear. Pursues verrrry slowly. +2 to Run Away"
+        self.undead = False
+        self.plant = False
+        self.speed = -2
+        self.level_rewarded = 1
+        self.treasure_rewarded = 1
+        self.bad_stuff_description = "If you lose a race to the Were_Turtle, you lose your Race. If you were a Half-Breed, lose one non-human race. If you were human already, there's no effect."
+        self.bad_stuff = lose_race(character)
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = pass
+        self.good_stuff = pass
 
+class Psycho_Squirrel(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Psycho Squirrel"
+        self.level = 3
+        self.description = "Will not attack females, or wearers of the Spiked Codpiece."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 1
+        self.bad_stuff_description = "Lose a level. Speak in a high, squecky voice until your next turn."
+        self.bad_stuff = (lose_level(1), font_italic())
+        self.fight = bribe(battle_dict, female, spiked_codpiece)
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = pass
+        self.good_stuff = pass
+
+class Pinata(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Pinata"
+        self.level = 3
+        self.description = "Large paper mache creature. If the Pinata is defeated, each party memeber, in the order you choose, gains one Treasure. It doesn't matter who participated in the combat."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = pinata(character_list)
+        self.bad_stuff_description = "The player to your left picks one item that you are using or from your closet. Discard it."
+        self.bad_stuff = lose_item()
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = pass
+        self.good_stuff = loot(pinata)
 
 
 
