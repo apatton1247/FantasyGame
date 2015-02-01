@@ -4,31 +4,28 @@ class Maul_Rat(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Maul Rat"
-        self.description = "A homely-looking rat with a wig and a mallet, a creature from Hell. +3 against Clerics."
-        self.bias = 0
+        self.description = "A homely-looking rat wearing a wig and wielding a mallet. A creature from Hell. +3 against Clerics."
         self.undead = False
         self.plant = False
-        self.speed = -1
-        self.enhancement = 0
+        self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "She whacks you. Lose a level."
+        self.bad_stuff = lose_level(1, battle_dict)
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = clerics(3, battle_dict)
+        self.good_stuff = pass
+    #def update_monster(self, battle_dict):
+        #if character.char_class == "Cleric":
+            #self.bias = 3
 
-    def update_monster(self, battle_dict):
-        if character.char_class == "Cleric":
-            self.bias = 3
-
-    def chase(self, character):
-        pass
-    
-    def fight(self, character):
-        pass
-
-    def good_stuff(self, character):
-        pass
-    
-    def bad_stuff(self, character):
-        character.level -= 1
+#An example of what could go in Monster Methods.
+##        def clerics(number, battle_dict):
+##            if character.char_class == "Cleric":
+##                bias += 3
+##            return bias
 
 class Shadow_Nose(Monster):
     def __init__(self):
