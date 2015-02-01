@@ -280,12 +280,87 @@ class Pinata(Monster):
         self.bias = pass
         self.good_stuff = loot(pinata)
 
+########## Level 4 ##########
 
+class Leperchaun(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Leperchaun"
+        self.level = 4
+        self.description = "A Leprechaun with limbs falling off. He's gross! +5 against Elves."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "He takes two items from you - one chosen by the player on either side of you."
+        self.bad_stuff = lose_item(2)
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = (elves(battle_dict), update_monster(5))
+        self.good_stuff = pass
 
+class Snails_on_Speed(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Snails on Speed"
+        self.level = 4
+        self.description = "-2 to Run Away"
+        self.undead = False
+        self.plant = False
+        self.speed = 2
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "They steal your treasure. Roll a die and lose that many items or cards in your hand - your choice."
+        self.bad_stuff = lose_item(ranint())
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = pass
+        self.good_stuff = pass
 
+class Harpies(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Harpies"
+        self.level = 4
+        self.description = "Winged creatures playing a harp. They resist magic. +5 against Wizards."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "Their music is really, really bad. Lose 2 levels."
+        self.bad_stuff = lose_level(2)
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = (wizards(battle_dict), update_monster(5))
+        self.good_stuff = pass
 
+class Undead_Horse(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Undead Horse"
+        self.level = 4
+        self.description = "+5 against Dwarves."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "KIcks, bites, and smells awful. Lose 2 levels."
+        self.bad_stuff = lose_level(2)
+        self.fight = pass
+        self.chase = pass
+        self.enhancement = pass
+        self.bias = (dwarves(battle_dict), update_monster(5))
+        self.good_stuff = pass
 
+########## Level 5 ##########
 
+        
 
 
 
