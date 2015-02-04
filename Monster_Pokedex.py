@@ -411,7 +411,76 @@ class Crawling_Hand(Monster):
         self.fight = 
         self.chase = pass
         self.bias = (dwarves(battle_dict), update_monster(5))
+        
+########## Level 6 ##########
 
+class Lawyers(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Lawyers"
+        self.level = 6
+        self.description = "Will not attack a Thief (professional courtesy). A Thief encountering a lawyer may instead discard two Treasures and pick up two new hidden ones."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "He hits you with an injunction. Let each other player take one item from your backpack starting with the player to your left. Discard the remainder."
+        self.bad_stuff = (charity(),empty_backpack())
+        self.fight = (thieves(battle_dict),discard_treasure(2),gain_treasure(2))
+        self.chase = pass
+        self.bias = pass
+        self.good_stuff = pass
+
+class Pukachu(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Pukachu"
+        self.level = 6
+        self.description = "Gain an extra level if you defeat it without using help or bonuses."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "Projectile vomiting attack! Discard your whole backpack."
+        self.bad_stuff = empty_backpack()
+        self.fight = pass
+        self.chase = pass
+        self.bias = pass
+        self.good_stuff = update_monster()
+
+class Shrieking_Geek(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Shrieking Geek
+        self.level = 6
+        self.description = "+ 6 against Warriors."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "You become a normal, boring Human. Lose both your Race and Class."
+        self.bad_stuff = empty_backpack()
+        self.fight = pass
+        self.chase = pass
+        self.bias = ((warriors(battle_dict))(update_monster(6)))
+        self.good_stuff = pass
+
+
+
+########## Level 7 ##########
+
+      
+
+########## Level 8 ##########
+
+
+
+########## Level 9 ##########
+
+        
 
 ########## Level 10 ##########
 
