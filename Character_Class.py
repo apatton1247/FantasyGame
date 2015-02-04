@@ -10,7 +10,13 @@ class Character(object):
     self.char_race = "human"
     self.gender = gender
     #This initializes equipment (equipped items)
-    self.equipment = {}
+    self.equipment = {
+      "headgear": [],
+      "armor": [],
+      "weapons": [],
+      "footgear": [],
+      "slotless": []
+      }
     #This initializes equipment slots
     self.hand_slots = 2
     self.hand_slots_used = 0

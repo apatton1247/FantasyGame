@@ -114,20 +114,29 @@ def open_door(character, door_deck):
         #TBD - create cases for curse cards and action cards
         pass
 
-def battle(character, monster):
+def make_battle_dict():
     battle_dict = {}
-    battle_dict[character] = character.level
-    battle_dict[character_bonus] = character.bonus
-    battle_dict[monster] = monster.level
-    pass
+    battle_dict["monster"] = {}
+    battle_dict["character"] = {}
+    battle_dict["monster one-shots"] = {}
+    battle_dict["character one-shots"] = {}
+    battle_dict["monster enhancers"] = {}
+
+
+def battle(character, monster):
+    battle_dict["monster"][monster] = monster.battle_strength
+    battle_dict["character"][character] = character.battle_strength
 
 #Starts the game.  Adds characters to the character list, prepares the decks,
 # and gives the characters their starting supplies
 def start_game(door_deck, treasure_deck):
     add_characters()
+    make_battle_dict()
     door_deck, treasure_deck = create_decks_2()
     for character in character_list:
         get_supplies(character, door_deck, treasure_deck)
+
+    
 def take_turn(character, door_deck):
     opening_statement = input("\n").lower()
     if opening_statement == "open door":

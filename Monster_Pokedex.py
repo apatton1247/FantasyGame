@@ -1,6 +1,7 @@
 ############### Monster Pokedex ###############
 
 import Monster_Class
+import Monster_Methods_Manuscript
 
 ########## Level 1 ##########
 
@@ -19,7 +20,7 @@ class Maul_Rat(Monster):
         self.bad_stuff = lose_level(1, battle_dict)
         self.fight = pass
         self.chase = pass
-        self.bias = (clerics(battle_dict), update_monster(3))
+        self.bias = monster_bias(clerics(battle_dict), 3)
         self.good_stuff = pass
 
 #An example of what could go in Monster Methods.
@@ -40,7 +41,7 @@ class Crabs(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Discard armor and all items worn below the waist."
-        self.bad_stuff = lose_lower_items()
+        self.bad_stuff = lose_lower_items(battle_dict)
         self.fight = pass
         self.chase = pass
         self.bias = pass
@@ -76,7 +77,7 @@ class Lame_Goblin(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "He whacks you with his crutch. Lose a level."
-        self.bad_stuff = lose_level(1)
+        self.bad_stuff = lose_level(1, battle_dict)
         self.fight = pass
         self.chase = pass
         self.bias = pass
@@ -94,11 +95,19 @@ class Drooling_Slime(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Discard the Footgear you are wearing. Lose a level if you are not wearing any Footgear."
-        self.bad_stuff = lose_level(1)
+        self.bad_stuff = self.bad_stuff()
         self.fight = pass
         self.chase = pass
-        self.bias = (elves(battle_dict), update_monster(4))
+        self.bias = monster_bias(elves(battle_dict), 4)
         self.good_stuff = pass
+
+    def bad_stuff(battle_dict):
+        for character in battle_dict["character"]:
+            if character.footgear_slots_used > 0:
+                lose_footgear(character)
+            else:
+                lose_level(1, character)
+                
 
 ########## Level 2 ##########
 
@@ -114,8 +123,8 @@ class Pit_Bull(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Fang marks in your butt. Lose 2 levels."
-        self.bad_stuff = lose_level(2)
-        self.fight = bribe(wand, pole, staff)#we will have to add a boelean attribute to items classes for this
+        self.bad_stuff = lose_level(2, battle_dict)
+        self.fight = bribe(wand, pole, staff)#we will have to add a boolean attribute to items classes for this
         self.chase = pass
         self.bias = pass
         self.good_stuff = pass
@@ -132,7 +141,7 @@ class Flying_Frogs(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "They bite!. Lose 2 levels."
-        self.bad_stuff = lose_level(2)
+        self.bad_stuff = lose_level(2, battle_dict)
         self.fight = pass
         self.chase = pass
         self.bias = pass
@@ -150,9 +159,9 @@ class Mr_Bones(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "His bony touch costs you 2 levels."
-        self.bad_stuff = lose_level(2)
+        self.bad_stuff = lose_level(2, battle_dict)
         self.fight = pass
-        self.chase = lose_level(1)
+        self.chase = lose_level(1, battle_dict)
         self.bias = pass
         self.good_stuff = pass
 
