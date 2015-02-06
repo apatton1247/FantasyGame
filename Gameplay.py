@@ -1,6 +1,9 @@
 from Character_Class import *
 from Monster_Class import *
-from random import randint  
+#from Monster_Pokedex import *
+from Curse_Compendium import *
+from random import randint
+from inspect import getmembers
     
 #Runs gameplay
 
@@ -25,15 +28,53 @@ def add_characters():
         character = Character(name, gender)
         character_list.append(character)
 
+#Should be able to use inspect.getmembers to return a list of classes, value pairs from whatever
+# module (.py file) we pass it.  For example, if module = Monster_Pokedex, one of the value pairs
+# will be ("Maul_Rat", Class).  Then if the correctly-formatted name we pass it matches up with any
+# class names in the file, it should use getattr to call the class's __init__ method and return the
+# resulting card object into card_obj, which gets returned to whatever calls it.  If this function
+# runs through the whole module it's given and doesn't find any matching class names, it returns None.
+def card_creation(card_name, module):
+    for name, value in inspect.getmembers(module):
+        if name == card_name:
+            card_obj = getattr(module, card_name)()
+            return card_obj
+    else:
+        return None
+    
+
 #Reads in the card names from appropriate text files, creates card objects, and populates
 # the door and treasure decks with those card objects.
 def create_decks():
     door_card_list = []
     with open("door_card_list.txt", "r") as door_card_file:
         for line in door_card_file:
-            door_card_list.append(door_card_file.readline().rstrip())
+            door_card_list.append(line.rstrip())
     print("Door card list: ", door_card_list)
+
     #TBD - create DoorCard objects
+    #The idea here is we populate places_to_look with the modules (.py files) we want it to look in to
+    # find the classes that match up with the string input, then call card_creation to search through
+    # that module.  If a matching class is not found in the module, the next module is searched, until
+    # an object is returned (the first "else" below, which breaks out of the inner for-loop and moves on
+    # to the next card), or no matching class is found in any of the places_to_look (the second "else"),
+    # at which time a message of unavailability is given and the card removed from play.
+    for card in door_card_list:
+        card_name = card.replace(" ", "_")
+
+        places_to_look = [Monster_Pokedex, Curse_Compendium]
+        for place in places_to_look:
+            card_obj = card_creation(card_name, place)
+            if card_obj == None:
+                continue
+            else:
+                card = card_obj
+                break
+        else:
+            print("No such card as %s listed" % (card))
+            door_card_list.remove(card)
+
+    
     door_list_len = len(door_card_list)
     for x in range(door_list_len):
         next_card_index = randint(0, len(door_card_list)-1)
@@ -45,9 +86,32 @@ def create_decks():
     treasure_card_list = []
     with open("treasure_card_list.txt", "r") as treasure_card_file:
         for line in treasure_card_file:
-            treasure_card_list.append(treasure_card_file.readline().rstrip())
+            treasure_card_list.append(line.rstrip())
     print("Treasure card list: ", treasure_card_list)
+
     #TBD - create TreasureCard objects
+    #The idea here is we populate places_to_look with the modules (.py files) we want it to look in to
+    # find the classes that match up with the string input, then call card_creation to search through
+    # that module.  If a matching class is not found in the module, the next module is searched, until
+    # an object is returned (the first "else" below, which breaks out of the inner for-loop and moves on
+    # to the next card), or no matching class is found in any of the places_to_look (the second "else"),
+    # at which time a message of unavailability is given and the card removed from play.
+    for card in treasure_card_list:
+        card_name = card.replace(" ", "_")
+        #TBD - create .py files in which to look for Treasure Card classes
+        places_to_look = []
+        for place in places_to_look:
+            card_obj = card_creation(card_name, place)
+            if card_obj == None:
+                continue
+            else:
+                card = card_obj
+                break
+        else:
+            print("No such card as %s listed" % (card))
+            treasure_card_list.remove(card)
+
+    
     treasure_list_len = len(treasure_card_list)
     for x in range(treasure_list_len):
         next_card_index = randint(0, len(treasure_card_list)-1)
@@ -58,36 +122,6 @@ def create_decks():
 
     return door_deck, treasure_deck
 
-def create_decks_2():
-    door_card_list = ["Mr. Bones", "Cat Girl", "Tentacle Demon", "Plutonium Dragon",
-                      "Lord Yahoo", "Were-Turtle", "Tequila Mockingbird",
-                      "Perfectly Ordinary Bunny Rabbit", "Rapier Twit", "Face Sucker",
-                      "Bigfoot", "Seven Year Lich", "Undead Horse", "Potted Plant",
-                      "Poison Ivy Kudzu", "Maul Rat", "Large Angry Chicken", "3,872 Orcs",
-                      "Plague Rats", "Shrieking Geek", "Scary Clowns", "Flying Frogs",
-                      "Auntie Paladin", "M.T. Suit", "Gazebo", "Male Chauvinist Pig",
-                      "The Dead Sea Trolls", "Frost Giant", "Hydrant", "Hungry Backpack"]
-    #TBD - create DoorCard objects
-    door_list_len = len(door_card_list)
-    for x in range(door_list_len):
-        next_card_index = randint(0, len(door_card_list)-1)
-        door_deck.append(door_card_list.pop(next_card_index))
-
-    treasure_card_list = ["Wishing Ring", "Reloaded Die", "Deus Ex Machinegun",
-                          "Invisibility Potion", "Instant Wall", "Feline Intervention",
-                          "Wishing Ring", "Itching Powder", "Loaded Die", "Flask of Glue",
-                          "Loaded Die", "Wishing Ring", "Wand of Dowsing", "Doppleganger",
-                          "Loaded Die", "Steal a Level", "Boots of Running Really Fast",
-                          "Ghoul Lash", "Foot-Mounted Mace",
-                          "Sword of Slaying Everything Except Squid", "Vorpal Blade"]
-    #TBD - create TreasureCard objects
-    treasure_list_len = len(treasure_card_list)
-    for x in range(treasure_list_len):
-        next_card_index = randint(0, len(treasure_card_list)-1)
-        treasure_deck.append(treasure_card_list.pop(next_card_index))
-
-    return door_deck, treasure_deck
-    
 #Whenever a character has to (re)supply at the garrison, this function places
 # 4 DoorCard objects and 4 TreasureCard objects in their backpack
 def get_supplies(character, door_deck, treasure_deck):
@@ -132,7 +166,7 @@ def battle(character, monster):
 def start_game(door_deck, treasure_deck):
     add_characters()
     make_battle_dict()
-    door_deck, treasure_deck = create_decks_2()
+    door_deck, treasure_deck = create_decks()
     for character in character_list:
         get_supplies(character, door_deck, treasure_deck)
 
