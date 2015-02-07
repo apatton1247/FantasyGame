@@ -17,14 +17,40 @@ def no_bad_stuff():
     pass
 
 def lose_footgear(character):
-    for footgear_num in range(len(self.equipment["footgear"])):
-        item = self.equipment["footgear"].pop(footgear_num)
-            discard(item)
-            print("%s lost the %s" % (character.name, item.name))
+    for item in self.equipment["footgear"]:
+        discard(item, self.equipment["footgear"])
+        print("%s lost the %s" % (character.name, item.name))
 
 def lose_big_items(character):
     pass
 
+def lose_backpack_item(number, character):
+    print(character.backpack)
+    item1, item2 = input("Which two items from your backpack will you drop?" ).lower()
+    discard(item1, character.backpack)
+    print("%s lost the %s" % (character.name, item1.name))
+    discard(item2, character.backpack)
+    print("%s lost the %s" % (character.name, item2.name))
+
+def lose_race(character):
+    if len(character.char_race) == 2:
+        print(character.char_race)
+        choice = input("Which race will you lose? ").lower()
+        discard(choice, character.char_race)
+        print("%s lost their %s-ness." % (character.name, choice))
+    elif character.char_race[0] == "human":
+        print("No effect.  You are already just a human.")
+    else:
+        discard(character.race[0], character.char_race)
+        print("%s lost their %s-ness." % (character.name, choice))
+
+def lose_races(character):
+    if character.char_race[0] != "human":
+        for char_race in character.char_race:
+            discard(char_race, character.char_race)
+            print("%s went back to being just a human." % (character.name))
+    else:
+        print("No effect.  You are already just a human.")
 
 ########## Fight Methods ##########			
 
