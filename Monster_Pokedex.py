@@ -17,10 +17,7 @@ class Maul_Rat(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "She whacks you. Lose a level."
-        self.fight = pass
-        self.chase = pass
         self.bias = monster_bias(clerics(battle_dict), 3)
-        self.good_stuff = pass
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -30,6 +27,15 @@ class Maul_Rat(Monster):
     def update_monster(self, battle_dict):
         self.bias = monster_bias(clerics(battle_dict), 3)
         self.battle_strength = self.level + self.bias
+
+    def fight(self, battle_dict):
+        pass
+
+    def chase(self, battle_dict):
+        pass
+
+    def good_stuff(self, battle_dict):
+        pass
 
 class Crabs(Monster):
     def __init__(self):
@@ -327,18 +333,19 @@ class Psycho_Squirrel(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Lose a level. Speak in a high, squecky voice until your next turn."
-        self.bad_stuff = (lose_level(1), font_italic())
-        self.fight = bribe(battle_dict, female, spiked_codpiece)
+        self.fight = will_not_pursue(battle_dict, female, spiked_codpiece)
         self.chase = pass
         self.bias = pass
         self.good_stuff = pass
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_level(1, character)
+            font_italic(character)
 
     def update_monster(self, battle_dict):
-        pass
+        self.battle_strength = self.level
 
 class Pinata(Monster):
     def __init__(self):
@@ -352,7 +359,7 @@ class Pinata(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = pinata(character_list)
         self.bad_stuff_description = "The player to your left picks one item that you are using or from your closet. Discard it."
-        self.bad_stuff = lose_item()
+        self.bad_stuff = lose_field_item()
         self.fight = pass
         self.chase = pass
         self.bias = pass
@@ -360,10 +367,11 @@ class Pinata(Monster):
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_field_item(1, character, character_to_left?)
 
     def update_monster(self, battle_dict):
-        pass
+        self.battle_strength = self.level
 
 ########## Level 4 ##########
 

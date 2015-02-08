@@ -24,13 +24,21 @@ def lose_footgear(character):
 def lose_big_items(character):
     pass
 
+#Maybe we should define different paths to take with this and the related lose_field_item
+# functions based on whether the character is choosing their own stuff to lose or whether
+# another player is choosing for them.
 def lose_backpack_item(number, character):
     print(character.backpack)
-    item1, item2 = input("Which two items from your backpack will you drop?" ).lower()
-    discard(item1, character.backpack)
-    print("%s lost the %s" % (character.name, item1.name))
-    discard(item2, character.backpack)
-    print("%s lost the %s" % (character.name, item2.name))
+    for item in range(number):
+        item_name = input("Which item (%d of %d) from your backpack will you drop?" % (item+1, number)).lower()
+        for backpack_item in character.backpack:
+            if backpack_item.name == item_name:
+                discard(backpack_item, character.backpack)
+                print("%s lost the %s" % (character.name, item_name))
+                break
+        else:
+            print("You must choose an item you have in your backpack. Try again.")
+            item -= 1
 
 def lose_race(character):
     if len(character.char_race) == 2:
@@ -51,6 +59,10 @@ def lose_races(character):
             print("%s went back to being just a human." % (character.name))
     else:
         print("No effect.  You are already just a human.")
+
+def font_italic(character):
+    #Somehow italicize the font of whatever the person says until their next turn.
+    pass
 
 ########## Fight Methods ##########			
 
