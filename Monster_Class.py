@@ -1,7 +1,6 @@
 class Monster(object):
   def __init__(self, name, level, description, bias, undead, plant, speed,
-               enhancement_method, fight_method,
-               chase_method,
+               fight_method, chase_method,
                bad_stuff_description, bad_stuff_method,
                good_stuff_method, level_rewarded, treasure_rewarded):
     self.type = "monster"
@@ -13,9 +12,7 @@ class Monster(object):
     self.plant = plant
     self.speed = speed
     
-    self.enhancement_method = enhancement_method
     self.fight_method = fight_method
-    
     self.chase_method = chase_method
     
     self.bad_stuff_description = bad_stuff_description
