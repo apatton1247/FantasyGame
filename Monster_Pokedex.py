@@ -135,7 +135,37 @@ class Drooling_Slime(Monster):
     def update_monster(self, battle_dict):
         self.bias = monster_bias(elves(battle_dict), 4)
         self.battle_strength = self.level + self.bias
-                
+
+class Tequila_Mockingbird(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Tequila Mockingbird"
+        self.level = 1
+        self.description = "Horrible, drunken singing, very much like that of a Bard. +5 vs. Bards."
+        self.undead = False
+        self.plant = False
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 1
+        self.bad_stuff_description = "You ate the worm! Discard two items (your choice) from your backpack."
+        self.battle_strength = 0
+
+    def bad_stuff(self, battle_dict):
+        for character in battle_dict["character"].keys():
+            lose_backpack_item(2, character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(bards(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
+
+    def fight(self, battle_dict):
+        pass
+
+    def chase(self, battle_dict):
+        pass
+
+    def good_stuff(self, battle_dict):
+        pass          
 
 ########## Level 2 ##########
 
