@@ -162,7 +162,7 @@ def gnomes(battle_dict):
 ########## Chase Methods ##########
 
 def auto_escape():
-    pass
+	pass
 
 
 ########## Good Stuff Methods ##########
