@@ -17,7 +17,6 @@ class Maul_Rat(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "She whacks you. Lose a level."
-        self.bias = monster_bias(clerics(battle_dict), 3)
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -49,10 +48,9 @@ class Crabs(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Discard armor and all items worn below the waist."
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -74,10 +72,9 @@ class Potted_Plant(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "None. Escape is automatic."
-        self.fight = pass
+        self.fight = None
         self.chase = auto_escape()
-        self.bias = pass
-        self.good_stuff = pass
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -99,10 +96,9 @@ class Lame_Goblin(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "He whacks you with his crutch. Lose a level."
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -124,10 +120,9 @@ class Drooling_Slime(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Discard the Footgear you are wearing. Lose a level if you are not wearing any Footgear."
-        self.fight = pass
-        self.chase = pass
-        self.bias = monster_bias(elves(battle_dict), 4)
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -157,9 +152,8 @@ class Pit_Bull(Monster):
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Fang marks in your butt. Lose 2 levels."
         self.fight = bribe(wand, pole, staff)#we will have to add a boolean attribute to items classes for this
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -181,10 +175,9 @@ class Flying_Frogs(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "They bite!. Lose 2 levels."
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -206,10 +199,9 @@ class Mr_Bones(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "His bony touch costs you 2 levels."
-        self.fight = pass
+        self.fight = None
         self.chase = lose_level(1, battle_dict)
-        self.bias = pass
-        self.good_stuff = pass
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -232,9 +224,8 @@ class Large_Angry_Chicken(Monster):
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Very painful pecking. Lose a level."
         self.fight = used_fire(battle_dict)#add fire and flame items/one-shots
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -256,10 +247,9 @@ class Gelatinous_Octahedron(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Drop all your Big items."
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -284,9 +274,8 @@ class The_Mighty_Germ(Monster):
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Helpless sneezing causes items to fall out of your backpack. Discard 2 items (your choice) from your backpack."
         self.fight = (halfling(battle_dict), stomp())
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass #may consider using auto_kill() with victory message adaptation here.
+        self.chase = None
+        self.good_stuff = None #may consider using auto_kill() with victory message adaptation here.
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -308,10 +297,9 @@ class Were_Turtle(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "If you lose a race to the Were_Turtle, you lose your Race. If you were a Half-Breed, lose one non-human race. If you were human already, there's no effect."
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -334,9 +322,8 @@ class Psycho_Squirrel(Monster):
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Lose a level. Speak in a high, squecky voice until your next turn."
         self.fight = will_not_pursue(battle_dict, female, spiked_codpiece)
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -359,16 +346,14 @@ class Pinata(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = pinata(character_list)
         self.bad_stuff_description = "The player to your left picks one item that you are using or from your closet. Discard it."
-        self.bad_stuff = lose_field_item()
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
+        self.fight = None
+        self.chase = None
         self.good_stuff = loot(pinata)
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
         for character in battle_dict["character"].keys():
-            lose_field_item(1, character, character_to_left?)
+            lose_field_item(1, character, character_to_left)
 
     def update_monster(self, battle_dict):
         self.battle_strength = self.level
@@ -387,17 +372,18 @@ class Leperchaun(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "He takes two items from you - one chosen by the player on either side of you."
-        self.bad_stuff = lose_item(2)
-        self.chase = pass
-        self.bias = (elves(battle_dict), update_monster(5))
-        self.good_stuff = pass
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_field_item(1, character, (character_to_left))
+            lose_field_item(1, character, (character_to_right))
 
     def update_monster(self, battle_dict):
-        pass
+        self.bias = monster_bias(elves(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 class Snails_on_Speed(Monster):
     def __init__(self):
@@ -411,18 +397,24 @@ class Snails_on_Speed(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "They steal your treasure. Roll a die and lose that many items or cards in your hand - your choice."
-        self.bad_stuff = lose_item(ranint())
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            num_to_lose = roll_die(character)
+            where = ""
+            while where != "backpack" and where != "field":
+                where = input("Will you lose items from your backpack, or items from the field? ").lower()
+            if where == "backpack":
+                lose_backpack_item(num_to_lose, character)
+            else:
+                lose_field_item(num_to_lose, character)
 
     def update_monster(self, battle_dict):
-        pass
+        self.battle_strength = self.level
 
 class Harpies(Monster):
     def __init__(self):
@@ -436,18 +428,18 @@ class Harpies(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Their music is really, really bad. Lose 2 levels."
-        self.bad_stuff = lose_level(2)
-        self.fight = pass
-        self.chase = pass
-        self.bias = (wizards(battle_dict), update_monster(5))
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_level(2, character)
 
     def update_monster(self, battle_dict):
-        pass
+        self.bias = monster_bias(wizards(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 class Undead_Horse(Monster):
     def __init__(self):
@@ -461,18 +453,18 @@ class Undead_Horse(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Kicks, bites, and smells awful. Lose 2 levels."
-        self.bad_stuff = lose_level(2)
-        self.fight = pass
-        self.chase = pass
-        self.bias = (dwarves(battle_dict), update_monster(5))
-        self.good_stuff = pass
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_level(2, character)
 
     def update_monster(self, battle_dict):
-        pass
+        self.bias = monster_bias(dwarves(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 ########## Level 5 ##########
 
@@ -483,16 +475,15 @@ class Fungus(Monster):
         self.level = 5
         self.description = "If the the Fungus becomes Humongous it gains, not the normal +10, but +25! Do not truffle with the Humongous Fungus."
         self.undead = False
-        self.plant = False
+        self.plant = True
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Elves lose 2 levels. Anyone else loses 1. Double the penalty if the Fungus was Humongous."
-        self.bad_stuff = (elves(battle_dict), lose_level(2), lose_level(1))
+#        self.bad_stuff = (elves(battle_dict), lose_level(2), lose_level(1))
         self.fight = humongous_fungus(battle_dict)
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -513,11 +504,10 @@ class Plague_Rats(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Lose 2 levels."
-        self.bad_stuff = lose_level(2)
+#        self.bad_stuff = lose_level(2)
         self.fight = (orcs(battle_dict),flee())#very similar to stomp for The Mighty Germ different victory message
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass #may consider using auto_kill() with victory message adaptation here.
+        self.chase = None
+        self.good_stuff = None #may consider using auto_kill() with victory message adaptation here.
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -538,11 +528,11 @@ class Teddy_Bear(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Discard your whole backpack. If you discarded more than one item, you may pick up one Treasure while Teddy is cackling over his ill-gotten gains."
-        self.bad_stuff = (empty_backpack(character), teddy_is_distracted())
-        self.fight = pass
-        self.chase = pass
-        self.bias = (orcs(battle_dict), update_monster(5))
-        self.good_stuff = pass
+#        self.bad_stuff = (empty_backpack(character), teddy_is_distracted())
+        self.fight = None
+        self.chase = None
+#        self.bias = (orcs(battle_dict), update_monster(5))
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -563,10 +553,10 @@ class Crawling_Hand(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Undead wedgie! Lose 2 levels."
-        self.bad_stuff = lose_level(2)
-        self.fight = 
-        self.chase = pass
-        self.bias = (dwarves(battle_dict), update_monster(5))
+#        self.bad_stuff = lose_level(2)
+        self.fight = None
+        self.chase = None
+#        self.bias = (dwarves(battle_dict), update_monster(5))
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -589,11 +579,10 @@ class Lawyers(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "He hits you with an injunction. Let each other player take one item from your backpack starting with the player to your left. Discard the remainder."
-        self.bad_stuff = (charity(),empty_backpack())
+#        self.bad_stuff = (charity(),empty_backpack())
         self.fight = (thieves(battle_dict),discard_treasure(2),gain_treasure(2))
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+        self.chase = None
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -614,10 +603,9 @@ class Pukachu(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Projectile vomiting attack! Discard your whole backpack."
-        self.bad_stuff = empty_backpack()
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
+#        self.bad_stuff = empty_backpack()
+        self.fight = None
+        self.chase = None
         self.good_stuff = update_monster()
         self.battle_strength = 0
 
@@ -639,11 +627,11 @@ class Shrieking_Geek(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "You become a normal, boring Human. Lose both your Race and Class."
-        self.bad_stuff = empty_backpack()
-        self.fight = pass
-        self.chase = pass
-        self.bias = ((warriors(battle_dict))(update_monster(6)))
-        self.good_stuff = pass
+#        self.bad_stuff = lose_race(), lose_class()
+        self.fight = None
+        self.chase = None
+#        self.bias = ((warriors(battle_dict))(update_monster(6)))
+        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
@@ -679,11 +667,10 @@ class Shadow_Nose(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 3
         self.bad_stuff_description = "You cannot flee. It automatically catches you. Lose 3 levels."
-        self.bad_stuff = lose_level(1, battle_dict)
-        self.fight = pass
-        self.chase = pass
-        self.bias = pass
-        self.good_stuff = pass
+#        self.bad_stuff = lose_level(1, battle_dict)
+        self.fight = None
+        self.chase = None
+        self.good_stuff = None
 ##      if "The Floating Nose" in battle_dict.keys():
 ##            self.enhancement += 10
 ##        if "Snot Elemental" in battle_dict.keys():
