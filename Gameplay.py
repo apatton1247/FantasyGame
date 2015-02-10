@@ -9,7 +9,9 @@ from inspect import getmembers
 
 character_list = []
 door_deck = []
+door_deck_discard = []
 treasure_deck = []
+treasure_deck_discard = []
 game_not_over = True
 
 #Adds characters to the game.  To be called at the beginning of the game
@@ -144,8 +146,11 @@ def open_door(character, door_deck):
     if door_deck[0].type == "monster":
         monster = door_deck.pop(0)
         battle(character, monster)
+    elif door_deck[0].type == "curse":
+        #TBD - create cases for curse cards
+        pass
     else:
-        #TBD - create cases for curse cards and action cards
+        #TBD - create cases for action cards, maybe other types?
         pass
 
 def make_battle_dict():
@@ -160,6 +165,21 @@ def make_battle_dict():
 def battle(character, monster):
     battle_dict["monster"][monster] = monster.battle_strength
     battle_dict["character"][character] = character.battle_strength
+
+    #Potential battle phases:
+    #   Preliminary phase (Dryad, Tongue Demon, anything that happens immediately)
+    #   Update phase (monster's biases/strength get updated / calculated)
+    #   Pursuit phase (decides if a monster will not pursue, finds out if character will pursue anyway)
+    #   Fight phase (calculates / announces current monster vs character standing)
+    #   Loop(Interference phase (by character or other characters, perhaps where help may be negotiated)
+    #        Update phase (if anything has changed, the monster's biases/strength may need to be updated))
+    #   Until either:
+    #      Victory claim phase (character(s) claim victory through a keyword) and
+    #        Interference phase (maybe someone has the Trojan Horse?)
+    #         Loot claim phase (character(s) get treasure and/or levels)
+    #   or Running/defeat phase (character(s) try to run if possible, or are immediately caught)
+    #        Interference phase (maybe they've got Magic Lamp, or someone else wants to use Flask of Glue?)
+    #         Bad Stuff phase (if unsuccessful at runaway)
 
 #Starts the game.  Adds characters to the character list, prepares the decks,
 # and gives the characters their starting supplies
@@ -185,11 +205,3 @@ while game_not_over:
     turn = (turn+1)%(len(character_list))
     if turn == 0:
         turn_round += 1
-
-
-#We used the double-commented lines below to test the game's add_characters function.
-#It totally worked as planned and we're awesome at coding.
-##add_characters()
-##
-##for character in character_list:
-##    print(character.name,  character.gender)
