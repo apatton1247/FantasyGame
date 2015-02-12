@@ -11,8 +11,7 @@ class Maul_Rat(Monster):
         self.name = "Maul Rat"
         self.level = 1
         self.description = "A homely-looking rat wearing a wig and wielding a mallet. A creature from Hell. +3 against Clerics."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -27,23 +26,13 @@ class Maul_Rat(Monster):
         self.bias = monster_bias(clerics(battle_dict), 3)
         self.battle_strength = self.level + self.bias
 
-    def fight(self, battle_dict):
-        pass
-
-    def chase(self, battle_dict):
-        pass
-
-    def good_stuff(self, battle_dict):
-        pass
-
 class Crabs(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Crabs"
         self.level = 1
         self.description = "Not the sea creature. It cannot be Outrun."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 15
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -57,17 +46,13 @@ class Crabs(Monster):
         for character in battle_dict["character"].keys():
             lose_lower_items(character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Potted_Plant(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Potted Plant"
         self.level = 1
         self.description = "A potted plant... thats it. Elves gain an extra Treasure after defeating it."
-        self.undead = False
-        self.plant = True
+        self.spec_attr = ["plant"]
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -81,17 +66,13 @@ class Potted_Plant(Monster):
         for character in battle_dict["character"].keys():
             no_bad_stuff(character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Lame_Goblin(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Lame Goblin"
         self.level = 1
         self.description = "A small goblin limping with a crutch. +1 to Run Away"
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = -1
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -105,17 +86,13 @@ class Lame_Goblin(Monster):
         for character in battle_dict["character"].keys():
             lose_level(1, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Drooling_Slime(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Drooling Slime"
         self.level = 1
         self.description = "Yucky slime! +4 against Elves."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -142,8 +119,7 @@ class Tequila_Mockingbird(Monster):
         self.name = "Tequila Mockingbird"
         self.level = 1
         self.description = "Horrible, drunken singing, very much like that of a Bard. +5 vs. Bards."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -158,15 +134,6 @@ class Tequila_Mockingbird(Monster):
         self.bias = monster_bias(bards(battle_dict), 5)
         self.battle_strength = self.level + self.bias
 
-    def fight(self, battle_dict):
-        pass
-
-    def chase(self, battle_dict):
-        pass
-
-    def good_stuff(self, battle_dict):
-        pass          
-
 ########## Level 2 ##########
 
 class Pit_Bull(Monster):
@@ -175,8 +142,7 @@ class Pit_Bull(Monster):
         self.name = "Pit Bull"
         self.level = 2
         self.description = "If you can't defeat it, you may distract it (automatic escape) by dropping any wand, pole, or staff. (Fetch, Fido!)"
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -190,17 +156,13 @@ class Pit_Bull(Monster):
         for character in battle_dict["character"].keys():
             lose_level(2, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Flying_Frogs(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Flying Frogs"
         self.level = 2
         self.description = "-1 to Run Away"
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 1
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -214,17 +176,13 @@ class Flying_Frogs(Monster):
         for character in battle_dict["character"].keys():
             lose_level(2, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Mr_Bones(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Mr. Bones
         self.level = 2
         self.description = "A skeleton dancing in a top hat. If you must flee you lose a level even if you escape."
-        self.undead = True
-        self.plant = False
+        self.spec_attr = ["undead"]
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -238,17 +196,13 @@ class Mr_Bones(Monster):
         for character in battle_dict["character"].keys():
             lose_level(2, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Large_Angry_Chicken(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Large Angry Chicken"
         self.level = 2
         self.description = "Fried Chicken is delicious. Gain an exrtra level if you defeat it with fire or flame."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -262,17 +216,13 @@ class Large_Angry_Chicken(Monster):
         for character in battle_dict["character"].keys():
             lose_level(1, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Gelatinous_Octahedron(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Gelatinous Octahedron"
         self.level = 2
         self.description = "+1 to Run Away"
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = -1
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -286,9 +236,6 @@ class Gelatinous_Octahedron(Monster):
         for character in battle_dict["character"].keys():
             lose_big_items(character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 ########## Level 3 ##########
 
 class The_Mighty_Germ(Monster):
@@ -297,8 +244,7 @@ class The_Mighty_Germ(Monster):
         self.name = "The Mighty Germ"
         self.level = 3
         self.description = "Really small spec. Halflings can just stomp it, killing it automatically."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -312,17 +258,13 @@ class The_Mighty_Germ(Monster):
         for character in battle_dict["character"].keys():
             lose_backpack_item(2, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Were_Turtle(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Were-Turtle"
         self.level = 3
         self.description = "A nerdy-looking turtle with a spear. Pursues verrrry slowly. +2 to Run Away"
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = -2
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -336,17 +278,13 @@ class Were_Turtle(Monster):
         for character in battle_dict["character"].keys():
             lose_race(1, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Psycho_Squirrel(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Psycho Squirrel"
         self.level = 3
         self.description = "Will not attack females, or wearers of the Spiked Codpiece."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
@@ -361,17 +299,13 @@ class Psycho_Squirrel(Monster):
             lose_level(1, character)
             font_italic(character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Pinata(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Pinata"
         self.level = 3
         self.description = "Large paper mache creature. If the Pinata is defeated, each party memeber, in the order you choose, gains one Treasure. It doesn't matter who participated in the combat."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = pinata(character_list)
@@ -385,9 +319,6 @@ class Pinata(Monster):
         for character in battle_dict["character"].keys():
             lose_field_item(1, character, character_to_left)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 ########## Level 4 ##########
 
 class Leperchaun(Monster):
@@ -396,12 +327,12 @@ class Leperchaun(Monster):
         self.name = "Leperchaun"
         self.level = 4
         self.description = "A Leprechaun with limbs falling off. He's gross! +5 against Elves."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "He takes two items from you - one chosen by the player on either side of you."
+        self.fight = None
         self.chase = None
         self.good_stuff = None
         self.battle_strength = 0
@@ -421,8 +352,7 @@ class Snails_on_Speed(Monster):
         self.name = "Snails on Speed"
         self.level = 4
         self.description = "-2 to Run Away"
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 2
         self.level_rewarded = 1
         self.treasure_rewarded = 2
@@ -443,17 +373,13 @@ class Snails_on_Speed(Monster):
             else:
                 lose_field_item(num_to_lose, character)
 
-    def update_monster(self, battle_dict):
-        self.battle_strength = self.level
-
 class Harpies(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Harpies"
         self.level = 4
         self.description = "Winged creatures playing a harp. They resist magic. +5 against Wizards."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
@@ -477,8 +403,7 @@ class Undead_Horse(Monster):
         self.name = "Undead Horse"
         self.level = 4
         self.description = "+5 against Dwarves."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = ["undead"]
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
@@ -504,47 +429,43 @@ class Fungus(Monster):
         self.name = "Fungus"
         self.level = 5
         self.description = "If the the Fungus becomes Humongous it gains, not the normal +10, but +25! Do not truffle with the Humongous Fungus."
-        self.undead = False
-        self.plant = True
+        self.spec_attr = ["plant"]
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Elves lose 2 levels. Anyone else loses 1. Double the penalty if the Fungus was Humongous."
-#        self.bad_stuff = (elves(battle_dict), lose_level(2), lose_level(1))
         self.fight = humongous_fungus(battle_dict)
         self.chase = None
         self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
-
-    def update_monster(self, battle_dict):
-        pass
+        levels_to_lose = 1
+        for character in battle_dict["character"].keys():
+            if character.char_race == "elf":
+                lose_level((2*levels_to_lose), character)
+            else:
+                lose_level(1, character)
 
 class Plague_Rats(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Plague Rats"
         self.level = 5
-        self.description = "Will flee from Orcs rather than attackng, leaving their treasure behind. Anyone else must fight, and is -1 to Run Away."
-        self.undead = False
-        self.plant = False
+        self.description = "Will flee from Orcs rather than attacking, leaving their treasure behind. Anyone else must fight, and is -1 to Run Away."
+        self.spec_attr = []
         self.speed = 1
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Lose 2 levels."
-#        self.bad_stuff = lose_level(2)
         self.fight = (orcs(battle_dict),flee())#very similar to stomp for The Mighty Germ different victory message
         self.chase = None
         self.good_stuff = None #may consider using auto_kill() with victory message adaptation here.
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
-
-    def update_monster(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_level(2, character)
 
 class Teddy_Bear(Monster):
     def __init__(self):
@@ -552,24 +473,26 @@ class Teddy_Bear(Monster):
         self.name = "Teddy Bear"
         self.level = 5
         self.description = "Digustingly cute. +5 against Orcs."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Discard your whole backpack. If you discarded more than one item, you may pick up one Treasure while Teddy is cackling over his ill-gotten gains."
-#        self.bad_stuff = (empty_backpack(character), teddy_is_distracted())
         self.fight = None
         self.chase = None
-#        self.bias = (orcs(battle_dict), update_monster(5))
         self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            backpack_size = len(character.backpack)
+            empty_backpack(character)
+            if backpack_size > 1:
+                character.backpack.append(treasure_deck[0])
 
     def update_monster(self, battle_dict):
-        pass
+        self.bias = monster_bias(orcs(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 class Crawling_Hand(Monster):
     def __init__(self):
@@ -577,23 +500,18 @@ class Crawling_Hand(Monster):
         self.name = "Crawling Hand"
         self.level = 4
         self.description = "A severed hand. If you give the Crawling Hand a Wishing Ring instead of fighting it, it will be your little friend. As a friend it now acts as a small item that gives +3 bonus in combat."
-        self.undead = True
-        self.plant = False
+        self.spec_attr = ["undead"]
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Undead wedgie! Lose 2 levels."
-#        self.bad_stuff = lose_level(2)
         self.fight = None
         self.chase = None
-#        self.bias = (dwarves(battle_dict), update_monster(5))
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
-        pass
-
-    def update_monster(self, battle_dict):
-        pass
+        for character in battle_dict["character"].keys():
+            lose_level(2, character)
         
 ########## Level 6 ##########
 
@@ -603,8 +521,7 @@ class Lawyers(Monster):
         self.name = "Lawyers"
         self.level = 6
         self.description = "Will not attack a Thief (professional courtesy). A Thief encountering a lawyer may instead discard two Treasures and pick up two new hidden ones."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
@@ -627,8 +544,7 @@ class Pukachu(Monster):
         self.name = "Pukachu"
         self.level = 6
         self.description = "Gain an extra level if you defeat it without using help or bonuses."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
@@ -651,8 +567,7 @@ class Shrieking_Geek(Monster):
         self.name = "Shrieking Geek
         self.level = 6
         self.description = "+ 6 against Warriors."
-        self.undead = False
-        self.plant = False
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 2
@@ -691,8 +606,7 @@ class Shadow_Nose(Monster):
         self.type = "monster"
         self.name = "The Shadow Nose"
         self.description = "Anything affecting the Floating nose works on its undead Shadow, too.  But the shadow won't take bribes."
-        self.undead = True
-        self.plant = False
+        self.spec_attr = ["undead"]
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 3

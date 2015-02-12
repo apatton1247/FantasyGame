@@ -1,26 +1,28 @@
 class Monster(object):
-  def __init__(self, name, level, description, bias, undead, plant, speed,
-               enhancement_method, fight_method,
-               chase_method,
-               bad_stuff_description, bad_stuff_method,
-               good_stuff_method, level_rewarded, treasure_rewarded):
-    self.type = "monster"
-    self.name = name
-    self.level = level
-    self.description = description
-    self.bias = bias
-    self.undead = undead
-    self.plant = plant
-    self.speed = speed
-    
-    self.enhancement_method = enhancement_method
-    self.fight_method = fight_method
-    
-    self.chase_method = chase_method
-    
-    self.bad_stuff_description = bad_stuff_description
-    self.bad_stuff_method = bad_stuff_method
+  def __init__(self)
+        self.type = "monster"
+        self.name = "monster name"
+        self.level = 0
+        self.description = "Generic description for characters to see."
+        self.special_attributes = []
+        self.speed = 0
+        self.level_rewarded = 0
+        self.treasure_rewarded = 0
+        self.bad_stuff_description = "Description of bad stuff goes here."
+        self.battle_strength = 0
 
-    self.good_stuff_method = good_stuff_method
-    self.level_rewarded = level_rewarded
-    self.treasure_rewarded = treasure_rewarded
+    def bad_stuff(self, battle_dict):
+        for character in battle_dict["character"].keys():
+            pass
+
+    def update_monster(self, battle_dict):
+        self.battle_strength = self.level
+
+    def fight(self, battle_dict):
+        pass
+
+    def chase(self, battle_dict):
+        pass
+
+    def good_stuff(self, battle_dict):
+        pass
