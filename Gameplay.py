@@ -157,29 +157,40 @@ def make_battle_dict():
     battle_dict = {}
     battle_dict["monster"] = {}
     battle_dict["character"] = {}
-    battle_dict["monster one-shots"] = {}
-    battle_dict["character one-shots"] = {}
-    battle_dict["monster enhancers"] = {}
+    battle_dict["monster"]["monster one-shots"] = {}
+    battle_dict["character"]["character one-shots"] = {}
 
+def battle_loop()
+    #During battle, the player(s) fighting the monster get to act; then in turn order, the players not fighting
+    # the monster get to interfere; every time a character interferes, the loop goes back to the player(s)
+    # fighting the monster, and they get a chance to act again, and play continues to the next character after
+    # the one who interfered.  If a character does not interfere on their turn, play passes to the next character
+    # not fighting the monster.  After a full round of no interference by the non-fighting characters, the
+    # fighting characters get one more chance to act, and if they do the loop restarts.
+    
 
 def battle(character, monster):
     battle_dict["monster"][monster] = monster.battle_strength
     battle_dict["character"][character] = character.battle_strength
 
-    #Potential battle phases:
+    battle_loop(battle_dict, character_list)
+    #Battle phases:
     #   Preliminary phase (Dryad, Tongue Demon, anything that happens immediately)
     #   Update phase (monster's biases/strength get updated / calculated)
     #   Pursuit phase (decides if a monster will not pursue, finds out if character will pursue anyway)
     #   Fight phase (calculates / announces current monster vs character standing)
-    #   Loop(Interference phase (by character or other characters, perhaps where help may be negotiated)
+    #   Loop: for each character, starting with the next character and going to each other character in turn,
+    #    and if nobody interferes, going back to the character in the fight.  Only after a full loop of no
+    #    interference will the battle end.
+    #       (Interference phase (perhaps where help may be negotiated if it's the main character's turn?)
     #        Update phase (if anything has changed, the monster's biases/strength may need to be updated))
     #   Until either:
-    #      Victory claim phase (character(s) claim victory through a keyword) and
-    #        Interference phase (maybe someone has the Trojan Horse?)
-    #         Loot claim phase (character(s) get treasure and/or levels)
+    #      Victory phase:
+    #        Final Interference Loop phase (maybe someone has the Trojan Horse?)
+    #        Loot claim phase (character(s) get treasure and/or levels)
     #   or Running/defeat phase (character(s) try to run if possible, or are immediately caught)
-    #        Interference phase (maybe they've got Magic Lamp, or someone else wants to use Flask of Glue?)
-    #         Bad Stuff phase (if unsuccessful at runaway)
+    #        Final Interference Loop phase (maybe they've got Magic Lamp, or someone else wants to use Flask of Glue?)
+    #        Bad Stuff phase (if unsuccessful at runaway)
 
 #Starts the game.  Adds characters to the character list, prepares the decks,
 # and gives the characters their starting supplies
