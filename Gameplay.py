@@ -160,7 +160,7 @@ def make_battle_dict():
     battle_dict["monster"]["monster one-shots"] = {}
     battle_dict["character"]["character one-shots"] = {}
 
-def battle_loop()
+def battle_loop(battle_dict, fighters, watchers)
     #During battle, the player(s) fighting the monster get to act; then in turn order, the players not fighting
     # the monster get to interfere; every time a character interferes, the loop goes back to the player(s)
     # fighting the monster, and they get a chance to act again, and play continues to the next character after
@@ -173,7 +173,11 @@ def battle(character, monster):
     battle_dict["monster"][monster] = monster.battle_strength
     battle_dict["character"][character] = character.battle_strength
 
-    battle_loop(battle_dict, character_list)
+    fighters = [character_list[turn]]
+    watchers = [character_list[(x + turn)%(len(character_list))] for x in range(1, len(character_list))]
+    #If a helper is negotiated, then we append(pop(index from watchers list)) to the fighters list
+
+    battle_loop(battle_dict, fighters, watchers)
     #Battle phases:
     #   Preliminary phase (Dryad, Tongue Demon, anything that happens immediately)
     #   Update phase (monster's biases/strength get updated / calculated)
