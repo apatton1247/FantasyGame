@@ -5,9 +5,9 @@
 def lose_level(number, character):
     character.level -= 1
     if number == 1:
-	print("%s lost 1 level!" % (character.name))
+        print("%s lost 1 level!" % (character.name))
     else:
-	print("%s lost %d levels!" % (character.name, number))
+        print("%s lost %d levels!" % (character.name, number))
 
 def lose_lower_items(character):
 	pass
@@ -72,27 +72,27 @@ def bribe(item):
 
 ########## Bias Methods ##########
 
-def monster_bias(number1, number2)
+def monster_bias(number1, number2):
     return (number1 * number2)
 
 def classless(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].keys():
-	if character.char_class == "normal":
-	    num_bias += 1
+        if character.char_class == "normal":
+            num_bias += 1
     return num_bias	
 	
 def clerics(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].keys():
-	if character.char_class == "cleric":
-	    num_bias += 1
+        if character.char_class == "cleric":
+            num_bias += 1
     return num_bias
 
 def warriors(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].keys():
-	if character.char_class == "warrior":
+        if character.char_class == "warrior":
             num_bias += 1
     return num_bias
 

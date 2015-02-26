@@ -1,6 +1,6 @@
 from Character_Class import *
 from Monster_Class import *
-#from Monster_Pokedex import *
+from Monster_Pokedex import *
 from Curse_Compendium import *
 from random import randint
 from inspect import getmembers
@@ -37,7 +37,7 @@ def add_characters():
 # resulting card object into card_obj, which gets returned to whatever calls it.  If this function
 # runs through the whole module it's given and doesn't find any matching class names, it returns None.
 def card_creation(card_name, module):
-    for name, value in inspect.getmembers(module):
+    for name, value in getmembers(module):
         if name == card_name:
             card_obj = getattr(module, card_name)()
             return card_obj
@@ -52,20 +52,20 @@ def create_decks():
     with open("door_card_list.txt", "r") as door_card_file:
         for line in door_card_file:
             door_card_list.append(line.rstrip())
-    print("Door card list: ", door_card_list)
+    #print("Door card list: ", door_card_list)
 
     #TBD - create DoorCard objects
-    #The idea here is we populate places_to_look with the modules (.py files) we want it to look in to
+    #The idea here is we populate world_of_munchkin with the modules (.py files) we want it to look in to
     # find the classes that match up with the string input, then call card_creation to search through
     # that module.  If a matching class is not found in the module, the next module is searched, until
     # an object is returned (the first "else" below, which breaks out of the inner for-loop and moves on
-    # to the next card), or no matching class is found in any of the places_to_look (the second "else"),
+    # to the next card), or no matching class is found in any of the world_of_munchkin (the second "else"),
     # at which time a message of unavailability is given and the card removed from play.
     for card in door_card_list:
         card_name = card.replace(" ", "_")
 
-        places_to_look = [Monster_Pokedex, Curse_Compendium]
-        for place in places_to_look:
+        world_of_munchkin = [Monster_Pokedex.py]#, Curse_Compendium]
+        for place in world_of_munchkin:
             card_obj = card_creation(card_name, place)
             if card_obj == None:
                 continue
@@ -89,20 +89,20 @@ def create_decks():
     with open("treasure_card_list.txt", "r") as treasure_card_file:
         for line in treasure_card_file:
             treasure_card_list.append(line.rstrip())
-    print("Treasure card list: ", treasure_card_list)
+    #print("Treasure card list: ", treasure_card_list)
 
     #TBD - create TreasureCard objects
-    #The idea here is we populate places_to_look with the modules (.py files) we want it to look in to
+    #The idea here is we populate world_of_munchkin with the modules (.py files) we want it to look in to
     # find the classes that match up with the string input, then call card_creation to search through
     # that module.  If a matching class is not found in the module, the next module is searched, until
     # an object is returned (the first "else" below, which breaks out of the inner for-loop and moves on
-    # to the next card), or no matching class is found in any of the places_to_look (the second "else"),
+    # to the next card), or no matching class is found in any of the world_of_munchkin (the second "else"),
     # at which time a message of unavailability is given and the card removed from play.
     for card in treasure_card_list:
         card_name = card.replace(" ", "_")
         #TBD - create .py files in which to look for Treasure Card classes
-        places_to_look = []
-        for place in places_to_look:
+        world_of_munchkin = []
+        for place in world_of_munchkin:
             card_obj = card_creation(card_name, place)
             if card_obj == None:
                 continue
@@ -120,7 +120,7 @@ def create_decks():
         treasure_deck.append(treasure_card_list.pop(next_card_index))
     if not treasure_card_file.closed:
         treasure_card_file.close()
-    print("Treasure deck: ", treasure_deck)
+    #print("Treasure deck: ", treasure_deck)
 
     return door_deck, treasure_deck
 
@@ -142,7 +142,7 @@ def shuffle(discards):
   pass
 
 def open_door(character, door_deck):
-    print(character.backpack)
+    print(door_deck[0])
     if door_deck[0].type == "monster":
         monster = door_deck.pop(0)
         battle(character, monster)
@@ -164,14 +164,15 @@ def battle_setup(battle_dict):
     for monster in battle_dict["monster"].keys():
         monster.prelim(battle_dict)
         monster.update_monster(battle_dict)
-        monster.chase(battle_dict)
+        monster.pursuit(battle_dict)
 
 def fight_calc(battle_dict):
     monster_strength = 0
-    for category, entity in battle_dict["monster"]:
-        monster_strength += battle_dict["monster"][category][entity]
+    for category in battle_dict["monster"]:
+        for entity in category:
+            monster_strength += battle_dict["monster"][category][entity]
     character_strength = 0
-    for category, entity in battle_dict["character"]:
+    for category in battle_dict["character"]:
         character_strength += battle_dict["character"][category][entity]
 
     #print the status of the battle with the current monster_strength vs character_strength, somehow make it
@@ -179,7 +180,7 @@ def fight_calc(battle_dict):
 
 def take_action(battle_dict, fighters, watchers, character):
     #Allow the person to take an action, choosing to play a card or activate a power, or run
-    #Can a player do more than one action per loop?  What if a person wants to backstab and play a monster?
+    #Allow the person to take as many actions (with a while-loop) until the player declares they're "Done".
 
     #if an action is taken, take_action should update the fight calc and return True, else it should return False
     if True:
@@ -199,42 +200,42 @@ def battle_loop(battle_dict, fighters, watchers):
     action_this_round = True
     while action_this_round:
         action_this_round = False
+        for character in fighters:
+            action_taken = take_action(battle_dict, fighters, watchers, character)
+            if action_taken:
+                action_this_round = True
         for character in watchers:
             action_taken = take_action(battle_dict, fighters, watchers, character)
             if action_taken:
                 action_this_round = True
                 for character in fighters:
                     take_action(battle_dict, fighters, watchers, character)
-        for character in fighters:
-            action_taken = take_action(battle_dict, fighters, watchers, character)
-            if action_taken:
-                action_this_round = True
     else:
         return 1
 
 def battle(character, monster):
-    battle_dict["monster"][monster] = monster.battle_strength
-    battle_dict["character"][character] = character.battle_strength
+    battle_dict["monster"][monster.name] = {monster : monster.level}
+    battle_dict["character"][character.name] = {character : character.level}
 
     fighters = [character_list[turn]]
     watchers = [character_list[(x + turn)%(len(character_list))] for x in range(1, len(character_list))]
     #If a helper is negotiated, then we append(pop(index from watchers list)) to the fighters list
 
     battle_setup(battle_dict)
-    take_action(battle_dict, fighters, watchers, fighters[0])
     battle_loop(battle_dict, fighters, watchers)
     #Still need to figure out how to do the final phase; at this point the battle is decided, and the fighter(s)
     # have either won or lost.  Depending on the monster escape may or may not be possible, but they should get
     # a chance to take an action that can't change the battle outcome (win or lose), but could make escape easier
-    # or possible, and other players should be able to play Flask of Glue or Dead Broke or Trojan Horse, etc.
+    # or possible, or could influence treasure, and other players should be able to play Flask of Glue or Dead
+    # Broke or Trojan Horse, etc.
 
     #Battle phases:
-    #   Preliminary phase (Dryad, Tongue Demon, anything that happens immediately)
-    #   Update phase (monster's biases/strength get updated / calculated)
-    #   Pursuit phase (decides if a monster will not pursue, finds out if character will pursue anyway)
-    #   Fight phase (calculates / announces current monster vs character standing)
-    #   Loop: for each character, starting with the next character and going to each other character in turn,
-    #    and if nobody interferes, going back to the character in the fight.  Only after a full loop of no
+    #   Setup phase:
+    #       Preliminary phase (Dryad, Tongue Demon, anything that happens immediately)
+    #       Update phase (monster's biases/strength get updated / calculated)
+    #       Pursuit phase (decides if a monster will not pursue, finds out if character will pursue anyway)
+    #   Loop: each character gets a chance to act.  Fighters go first in each iteration of the loop.  Then each
+    #    watcher in turn may act; if any do, the fighters can immediately react. Only after a full loop of no
     #    interference will the battle end.
     #       (Interference phase (perhaps where help may be negotiated if it's the main character's turn?)
     #        Update phase (if anything has changed, the monster's biases/strength may need to be updated))

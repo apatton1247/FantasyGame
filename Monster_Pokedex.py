@@ -3,6 +3,41 @@
 import Monster_Class
 import Monster_Methods_Manuscript
 
+class Monster(object):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "monster name"
+        self.level = 0
+        self.description = "Generic description for characters to see."
+        self.special_attributes = []
+        self.speed = 0
+        self.level_rewarded = 0
+        self.treasure_rewarded = 0
+        self.bad_stuff_description = "Description of bad stuff goes here."
+        self.battle_strength = 0
+
+    def prelim(self, battle_dict):
+        pass
+
+    def pursuit(self, battle_dict):
+        pass
+      
+    def bad_stuff(self, battle_dict):
+        for character in battle_dict["character"].keys():
+            pass
+
+    def update_monster(self, battle_dict):
+        self.battle_strength = self.level
+
+    def fight(self, battle_dict):
+        pass
+
+    def chase(self, battle_dict):
+        pass
+
+    def good_stuff(self, battle_dict):
+        pass
+
 ########## Level 1 ##########
 
 class Maul_Rat(Monster):
@@ -179,7 +214,7 @@ class Flying_Frogs(Monster):
 class Mr_Bones(Monster):
     def __init__(self):
         self.type = "monster"
-        self.name = "Mr. Bones
+        self.name = "Mr. Bones"
         self.level = 2
         self.description = "A skeleton dancing in a top hat. If you must flee you lose a level even if you escape."
         self.spec_attr = ["undead"]
@@ -564,7 +599,7 @@ class Pukachu(Monster):
 class Shrieking_Geek(Monster):
     def __init__(self):
         self.type = "monster"
-        self.name = "Shrieking Geek
+        self.name = "Shrieking Geek"
         self.level = 6
         self.description = "+ 6 against Warriors."
         self.spec_attr = []

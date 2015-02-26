@@ -1,5 +1,5 @@
 class Monster(object):
-  def __init__(self)
+    def __init__(self):
         self.type = "monster"
         self.name = "monster name"
         self.level = 0
@@ -12,6 +12,9 @@ class Monster(object):
         self.battle_strength = 0
 
     def prelim(self, battle_dict):
+        pass
+
+    def pursuit(self, battle_dict):
         pass
       
     def bad_stuff(self, battle_dict):
