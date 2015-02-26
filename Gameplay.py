@@ -160,14 +160,57 @@ def make_battle_dict():
     battle_dict["monster"]["monster one-shots"] = {}
     battle_dict["character"]["character one-shots"] = {}
 
-def battle_loop(battle_dict, fighters, watchers)
+def battle_setup(battle_dict):
+    for monster in battle_dict["monster"].keys():
+        monster.prelim(battle_dict)
+        monster.update_monster(battle_dict)
+        monster.chase(battle_dict)
+
+def fight_calc(battle_dict):
+    monster_strength = 0
+    for category, entity in battle_dict["monster"]:
+        monster_strength += battle_dict["monster"][category][entity]
+    character_strength = 0
+    for category, entity in battle_dict["character"]:
+        character_strength += battle_dict["character"][category][entity]
+
+    #print the status of the battle with the current monster_strength vs character_strength, somehow make it
+    # so that the character(s)'s and monster(s)'s names are shown no matter how many of each there are.
+
+def take_action(battle_dict, fighters, watchers, character):
+    #Allow the person to take an action, choosing to play a card or activate a power, or run
+    #Can a player do more than one action per loop?  What if a person wants to backstab and play a monster?
+
+    #if an action is taken, take_action should update the fight calc and return True, else it should return False
+    if True:
+        fight_calc(battle_dict)
+        return True
+    else:
+        return False
+
+def battle_loop(battle_dict, fighters, watchers):
     #During battle, the player(s) fighting the monster get to act; then in turn order, the players not fighting
     # the monster get to interfere; every time a character interferes, the loop goes back to the player(s)
     # fighting the monster, and they get a chance to act again, and play continues to the next character after
     # the one who interfered.  If a character does not interfere on their turn, play passes to the next character
     # not fighting the monster.  After a full round of no interference by the non-fighting characters, the
     # fighting characters get one more chance to act, and if they do the loop restarts.
-    
+    fight_calc(battle_dict)
+    action_this_round = True
+    while action_this_round:
+        action_this_round = False
+        for character in watchers:
+            action_taken = take_action(battle_dict, fighters, watchers, character)
+            if action_taken:
+                action_this_round = True
+                for character in fighters:
+                    take_action(battle_dict, fighters, watchers, character)
+        for character in fighters:
+            action_taken = take_action(battle_dict, fighters, watchers, character)
+            if action_taken:
+                action_this_round = True
+    else:
+        return 1
 
 def battle(character, monster):
     battle_dict["monster"][monster] = monster.battle_strength
@@ -177,7 +220,14 @@ def battle(character, monster):
     watchers = [character_list[(x + turn)%(len(character_list))] for x in range(1, len(character_list))]
     #If a helper is negotiated, then we append(pop(index from watchers list)) to the fighters list
 
+    battle_setup(battle_dict)
+    take_action(battle_dict, fighters, watchers, fighters[0])
     battle_loop(battle_dict, fighters, watchers)
+    #Still need to figure out how to do the final phase; at this point the battle is decided, and the fighter(s)
+    # have either won or lost.  Depending on the monster escape may or may not be possible, but they should get
+    # a chance to take an action that can't change the battle outcome (win or lose), but could make escape easier
+    # or possible, and other players should be able to play Flask of Glue or Dead Broke or Trojan Horse, etc.
+
     #Battle phases:
     #   Preliminary phase (Dryad, Tongue Demon, anything that happens immediately)
     #   Update phase (monster's biases/strength get updated / calculated)

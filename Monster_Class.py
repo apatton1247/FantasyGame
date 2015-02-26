@@ -11,6 +11,9 @@ class Monster(object):
         self.bad_stuff_description = "Description of bad stuff goes here."
         self.battle_strength = 0
 
+    def prelim(self, battle_dict):
+        pass
+      
     def bad_stuff(self, battle_dict):
         for character in battle_dict["character"].keys():
             pass
