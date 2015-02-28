@@ -37,9 +37,9 @@ Big Feet
 Truly Obnoxious Curse
 Lose Your Class
 Lose Your Race
-Lose a Level
-Duck of Doom
-Chicken on Your Head
+Lose A Level
+Duck Of Doom
+Chicken On Your Head
 Change Race
 Lose Two Cards
 Humongous
@@ -52,8 +52,8 @@ Ancient
 Enraged
 ...From Hell
 Baby
-Big Honking Sword of Character Whupping
-Find a Map
+Big Honking Sword Of Character Whupping
+Find A Map
 Divine Intervention
 Annihilation
 Typographical Error
@@ -109,9 +109,9 @@ Santa
 Crabs
 Medusa
 Bobble-head
-Snails on Speed
+Snails On Speed
 Hippogriff
-Monster the GM Made Up Himself
+Monster The GM Made Up Himself
 King Tut
 Jabberwock
 Teddy Bear
@@ -124,7 +124,7 @@ Pit Bull
 Grassy Gnoll
 Net Troll
 Amazon
-Thing With A Name So Long There's No Room for A Picture On the Card
+Thing With A Name So Long There's No Room For A Picture On The Card
 Clerical Error
 Exploding Kneecaps
 Trip Over Your Own Chest
@@ -133,9 +133,9 @@ Necrophobia
 Dying Curse
 Undead
 Undead
-Deck of Too Many Things
+Deck Of Too Many Things
 Dead Broke
-Out to Lunch
+Out To Lunch
 Mommy
 Illusion
 Mate

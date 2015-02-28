@@ -1,6 +1,7 @@
 ############### Monster Pokedex ###############
 
 from Monster_Methods_Manuscript import *
+from datetime import date
 
 ########## Monster Superclass ##########
 class Monster(object):
@@ -503,6 +504,11 @@ class Crawling_Hand(Monster):
 
     def bad_stuff(self, character):
         lose_level(2, character)
+
+    def fight(self, battle_dict):
+        #If you give the Crawling Hand a Wishing Ring or Other Ring, battle ends and
+        # it becomes a small slotless item that gives you a +3 bonus.
+        pass
         
 ########## Level 6 ##########
 
@@ -573,15 +579,87 @@ class Shrieking_Geek(Monster):
 
 ########## Level 7 ##########
 
-      
+class Monster_The_GM_Made_Up_Himself(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Monster The GM Made Up Himself"
+        self.level = 7
+        self.description = "+4 against Dwarves, +2 against females, -3 against Wizards, -2 if it's Saturday."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "Halflings lose 1 level.  Elves lose 2 levels.  Males lose 1 extra level and must discard one item from their backpack.  Those who don't fall in the above categories must discard two items from their backpacks.  No, really! It's for game balance!"
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        levels_lost = False
+        if character.char_race == "halfling":
+            lose_level(1, character)
+            levels_lost = True
+        if character.char_race == "elf":
+            lose_level(2, character)
+            levels_lost = True
+        if character.gender == "male":
+            lose_level(1, character)
+            lose_backpack_item(1, character)
+            levels_lost = True
+        if not levels_lost:
+            lose_backpack_item(2, character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(dwarves(battle_dict), 4)
+        self.bias += monster_bias(females(battle_dict), 2)
+        self.bias += monster_bias(wizards(battle_dict), -3)
+        if date.today().weekday() == 5:
+            self.bias -= 2
+        self.battle_strength = self.level + self.bias
+
 
 ########## Level 8 ##########
 
+class Face_Sucker(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Face Sucker"
+        self.level = 8
+        self.description = "It's gross! +6 against Elves."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "When it sucks your face off, your Headgear goes with it. Discard the Headgear you are wearing, and lose a level."
+        self.battle_strength = 0
 
+    def bad_stuff(self, character):
+        lose_headgear(character)
+        lose_level(1, character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(dwarves(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 ########## Level 9 ##########
 
-        
+class Scary_Clowns(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Scary Clowns"
+        self.level = 9
+        self.description = "+5 against Halflings."
+        self.spec_attr = ["undead"]
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 3
+        self.bad_stuff_description = "Laugh yourself sick. Lose 3 levels."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        lose_level(3, character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(halflings(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 ########## Level 10 ##########
 
@@ -604,3 +682,88 @@ class Shadow_Nose(Monster):
 
     def bad_stuff(self, character):
         lose_level(3, character)
+
+########## Level 11 ##########
+
+        
+
+########## Level 12 ##########
+
+        
+
+########## Level 13 ##########
+
+        
+
+########## Level 14 ##########
+
+        
+
+########## Level 15 ##########
+
+class Poison_Ivy_Kudzu_Flytrap(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Poison Ivy Kudzu Flytrap"
+        self.level = 15
+        self.description = "-4 against Elves."
+        self.spec_attr = ["plant"]
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 4
+        self.bad_stuff_description = "Frantic scratching.  Lose your Armor and Headgear."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        lose_armor(character)
+        lose_headgear(character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(elves(battle_dict), -4)
+        self.battle_strength = self.level + self.bias
+
+########## Level 16 ##########
+
+        
+
+########## Level 17 ##########
+
+        
+
+########## Level 18 ##########
+
+        
+
+########## Level 19 ##########
+
+class Medusa(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Medusa"
+        self.level = 19
+        self.description = "A gorgon with icky snakes for hair. +4 against Elves."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 5
+        self.bad_stuff_description = "You are turned to stone.  You're dead... and your possessions turn to stone with you, so nobody gets them."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        empty_backpack(character)
+        empty_closet(character)
+        death(character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(elves(battle_dict), 4)
+        self.battle_strength = self.level + self.bias
+
+
+########## Level 20 ##########
+
+        
+
+########## Level 25 ##########
+
+        
+

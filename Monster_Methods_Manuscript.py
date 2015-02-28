@@ -17,9 +17,29 @@ def no_bad_stuff():
     print("No bad stuff has happened to %s.  Move along." % (character.name))
     pass
 
+def lose_headgear(character):
+    for item in character.equipment["headgear"]:
+        discard(item, character.equipment["headgear"])
+        print("%s lost the %s" % (character.name, item.name))
+
+def lose_armor(character):
+    for item in character.equipment["armor"]:
+        discard(item, character.equipment["armor"])
+        print("%s lost the %s" % (character.name, item.name))
+
+def lose_weapons(character):
+    for item in character.equipment["weapons"]:
+        discard(item, character.equipment["weapons"])
+        print("%s lost the %s" % (character.name, item.name))
+        
 def lose_footgear(character):
     for item in character.equipment["footgear"]:
         discard(item, character.equipment["footgear"])
+        print("%s lost the %s" % (character.name, item.name))
+
+def lose_slotless(character):
+    for item in character.equipment["slotless"]:
+        discard(item, character.equipment["slotless"])
         print("%s lost the %s" % (character.name, item.name))
 
 def lose_big_items(character):
@@ -65,6 +85,17 @@ def lose_field_item(number, character):
                 print("You must choose an item you have in your backpack. Try again.")
                 item -= 1
 
+def empty_equipment(character):
+    lose_headgear(character)
+    lose_armor(character)
+    lose_weapons(character)
+    lose_footgear(character)
+    lose_slotless(character)
+
+def empty_closet(character):
+    for item in character.closet:
+        discard(item, character.closet)
+
 def lose_race(character):
     if len(character.char_race) == 2:
         print(character.char_race)
@@ -108,6 +139,14 @@ def lose_classes(character):
 def font_italic(character):
     #Somehow italicize the font of whatever the person says until their next turn.
     pass
+
+def death(character):
+    character.level = 1
+    #Need some way to get their items in their backpack and on the field visible, and then
+    # allow the other non-dead players (in level order) to pick something from them, while
+    # the rest is discarded.  Their turn must end.  They then respawn at the start of
+    # the next player's turn, and the get_supplies() at the beginning of their next turn.
+    # Maybe most of that should happen outside of the death() method, back in gameplay?
 
 ########## Fight Methods ##########			
 
@@ -213,6 +252,22 @@ def gnomes(battle_dict):
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
             if char_obj.char_race == "gnome":
+                num_bias += 1
+    return num_bias
+
+def males(battle_dict):
+    num_bias = 0
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.gender == "male":
+                num_bias += 1
+    return num_bias
+
+def females(battle_dict):
+    num_bias = 0
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.gender == "female":
                 num_bias += 1
     return num_bias
 
