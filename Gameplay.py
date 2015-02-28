@@ -267,7 +267,7 @@ def battle(character, monster):
     #      Victory phase:
     #        Final Interference Loop phase (maybe someone has the Trojan Horse?)
     #        Loot claim phase (character(s) get treasure and/or levels)
-    #   or Running/defeat phase (character(s) try to run if possible, or are immediately caught)
+    #   or Running/defeat phase (character(s) try to run if possible (maybe chase method is called here?), or are immediately caught)
     #        Final Interference Loop phase (maybe they've got Magic Lamp, or someone else wants to use Flask of Glue?)
     #        Bad Stuff phase (if unsuccessful at runaway)
 
