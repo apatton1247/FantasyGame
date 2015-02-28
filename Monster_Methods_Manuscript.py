@@ -77,92 +77,109 @@ def monster_bias(number1, number2):
 
 def classless(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_class == "normal":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_class == "normal":
+                num_bias += 1
     return num_bias	
 	
 def clerics(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_class == "cleric":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_class == "cleric":
+                num_bias += 1
     return num_bias
 
 def warriors(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_class == "warrior":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_class == "warrior":
+                num_bias += 1
     return num_bias
 
 def bards(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_class == "bard":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_class == "bard":
+                num_bias += 1
     return num_bias
 
 def thieves(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_class == "thief":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_class == "thief":
+                num_bias += 1
     return num_bias
 
 def wizards(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_class == "wizard":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_class == "wizard":
+                num_bias += 1
     return num_bias
 
 def humans(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_race == "human":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_race == "human":
+                num_bias += 1
     return num_bias
 
 def elves(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_race == "elf":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_race == "elf":
+                num_bias += 1
     return num_bias
 
 def dwarves(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_race == "dwarf":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_race == "dwarf":
+                num_bias += 1
     return num_bias
 
 def halflings(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_race == "halfling":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_race == "halfling":
+                num_bias += 1
     return num_bias
 
 def orcs(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_race == "orc":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_race == "orc":
+                num_bias += 1
     return num_bias
 
 def gnomes(battle_dict):
     num_bias = 0
-    for character in battle_dict["character"].keys():
-        if character.char_race == "gnome":
-            num_bias += 1
+    for character in battle_dict["character"].values():
+        for char_obj in character.keys():
+            if char_obj.char_race == "gnome":
+                num_bias += 1
     return num_bias
 
 ########## Chase Methods ##########
 
 def auto_escape():
-	pass
+    pass
 
+########## Pursuit Methods ##########
+
+def will_not_pursue():
+    pass
 
 ########## Good Stuff Methods ##########
+

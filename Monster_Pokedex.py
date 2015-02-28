@@ -1,8 +1,8 @@
 ############### Monster Pokedex ###############
 
-import Monster_Class
-import Monster_Methods_Manuscript
+from Monster_Methods_Manuscript import *
 
+########## Monster Superclass ##########
 class Monster(object):
     def __init__(self):
         self.type = "monster"
@@ -101,6 +101,9 @@ class Potted_Plant(Monster):
         for character in battle_dict["character"].keys():
             no_bad_stuff(character)
 
+    def chase(self, battle_dict):
+        auto_escape()
+
 class Lame_Goblin(Monster):
     def __init__(self):
         self.type = "monster"
@@ -182,7 +185,7 @@ class Pit_Bull(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Fang marks in your butt. Lose 2 levels."
-        self.fight = bribe(wand, pole, staff)#we will have to add a boolean attribute to items classes for this
+        #self.fight = bribe(wand, pole, staff)#we will have to add a boolean attribute to items classes for this
         self.chase = None
         self.good_stuff = None
         self.battle_strength = 0
@@ -190,6 +193,11 @@ class Pit_Bull(Monster):
     def bad_stuff(self, battle_dict):
         for character in battle_dict["character"].keys():
             lose_level(2, character)
+
+    def fight(self, battle_dict):
+        #A player my say "drop " some pole/wand/staff, and if that item has "pole" or "wand"
+        # or "staff" as a special attribute, then the player may auto-escape.
+        pass
 
 class Flying_Frogs(Monster):
     def __init__(self):
@@ -223,7 +231,7 @@ class Mr_Bones(Monster):
         self.treasure_rewarded = 1
         self.bad_stuff_description = "His bony touch costs you 2 levels."
         self.fight = None
-        self.chase = lose_level(1, battle_dict)
+        #self.chase = lose_level(1, battle_dict)
         self.good_stuff = None
         self.battle_strength = 0
 
@@ -231,18 +239,22 @@ class Mr_Bones(Monster):
         for character in battle_dict["character"].keys():
             lose_level(2, character)
 
+    def chase(self, battle_dict):
+        for character in battle_dict["character"].keys():
+            lose_level(1, character)
+
 class Large_Angry_Chicken(Monster):
     def __init__(self):
         self.type = "monster"
         self.name = "Large Angry Chicken"
         self.level = 2
-        self.description = "Fried Chicken is delicious. Gain an exrtra level if you defeat it with fire or flame."
+        self.description = "Fried Chicken is delicious. Gain an extra level if you defeat it with fire or flame."
         self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Very painful pecking. Lose a level."
-        self.fight = used_fire(battle_dict)#add fire and flame items/one-shots
+        #self.fight = used_fire(battle_dict)#add fire and flame items/one-shots
         self.chase = None
         self.good_stuff = None
         self.battle_strength = 0
@@ -250,6 +262,10 @@ class Large_Angry_Chicken(Monster):
     def bad_stuff(self, battle_dict):
         for character in battle_dict["character"].keys():
             lose_level(1, character)
+
+    def fight(self, battle_dict):
+        #If the character used fire in any way, they go up another level
+        pass
 
 class Gelatinous_Octahedron(Monster):
     def __init__(self):
@@ -284,7 +300,7 @@ class The_Mighty_Germ(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Helpless sneezing causes items to fall out of your backpack. Discard 2 items (your choice) from your backpack."
-        self.fight = (halfling(battle_dict), stomp())
+        #self.fight = (halfling(battle_dict), stomp())
         self.chase = None
         self.good_stuff = None #may consider using auto_kill() with victory message adaptation here.
         self.battle_strength = 0
@@ -293,6 +309,10 @@ class The_Mighty_Germ(Monster):
         for character in battle_dict["character"].keys():
             lose_backpack_item(2, character)
 
+    def fight(self, battle_dict):
+        #If a character whose race is "halfling" says "Stomp", they should auto-kill the Mighty Germ.
+        pass
+    
 class Were_Turtle(Monster):
     def __init__(self):
         self.type = "monster"
@@ -324,7 +344,7 @@ class Psycho_Squirrel(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Lose a level. Speak in a high, squecky voice until your next turn."
-        self.fight = will_not_pursue(battle_dict, female, spiked_codpiece)
+        #self.fight = will_not_pursue(battle_dict, female, spiked_codpiece)
         self.chase = None
         self.good_stuff = None
         self.battle_strength = 0
@@ -333,6 +353,11 @@ class Psycho_Squirrel(Monster):
         for character in battle_dict["character"].keys():
             lose_level(1, character)
             font_italic(character)
+
+    def pursuit(self, battle_dict):
+        if len(battle_dict["character"].keys()) < 3: # and the character is a female or wears the spiked codpiece
+            will_not_pursue()
+
 
 class Pinata(Monster):
     def __init__(self):
@@ -343,16 +368,20 @@ class Pinata(Monster):
         self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
-        self.treasure_rewarded = pinata(character_list)
+        #self.treasure_rewarded = pinata(character_list)
         self.bad_stuff_description = "The player to your left picks one item that you are using or from your closet. Discard it."
         self.fight = None
         self.chase = None
-        self.good_stuff = loot(pinata)
+        #self.good_stuff = loot(pinata)
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
         for character in battle_dict["character"].keys():
             lose_field_item(1, character, character_to_left)
+
+    def good_stuff(self, battle_dict):
+        #Pinata loot method.  It's spelled out above, just need to figure out how to implement it.
+        pass
 
 ########## Level 4 ##########
 
@@ -469,7 +498,7 @@ class Fungus(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Elves lose 2 levels. Anyone else loses 1. Double the penalty if the Fungus was Humongous."
-        self.fight = humongous_fungus(battle_dict)
+        #self.fight = humongous_fungus(battle_dict)
         self.chase = None
         self.good_stuff = None
         self.battle_strength = 0
@@ -482,6 +511,10 @@ class Fungus(Monster):
             else:
                 lose_level(1, character)
 
+    def fight(self, battle_dict):
+        #Provision for a player using Humongous on the Fungus to give an extra +15
+        pass
+
 class Plague_Rats(Monster):
     def __init__(self):
         self.type = "monster"
@@ -493,7 +526,7 @@ class Plague_Rats(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 2
         self.bad_stuff_description = "Lose 2 levels."
-        self.fight = (orcs(battle_dict),flee())#very similar to stomp for The Mighty Germ different victory message
+        #self.fight = (orcs(battle_dict),flee())#very similar to stomp for The Mighty Germ different victory message
         self.chase = None
         self.good_stuff = None #may consider using auto_kill() with victory message adaptation here.
         self.battle_strength = 0
@@ -501,6 +534,10 @@ class Plague_Rats(Monster):
     def bad_stuff(self, battle_dict):
         for character in battle_dict["character"].keys():
             lose_level(2, character)
+
+    def pursuit(self, battle_dict):
+        #will not allow pursuit by orcs, will just leave the treasure and circumvent the rest of the battle.
+        pass
 
 class Teddy_Bear(Monster):
     def __init__(self):
@@ -573,6 +610,10 @@ class Lawyers(Monster):
     def update_monster(self, battle_dict):
         pass
 
+    def pursuit(self, battle_dict):
+        #If the player's a thief they have the option to attack anyway or take the 2 for 2 treasure deal.
+        pass
+
 class Pukachu(Monster):
     def __init__(self):
         self.type = "monster"
@@ -587,7 +628,7 @@ class Pukachu(Monster):
 #        self.bad_stuff = empty_backpack()
         self.fight = None
         self.chase = None
-        self.good_stuff = update_monster()
+        #self.good_stuff = extra_level()
         self.battle_strength = 0
 
     def bad_stuff(self, battle_dict):
