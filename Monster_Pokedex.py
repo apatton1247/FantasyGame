@@ -20,7 +20,7 @@ class Monster(object):
     def prelim(self, battle_dict):
         pass
 
-    def pursuit(self, battle_dict):
+    def pursuit(self, character):
         pass
       
     def bad_stuff(self, character):
@@ -309,8 +309,8 @@ class Psycho_Squirrel(Monster):
         lose_level(1, character)
         font_italic(character)
 
-    def pursuit(self, battle_dict):
-        if len(battle_dict["monster"].keys()) == 1 and len(battle_dict["character"].keys()) == 1: # and the character is a female or wears the spiked codpiece
+    def pursuit(self, character):
+        if character.gender == "female" #or if Spiked_Codpiece is in character.equipment["slotless"]
             will_not_pursue()
 
 class Pinata(Monster):
@@ -461,8 +461,11 @@ class Plague_Rats(Monster):
     def bad_stuff(self, character):
         lose_level(2, character)
 
-    def pursuit(self, battle_dict):
-        #will not allow pursuit by orcs, will just leave the treasure and circumvent the rest of the battle.  Maybe custom text here.
+    def pursuit(self, character):
+        if character.char_race == "orc":
+            #Need to come up with a method name for the following:
+            #monster will not allow pursuit, will just leave the treasure and circumvent the rest of the battle.  Maybe custom text here.
+            pass
         pass
 
 class Teddy_Bear(Monster):
@@ -509,7 +512,29 @@ class Crawling_Hand(Monster):
         #If you give the Crawling Hand a Wishing Ring or Other Ring, battle ends and
         # it becomes a small slotless item that gives you a +3 bonus.
         pass
-        
+
+class Lord_Yahoo(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Lord Yahoo"
+        self.level = 5
+        self.description = "+5 against Elves, Bards, and Halflings because he thinks they're wussy."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 2
+        self.bad_stuff_description = "He tells you about his character. Discard your Headgear so you can put your fingers in your ears."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        lose_headgear(character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(elves(battle_dict), 5)
+        self.bias += monster_bias(bards(battle_dict), 5)
+        self.bias += monster_bias(halflings(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
+
 ########## Level 6 ##########
 
 class Lawyers(Monster):
@@ -529,8 +554,10 @@ class Lawyers(Monster):
         #Let other players choose items from your backpack, and after that call empty_backpack().
         pass
 
-    def pursuit(self, battle_dict):
-        #If the player's a thief they have the option to attack anyway or take the 2 for 2 treasure deal.
+    def pursuit(self, character):
+        if character.char_class == "thief":
+            #If the player's a thief they have the option to attack anyway or take the 2 for 2 treasure deal.
+            pass
         pass
 
 class Pukachu(Monster):
@@ -549,9 +576,6 @@ class Pukachu(Monster):
     def bad_stuff(self, character):
         empty_backpack(character
 
-    def update_monster(self, battle_dict):
-        pass
-
     def good_stuff(self, battle_dict):
         #If you defeat it when len(battle_dict["character"].keys()) == 1 and the character's level > 6, self.level_rewarded = 2
         pass
@@ -561,7 +585,7 @@ class Shrieking_Geek(Monster):
         self.type = "monster"
         self.name = "Shrieking Geek"
         self.level = 6
-        self.description = "+ 6 against Warriors."
+        self.description = "+6 against Warriors."
         self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 1
@@ -685,7 +709,26 @@ class Shadow_Nose(Monster):
 
 ########## Level 11 ##########
 
-        
+class MT_Suit(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "M.T. Suit"
+        self.level = 11
+        self.description = "An empty suit.  +5 against Wizards or Thieves."
+        self.spec_attr = ["undead"]
+        self.speed = 0
+        self.level_rewarded = 1
+        self.treasure_rewarded = 3
+        self.bad_stuff_description = "Imagine an undead lawyer... Stop. You're scaring me. Lose 3 levels."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        lose_level(3, character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(wizards(battle_dict), 5)
+        self.bias += monster_bias(thieves(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 ########## Level 12 ##########
 
@@ -722,17 +765,107 @@ class Poison_Ivy_Kudzu_Flytrap(Monster):
         self.bias = monster_bias(elves(battle_dict), -4)
         self.battle_strength = self.level + self.bias
 
+class Tentacle_Demon(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Tentacle Demon"
+        self.level = 15
+        self.description = "A creature from Hell. +5 against Clerics. Will not pursue anyone of level 2 or below."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 4
+        self.bad_stuff_description = "If it catches you, you're dead."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        death(character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(clerics(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
+
+    def pursuit(self, character):
+        if character.level <= 2:
+            will_not_pursue()
+
+
 ########## Level 16 ##########
 
         
 
 ########## Level 17 ##########
 
+class Judge_Fredd(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Judge Fredd"
+        self.level = 17
+        self.description = "A no-nonsense judge. +5 against Thieves."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 4
+        self.bad_stuff_description = "He beats you to death for resisting arrest, and confiscates your stuff as evidence. It's all discarded; the other players don't get to loot your body."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        empty_backpack(character)
+        empty_closet(character)
+        death(character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(thieves(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
         
+class Seven_Year_Lich(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Seven Year Lich"
+        self.level = 17
+        self.description = "Zombie Marilyn Monroe! +5 against Warriors. Will not pursue anyone of level 2 or below."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 4
+        self.bad_stuff_description = "If it catches you, you're dead."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        death(character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(warriors(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
+
+    def pursuit(self, character):
+        if character.level <= 2:
+            will_not_pursue()
+
 
 ########## Level 18 ##########
 
-        
+class Auntie_Paladin(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Auntie Paladin"
+        self.level = 18
+        self.description = "A creature from Hell. +5 against Clerics, +5 against male characters."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 4
+        self.bad_stuff_description = "Take your armor off and bend over. You've been bad... Lose your Armor. Lose 3 levels to a near-fatal spanking."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        lose_armor(character)
+        lose_level(3, character)
+
+    def update_monster(self, battle_dict):
+        self.bias = monster_bias(clerics(battle_dict), 5)
+        self.bias += monster_bias(males(battle_dict), 5)
+        self.battle_strength = self.level + self.bias
 
 ########## Level 19 ##########
 
@@ -761,7 +894,25 @@ class Medusa(Monster):
 
 ########## Level 20 ##########
 
-        
+class Plutonium_Dragon(Monster):
+    def __init__(self):
+        self.type = "monster"
+        self.name = "Plutonium Dragon"
+        self.level = 20
+        self.description = "Will not pursue anyone of level 5 or below."
+        self.spec_attr = []
+        self.speed = 0
+        self.level_rewarded = 2
+        self.treasure_rewarded = 5
+        self.bad_stuff_description = "You are roasted and eaten. You are dead."
+        self.battle_strength = 0
+
+    def bad_stuff(self, character):
+        death(character)
+
+    def pursuit(self, character):
+        if character.level <= 5:
+            will_not_pursue()
 
 ########## Level 25 ##########
 
