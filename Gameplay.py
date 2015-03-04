@@ -195,10 +195,11 @@ def fight_calc(battle_dict):
         character_strength += battle_dict["character one-shots"][character_one_shot]
 
     print("Monster strength: %d, Character strength: %d." % (monster_strength, character_strength))
+    return (monster_strength, character_strength)
     #print the status of the battle with the current monster_strength vs character_strength, somehow make it
     # so that the character(s)'s and monster(s)'s names are shown no matter how many of each there are.
 
-def take_action(battle_dict, fighters, watchers, character):
+def take_action(character, battle_dict):
     #Allow the person to take an action, choosing to play a card or activate a power, or run
     #Allow the person to take as many actions (with a while-loop) until the player declares they're "Done".
     action_to_take = input("%s's action: " % character.name)
@@ -209,7 +210,7 @@ def take_action(battle_dict, fighters, watchers, character):
     else:
         return False
 
-def battle_loop(battle_dict, fighters, watchers):
+def battle_loop(battle_dict):
     #During battle, the player(s) fighting the monster get to act; then in turn order, the players not fighting
     # the monster get to interfere; every time a character interferes, the loop goes back to the player(s)
     # fighting the monster, and they get a chance to act again, and play continues to the next character after
@@ -220,32 +221,53 @@ def battle_loop(battle_dict, fighters, watchers):
     action_this_round = True
     while action_this_round:
         action_this_round = False
-        for character in fighters:
-            action_taken = take_action(battle_dict, fighters, watchers, character)
+        for character in battle_dict["fighters"]:
+            action_taken = take_action(character, battle_dict)
             if action_taken:
                 action_this_round = True
-        for character in watchers:
-            action_taken = take_action(battle_dict, fighters, watchers, character)
+        for character in battle_dict["watchers"]:
+            action_taken = take_action(character, battle_dict)
             if action_taken:
                 action_this_round = True
-                for character in fighters:
-                    take_action(battle_dict, fighters, watchers, character)
+                for character in battle_dict["fighters"]:
+                    take_action(character, battle_dict)
     else:
         return 1
+
+def battle_win(battle_dict):
+    #After a win, the character(s) should collect the level(s) and treasure they were
+    # promised, and any monster.good_stuff() should be evaluated.  In the simple battle,
+    # we will assume that there's only one character, but with potentially more than
+    # one monster, so we don't have to figure out treasure-splitting just yet.
+    pass
+
+def battle_loss(battle_dict):
+    #The monsters chase/escape methods should be called, and if they don't prohibit running
+    # (and players should, if the monster allows, be able to play a card to help running),
+    # then players should have to roll for running.  If they escape, nothing else should
+    # happen, but if they fail they have to suffer (individually) the monster's bad_stuff().
+    pass
 
 def battle(character, monster):
 
     battle_dict = make_battle_dict()
-    
+
+    #This part determines the calculations of the battle
     battle_dict["monster"][monster.name] = {monster : monster.level}
     battle_dict["character"][character.name] = {character : character.level}
 
-    fighters = [character_list[turn]]
-    watchers = [character_list[(x + turn)%(len(character_list))] for x in range(1, len(character_list))]
+    #This part determines the turn order of the battle, and is referenced for any bad stuff involving turn order.
+    battle_dict["fighters"] = [character_list[turn]]
+    battle_dict["watchers"] = [character_list[(x + turn)%(len(character_list))] for x in range(1, len(character_list))]
     #If a helper is negotiated, then we append(pop(index from watchers list)) to the fighters list
 
     battle_setup(battle_dict)
-    battle_loop(battle_dict, fighters, watchers)
+    battle_loop(battle_dict)
+    monster_strength, character_strength = fight_calc(battle_dict)
+    if character_strength > monster_strength:
+        battle_win(battle_dict)
+    else:
+        battle_loss(battle_dict)
     #Still need to figure out how to do the final phase; at this point the battle is decided, and the fighter(s)
     # have either won or lost.  Depending on the monster escape may or may not be possible, but they should get
     # a chance to take an action that can't change the battle outcome (win or lose), but could make escape easier

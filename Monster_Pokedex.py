@@ -10,7 +10,7 @@ class Monster(object):
         self.name = "monster name"
         self.level = 0
         self.description = "Generic description for characters to see."
-        self.special_attributes = []
+        self.spec_attr = []
         self.speed = 0
         self.level_rewarded = 0
         self.treasure_rewarded = 0
@@ -23,7 +23,7 @@ class Monster(object):
     def pursuit(self, character):
         pass
       
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         pass
 
     def update_monster(self, battle_dict):
@@ -53,7 +53,7 @@ class Maul_Rat(Monster):
         self.bad_stuff_description = "She whacks you. Lose a level."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(1, character)
 
     def update_monster(self, battle_dict):
@@ -73,7 +73,7 @@ class Crabs(Monster):
         self.bad_stuff_description = "Discard armor and all items worn below the waist."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_lower_items(character)
 
 class Potted_Plant(Monster):
@@ -92,7 +92,7 @@ class Potted_Plant(Monster):
         self.good_stuff = None
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         no_bad_stuff(character)
 
     def chase(self, battle_dict):
@@ -111,7 +111,7 @@ class Lame_Goblin(Monster):
         self.bad_stuff_description = "He whacks you with his crutch. Lose a level."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(1, character)
 
 class Drooling_Slime(Monster):
@@ -127,7 +127,7 @@ class Drooling_Slime(Monster):
         self.bad_stuff_description = "Discard the Footgear you are wearing. Lose a level if you are not wearing any Footgear."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         if character.footgear_slots_used > 0:
             lose_footgear(character)
         else:
@@ -150,7 +150,7 @@ class Tequila_Mockingbird(Monster):
         self.bad_stuff_description = "You ate the worm! Discard two items (your choice) from your backpack."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_backpack_item(2, character)
 
     def update_monster(self, battle_dict):
@@ -172,7 +172,7 @@ class Pit_Bull(Monster):
         self.bad_stuff_description = "Fang marks in your butt. Lose 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
     def fight(self, battle_dict):
@@ -193,7 +193,7 @@ class Flying_Frogs(Monster):
         self.bad_stuff_description = "They bite!. Lose 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
 class Mr_Bones(Monster):
@@ -209,7 +209,7 @@ class Mr_Bones(Monster):
         self.bad_stuff_description = "His bony touch costs you 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
     def chase(self, character):
@@ -228,7 +228,7 @@ class Large_Angry_Chicken(Monster):
         self.bad_stuff_description = "Very painful pecking. Lose a level."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(1, character)
 
     def fight(self, battle_dict):
@@ -248,7 +248,7 @@ class Gelatinous_Octahedron(Monster):
         self.bad_stuff_description = "Drop all your Big items."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_big_items(character)
 
 ########## Level 3 ##########
@@ -266,7 +266,7 @@ class The_Mighty_Germ(Monster):
         self.bad_stuff_description = "Helpless sneezing causes items to fall out of your backpack. Discard 2 items (your choice) from your backpack."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_backpack_item(2, character)
 
     def fight(self, battle_dict):
@@ -286,7 +286,7 @@ class Were_Turtle(Monster):
         self.bad_stuff_description = "If you lose a race to the Were_Turtle, you lose your Race. If you were a Half-Breed, lose one non-human race. If you were human already, there's no effect."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_race(1, character)
 
 class Psycho_Squirrel(Monster):
@@ -305,7 +305,7 @@ class Psycho_Squirrel(Monster):
         self.good_stuff = None
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(1, character)
         font_italic(character)
 
@@ -326,7 +326,7 @@ class Pinata(Monster):
         self.bad_stuff_description = "The player to your left picks one item that you are using or from your closet. Discard it."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_field_item(1, character, character_to_left)
 
     def good_stuff(self, battle_dict):
@@ -348,7 +348,7 @@ class Leperchaun(Monster):
         self.bad_stuff_description = "He takes two items from you - one chosen by the player on either side of you."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_field_item(1, character)#, (character_to_left))
         lose_field_item(1, character)#, (character_to_right))
 
@@ -369,7 +369,7 @@ class Snails_on_Speed(Monster):
         self.bad_stuff_description = "They steal your treasure. Roll a die and lose that many items or cards in your hand - your choice."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         num_to_lose = roll_die(character)
         where = ""
         while where != "backpack" and where != "field":
@@ -392,7 +392,7 @@ class Harpies(Monster):
         self.bad_stuff_description = "Their music is really, really bad. Lose 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
     def update_monster(self, battle_dict):
@@ -412,7 +412,7 @@ class Undead_Horse(Monster):
         self.bad_stuff_description = "Kicks, bites, and smells awful. Lose 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
     def update_monster(self, battle_dict):
@@ -434,7 +434,7 @@ class Fungus(Monster):
         self.bad_stuff_description = "Elves lose 2 levels. Anyone else loses 1. Double the penalty if the Fungus was Humongous."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         levels_to_lose = 1
         if character.char_race == "elf":
             lose_level((2*levels_to_lose), character)
@@ -458,7 +458,7 @@ class Plague_Rats(Monster):
         self.bad_stuff_description = "Lose 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
     def pursuit(self, character):
@@ -481,7 +481,7 @@ class Teddy_Bear(Monster):
         self.bad_stuff_description = "Discard your whole backpack. If you discarded more than one item, you may pick up one Treasure while Teddy is cackling over his ill-gotten gains."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         backpack_size = len(character.backpack)
         empty_backpack(character)
         if backpack_size > 1:
@@ -505,7 +505,7 @@ class Crawling_Hand(Monster):
         self.bad_stuff_description = "Undead wedgie! Lose 2 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(2, character)
 
     def fight(self, battle_dict):
@@ -526,7 +526,7 @@ class Lord_Yahoo(Monster):
         self.bad_stuff_description = "He tells you about his character. Discard your Headgear so you can put your fingers in your ears."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_headgear(character)
 
     def update_monster(self, battle_dict):
@@ -550,7 +550,7 @@ class Lawyers(Monster):
         self.bad_stuff_description = "He hits you with an injunction. Let each other player take one item from your backpack starting with the player to your left. Discard the remainder."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         #Let other players choose items from your backpack, and after that call empty_backpack().
         pass
 
@@ -573,7 +573,7 @@ class Pukachu(Monster):
         self.bad_stuff_description = "Projectile vomiting attack! Discard your whole backpack."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         empty_backpack(character
 
     def good_stuff(self, battle_dict):
@@ -593,7 +593,7 @@ class Shrieking_Geek(Monster):
         self.bad_stuff_description = "You become a normal, boring Human. Lose both your Race and Class."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_races(character)
         lose_classes(character)
 
@@ -616,7 +616,7 @@ class Monster_The_GM_Made_Up_Himself(Monster):
         self.bad_stuff_description = "Halflings lose 1 level.  Elves lose 2 levels.  Males lose 1 extra level and must discard one item from their backpack.  Those who don't fall in the above categories must discard two items from their backpacks.  No, really! It's for game balance!"
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         levels_lost = False
         if character.char_race == "halfling":
             lose_level(1, character)
@@ -655,7 +655,7 @@ class Face_Sucker(Monster):
         self.bad_stuff_description = "When it sucks your face off, your Headgear goes with it. Discard the Headgear you are wearing, and lose a level."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_headgear(character)
         lose_level(1, character)
 
@@ -678,7 +678,7 @@ class Scary_Clowns(Monster):
         self.bad_stuff_description = "Laugh yourself sick. Lose 3 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(3, character)
 
     def update_monster(self, battle_dict):
@@ -704,7 +704,7 @@ class Shadow_Nose(Monster):
 ##            self.enhancement += 10
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(3, character)
 
 ########## Level 11 ##########
@@ -722,7 +722,7 @@ class MT_Suit(Monster):
         self.bad_stuff_description = "Imagine an undead lawyer... Stop. You're scaring me. Lose 3 levels."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_level(3, character)
 
     def update_monster(self, battle_dict):
@@ -757,7 +757,7 @@ class Poison_Ivy_Kudzu_Flytrap(Monster):
         self.bad_stuff_description = "Frantic scratching.  Lose your Armor and Headgear."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_armor(character)
         lose_headgear(character)
 
@@ -778,7 +778,7 @@ class Tentacle_Demon(Monster):
         self.bad_stuff_description = "If it catches you, you're dead."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         death(character)
 
     def update_monster(self, battle_dict):
@@ -809,7 +809,7 @@ class Judge_Fredd(Monster):
         self.bad_stuff_description = "He beats you to death for resisting arrest, and confiscates your stuff as evidence. It's all discarded; the other players don't get to loot your body."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         empty_backpack(character)
         empty_closet(character)
         death(character)
@@ -831,7 +831,7 @@ class Seven_Year_Lich(Monster):
         self.bad_stuff_description = "If it catches you, you're dead."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         death(character)
 
     def update_monster(self, battle_dict):
@@ -858,7 +858,7 @@ class Auntie_Paladin(Monster):
         self.bad_stuff_description = "Take your armor off and bend over. You've been bad... Lose your Armor. Lose 3 levels to a near-fatal spanking."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         lose_armor(character)
         lose_level(3, character)
 
@@ -882,7 +882,7 @@ class Medusa(Monster):
         self.bad_stuff_description = "You are turned to stone.  You're dead... and your possessions turn to stone with you, so nobody gets them."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         empty_backpack(character)
         empty_closet(character)
         death(character)
@@ -907,7 +907,7 @@ class Plutonium_Dragon(Monster):
         self.bad_stuff_description = "You are roasted and eaten. You are dead."
         self.battle_strength = 0
 
-    def bad_stuff(self, character):
+    def bad_stuff(self, character, battle_dict):
         death(character)
 
     def pursuit(self, character):
@@ -916,5 +916,5 @@ class Plutonium_Dragon(Monster):
 
 ########## Level 25 ##########
 
-        
+#Coming soon: Zapdos!
 

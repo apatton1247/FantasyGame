@@ -39,13 +39,18 @@ class Character(object):
 
   def pick_up_treasure(treasure):
     pass
+  
   def discard(thing):
     pass
+  
   def equip(equipment):
     pass
+  
   def unequip(equipment):
     pass
+  
   def view_char(character):
     pass
+  
   def view_hand(char_hand):
     pass
