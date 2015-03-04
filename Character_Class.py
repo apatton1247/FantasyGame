@@ -6,8 +6,8 @@ class Character(object):
     self.name = name
     self.level = 1
     self.bonus = 0
-    self.char_class = "normal"
-    self.char_race = "human"
+    self.char_class = ["normal"]
+    self.char_race = ["human"]
     self.gender = gender
     #This initializes equipment (equipped items)
     self.equipment = {

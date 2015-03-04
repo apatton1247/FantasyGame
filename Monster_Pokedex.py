@@ -87,9 +87,6 @@ class Potted_Plant(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "None. Escape is automatic."
-        self.fight = None
-        self.chase = auto_escape()
-        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, character, battle_dict):
@@ -300,9 +297,6 @@ class Psycho_Squirrel(Monster):
         self.level_rewarded = 1
         self.treasure_rewarded = 1
         self.bad_stuff_description = "Lose a level. Speak in a high, squecky voice until your next turn."
-        #self.fight = will_not_pursue(battle_dict, female, spiked_codpiece)
-        self.chase = None
-        self.good_stuff = None
         self.battle_strength = 0
 
     def bad_stuff(self, character, battle_dict):
@@ -436,7 +430,7 @@ class Fungus(Monster):
 
     def bad_stuff(self, character, battle_dict):
         levels_to_lose = 1
-        if character.char_race == "elf":
+        if "elf" in character.char_race:
             lose_level((2*levels_to_lose), character)
         else:
             lose_level(1, character)
@@ -555,7 +549,7 @@ class Lawyers(Monster):
         pass
 
     def pursuit(self, character):
-        if character.char_class == "thief":
+        if "thief" in character.char_class:
             #If the player's a thief they have the option to attack anyway or take the 2 for 2 treasure deal.
             pass
         pass
@@ -618,10 +612,10 @@ class Monster_The_GM_Made_Up_Himself(Monster):
 
     def bad_stuff(self, character, battle_dict):
         levels_lost = False
-        if character.char_race == "halfling":
+        if "halfling" in character.char_race:
             lose_level(1, character)
             levels_lost = True
-        if character.char_race == "elf":
+        if "elf" in character.char_race:
             lose_level(2, character)
             levels_lost = True
         if character.gender == "male":

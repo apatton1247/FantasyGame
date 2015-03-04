@@ -163,7 +163,7 @@ def classless(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_class == "normal":
+            if "normal" in char_obj.char_class:
                 num_bias += 1
     return num_bias	
 	
@@ -171,7 +171,7 @@ def clerics(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_class == "cleric":
+            if "cleric" in char_obj.char_class:
                 num_bias += 1
     return num_bias
 
@@ -179,7 +179,7 @@ def warriors(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_class == "warrior":
+            if "warrior" in char_obj.char_class:
                 num_bias += 1
     return num_bias
 
@@ -187,7 +187,7 @@ def bards(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_class == "bard":
+            if "bard" in char_obj.char_class:
                 num_bias += 1
     return num_bias
 
@@ -195,7 +195,7 @@ def thieves(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_class == "thief":
+            if "thief" in char_obj.char_class:
                 num_bias += 1
     return num_bias
 
@@ -203,7 +203,7 @@ def wizards(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_class == "wizard":
+            if "wizard" in char_obj.char_class:
                 num_bias += 1
     return num_bias
 
@@ -211,7 +211,7 @@ def humans(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_race == "human":
+            if "human" in char_obj.char_race:
                 num_bias += 1
     return num_bias
 
@@ -219,7 +219,7 @@ def elves(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_race == "elf":
+            if "elf" in char_obj.char_race:
                 num_bias += 1
     return num_bias
 
@@ -227,7 +227,7 @@ def dwarves(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_race == "dwarf":
+            if "dwarf" in char_obj.char_race:
                 num_bias += 1
     return num_bias
 
@@ -235,7 +235,7 @@ def halflings(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_race == "halfling":
+            if "halfling" in char_obj.char_race:
                 num_bias += 1
     return num_bias
 
@@ -243,7 +243,7 @@ def orcs(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_race == "orc":
+            if "orc" in char_obj.char_race:
                 num_bias += 1
     return num_bias
 
@@ -251,7 +251,7 @@ def gnomes(battle_dict):
     num_bias = 0
     for character in battle_dict["character"].values():
         for char_obj in character.keys():
-            if char_obj.char_race == "gnome":
+            if "gnome" in char_obj.char_race:
                 num_bias += 1
     return num_bias
 
