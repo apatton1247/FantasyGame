@@ -321,7 +321,7 @@ class Pinata(Monster):
         self.battle_strength = 0
 
     def bad_stuff(self, character, battle_dict):
-        lose_field_item(1, character, character_to_left)
+        lose_field_item(1, character)#, character_to_left)
 
     def good_stuff(self, battle_dict):
         #Pinata loot method.  It's spelled out above, just need to figure out how to implement it.
