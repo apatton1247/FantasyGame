@@ -17,6 +17,9 @@ def skip_intro():
     print("Intro skipped")
 
 def wake_character(mode):
+    #options = Options_class()
+    #options.add_option("skip intro", "hidden")
+    #options.add_option("stand up", "visible")
     options = ["skip intro", "stand up"]
     #Display a different sort of message depending on whether a player wakes
     # up willingly or has to be shaken/kicked awake (if the latter, their turn
