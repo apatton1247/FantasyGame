@@ -82,8 +82,8 @@ def wake_character(mode):
     print("   Entering a gateway will transport you to a different")
     print("   dimension. Some of them are friendly, like the one")
     print("   which just opened, leading to your Shrine. Some of them...")
-    print("   are not. You can only enter a gateway containing the
-    print("   color of the key you are wearing on your wrist. No one
+    print("   are not. You can only enter a gateway containing the")
+    print("   color of the key you are wearing on your wrist. No one")
     print("   else can enter unless pulled in by someone on the inside.")
     pause()
     print("   Once you have collected eleven keys, only then will a")
