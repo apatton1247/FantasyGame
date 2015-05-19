@@ -37,3 +37,5 @@ class Gui(Frame):
 
 gui = Gui(root)
 root.mainloop()
+#intro.run()
+#print("Done")
