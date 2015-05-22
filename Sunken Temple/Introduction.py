@@ -4,7 +4,7 @@ from Character_Class import *
 #from Options_class import *
 from datetime import date
 
-def print_options(options):
+def print_options(*options):
     for option in options:
         print(option.rjust(64))
 
@@ -96,7 +96,6 @@ def wake_character(mode):
     pause()
     #Add Visit Shrine, View Character, and View Obelisk to options.
     
-        
 
 def enter_game():
     
@@ -113,5 +112,10 @@ def enter_game():
         wake_character("normal")#include time to help determine turn order
     else:
         wake_character("force")#include time to help determine turn order
-        
+
+def run():
+    statement_1 = "You are in your bed, watching the evening news on TV. A correspondent from NASA is discussing a weird 'cosmic event' that's imminent to earth. The discussion is so boring that you drift off to sleep.\n"
+    to_print = (statement_1)
+    yield to_print
+
 enter_game()
