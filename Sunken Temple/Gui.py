@@ -1,53 +1,51 @@
 from tkinter import *
+#import Introduction as intro
 
-root = Tk()
+class Gui(Tk):
+    def __init__(self):
+        Tk.__init__(self)
 
-class Gui(Frame):
-  def __init__(self, master):
-    self.master = master
-    Frame.__init__(self, master)
-    self.create_widgets()
-    self.master.title("Sunken Temple")
+        self.root = Frame(self)
+        self.root.pack(side = "top", fill = "both", expand = True)
+        width = self.root.winfo_screenwidth()
+        height = self.root.winfo_screenheight()
+        #print(width, height)
+        
+        self.create_widgets(height, width)
+        Tk.wm_title(self, "Sunken Temple")
+        self.mainloop()
 
-  def create_widgets(self):
-    left_frame = Frame(self.master, bg = "dark green")
+    def write(self, event, *text):
+        if text:
+            for line in text:
+                self.output_text.set(self.output_text.get() + line)
+        else:
+            self.output_text.set(self.output_text.get() + "\n" + self.input_text.get())
+        self.input_text.set("")
 
-    io_frame = Frame(left_frame, bg = "dark green")
-    top_label = Label(io_frame, height = 10, width = 80, bg = "dark gray", borderwidth = 0)
-    output = Label(io_frame, bg = "white", anchor = "nw")
-    output.config(height = 20, width = 80, wraplength = 575, text = "Welcome to the Sunken Temple!\nThis is a line of text that is so long that the Label will be either forced to wrap it or it will disappear off the side of the screen into the void!", justify = "left")
-    #print(output.config().keys())
-    #center_image = PhotoImage(file = "StoneWallCenterLow")
-    center_label = Label(io_frame, height = 7, width = 80, bg = "dark gray", borderwidth = 0)
-    entry = Entry(io_frame, width = 94)
+    def create_widgets(self, scr_height, scr_width):
+        win_height = int(0.75 * scr_height)
+        win_width = int(0.75 * scr_width)
+        bg_canvas = Canvas(self.root, height = win_height, width = win_width)
+        bg_canvas.pack(expand = True, fill = "both")
 
-    left_pad_frame = Frame(left_frame)
-    left_image = PhotoImage(file="StoneWallLeft.gif")
-    left_pic_label = Label(left_pad_frame, image = left_image, height = 590, width = 201, borderwidth = 0)
-    left_pic_label.pack(side = "left", fill = "both", expand = "yes")
-    left_pic_label.image = left_image
+        wall = PhotoImage(file = "gui_bg_1.gif")
+        bg_canvas.img = wall
+        bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
 
-    right_pad_frame = Frame(left_frame)
-    right_image = PhotoImage(file="StoneWallRight.gif")
-    right_pic_label = Label(right_pad_frame, image = right_image, height = 590, width = 201, borderwidth = 0)
-    right_pic_label.pack(side = "right")
-    right_pic_label.image = right_image
-    
-    button_frame = Frame(left_frame)
-    ext_button = Button(button_frame, text = ">")
-    button_frame.config(bg = "dark green", height = 22)
+        self.input_text = StringVar()
+        self.input_text.set("")
+        entry = Entry(self.root, bg = "light gray", width = 60, font=("Arial", 16), textvariable = self.input_text, relief = "sunken")
+        entry.bind("<Return>", self.write)
 
-    left_pad_frame.pack(side = "left")
-    top_label.pack(side = "top")
-    output.pack(side = "top")
-    center_label.pack(side = "top")
-    entry.pack(side = "bottom")
-    ext_button.pack(side = "top")
-    io_frame.pack(side = "left")
-    right_pad_frame.pack(side = "left")
-    button_frame.pack(side = "top")
-    left_frame.pack()
-    
-    
-gui = Gui(root)
-root.mainloop()
+        self.output_text = StringVar()
+        self.output_text.set("This is the sample text!\rHello World!")
+        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 60, height = 18, font=("Arial", 16), relief = "sunken")
+        output_label.config(textvariable = self.output_text, justify = "left")
+
+        player_stats_label = Label(self.master, bg = "light gray", anchor ="nw", width = 20, height = 6, font=("Arial",16))
+
+        bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
+        bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
+
+gui = Gui()
