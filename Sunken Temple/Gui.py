@@ -1,5 +1,5 @@
 from tkinter import *
-#import Introduction as intro
+#import Gameplay as game
 
 class Gui(Tk):
     def __init__(self):
@@ -13,6 +13,8 @@ class Gui(Tk):
         
         self.create_widgets(height, width)
         Tk.wm_title(self, "Sunken Temple")
+
+        #self.game = game.New()
         self.mainloop()
 
     def write(self, event, *text):
@@ -43,7 +45,7 @@ class Gui(Tk):
         output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 60, height = 18, font=("Arial", 16), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
-        player_stats_label = Label(self.master, bg = "light gray", anchor ="nw", width = 20, height = 6, font=("Arial",16))
+        player_stats_label = Label(self.root, bg = "light gray", anchor ="nw", width = 20, height = 6, font=("Arial",16))
 
         bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
         bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
