@@ -1,7 +1,9 @@
+#imports matplotlib
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
+
 from tkinter import *
 #import Gameplay as game
 
@@ -53,5 +55,6 @@ class Gui(Tk):
 
         bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
         bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
+
 
 gui = Gui()
