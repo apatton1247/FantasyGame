@@ -1,4 +1,3 @@
-#imports matplotlib
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
@@ -51,10 +50,23 @@ class Gui(Tk):
         output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 60, height = 18, font=("Arial", 16), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
-        player_stats_label = Label(self.root, bg = "light gray", anchor ="nw", width = 20, height = 6, font=("Arial",16))
-
         bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
         bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
+
+        stats_frame = Frame(self.root, height = 250, width = 250)
+        stats_name = Label(stats_frame, width = 20, height = 2, justify = "left", anchor = "nw", bg = "light gray", font=("Arial",16), text = "Name\t   Status\nClass, Race", relief = "sunken")
+        stats_mid_frame = Frame(stats_frame)
+        stats_level_bar = Label(stats_mid_frame, width = 4, height = 6, justify = "left", anchor = "nw", bg = "light gray", font=("Arial",16), text = "L\ne\nv\ne\nl\n!", relief = "sunken")
+        stats_pie_chart = Label(stats_mid_frame, width = 16, height = 6, bg = "light gray", font=("Arial",16), text = "Pie Chart\ngoes here!", relief = "sunken")
+        stats_xp_bar = Label(stats_frame, width = 20, height = 2, bg = "light gray", font=("Arial",16), text = "Here is the\nXP bar!", relief = "sunken")
+
+        stats_name.pack(side = "top")
+        stats_level_bar.pack(side = "left")
+        stats_pie_chart.pack(side = "left")
+        stats_mid_frame.pack(side = "top")
+        stats_xp_bar.pack(side = "top")
+
+        bg_canvas.create_window((8*win_width/10), (win_height/4), anchor = "nw", window = stats_frame)
 
 
 gui = Gui()
