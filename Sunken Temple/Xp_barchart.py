@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-plt.rcdefaults()
 import numpy as np
 
 #variables
@@ -27,6 +26,5 @@ plt.ylim(0,.8)
 #set limits on the y axis
 plt.subplots_adjust(top=.15)
 #Decreases width of entire chart
-
 
 plt.show()
