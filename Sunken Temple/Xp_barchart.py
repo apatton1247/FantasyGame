@@ -1,28 +1,18 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
 #variables
 char_xp = 250
 level_xp = 300
 
 fig = plt.figure()
-#Something to do with turning the plot into a figure?
 ax = fig.add_subplot(111)
-#Defining ax and positioning the subplot??
-ax.barh(0, char_xp, color='lime')
-#Basic construction of the bar chart
+ax.barh(0, char_xp, color='lime', hatch = "*")
 
-plt.tick_params(axis='y', which='both', left='off', right='off',labelleft='off')
-#Removes the left and right ticks and default tick labels
+plt.tick_params(axis='y', left='off', right='off', labelleft='off')
 plt.ylabel("Xp", rotation='horizontal', fontsize=18)
-#Defines the y axis label and rotates
 ax.yaxis.set_label_coords(1.04,.25)
-#Moves y label to the correct position
 plt.xlim(0,level_xp)
-#Sets limits on the x axis
 plt.ylim(0,.8)
-#set limits on the y axis
 plt.subplots_adjust(top=.15)
-#Decreases width of entire chart
 
 plt.show()
