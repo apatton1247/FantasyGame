@@ -30,16 +30,23 @@ class Gui(Tk):
             self.output_text.set(self.output_text.get() + "\n" + self.input_text.get())
         self.input_text.set("")
 
+    def char_stats(self):
+        pass
+
+    def bg(self,win_height, win_width):
+        self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
+        self.bg_canvas.pack(expand = True, fill = "both")
+
+        wall = PhotoImage(file = "gui_bg_1.gif")
+        self.bg_canvas.img = wall
+        self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
+
     def create_widgets(self, scr_height, scr_width):
         win_height = int(0.75 * scr_height)
         win_width = int(0.75 * scr_width)
-        bg_canvas = Canvas(self.root, height = win_height, width = win_width)
-        bg_canvas.pack(expand = True, fill = "both")
 
-        wall = PhotoImage(file = "gui_bg_1.gif")
-        bg_canvas.img = wall
-        bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
-
+        self.bg(win_height, win_width)
+        
         self.input_text = StringVar()
         self.input_text.set("")
         entry = Entry(self.root, bg = "light gray", width = 60, font=("Arial", 16), textvariable = self.input_text, relief = "sunken")
@@ -50,8 +57,8 @@ class Gui(Tk):
         output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 60, height = 18, font=("Arial", 16), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
-        bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
-        bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
+        self.bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
+        self.bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
 
         stats_frame = Frame(self.root, height = 250, width = 250)
         stats_name = Label(stats_frame, width = 20, height = 2, justify = "left", anchor = "nw", bg = "light gray", font=("Arial",16), text = "Name\t   Status\nClass, Race", relief = "sunken")
@@ -66,7 +73,7 @@ class Gui(Tk):
         stats_mid_frame.pack(side = "top")
         stats_xp_bar.pack(side = "top")
 
-        bg_canvas.create_window((8*win_width/10), (win_height/4), anchor = "nw", window = stats_frame)
+        self.bg_canvas.create_window((8*win_width/10), (win_height/4), anchor = "nw", window = stats_frame)
 
-
+        
 gui = Gui()
