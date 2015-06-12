@@ -9,12 +9,12 @@ num_strength = 15
 num_spirit = 2
 num_intellect = 5
 
-labels = ['Strength', 'Spirit', 'Intellect']
-values = [num_strength, num_spirit, num_intellect]
-colors = ['FireBrick', 'Khaki', 'SteelBlue']
+pie_labels = ['Strength', 'Spirit', 'Intellect']
+pie_values = [num_strength, num_spirit, num_intellect]
+pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
 
-def format_labels(labels, values):
-    lab_and_val = zip(labels, values)
+def format_labels(pie_labels, pie_values):
+    lab_and_val = zip(pie_labels, pie_values)
     lab_val_strings = []
     for pair in lab_and_val:
         new_pair = pair[0] + ": " + str(pair[1])
