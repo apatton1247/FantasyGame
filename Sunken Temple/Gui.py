@@ -37,7 +37,7 @@ class Gui(Tk):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
         self.bg_canvas.pack(expand = True, fill = "both")
 
-        wall = PhotoImage(file = "gui_bg_1.gif")
+        wall = PhotoImage(file = "crypt_wall_tessl.gif")
         self.bg_canvas.img = wall
         self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
 
