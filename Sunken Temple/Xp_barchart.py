@@ -5,13 +5,11 @@ import numpy as np
 char_xp = 250
 level_xp = 300
 
-y_pos = np.arange(1)
-#This says there is only one bar
 fig = plt.figure()
 #Something to do with turning the plot into a figure?
 ax = fig.add_subplot(111)
 #Defining ax and positioning the subplot??
-ax.barh(y_pos, char_xp, color='lime')
+ax.barh(0, char_xp, color='lime')
 #Basic construction of the bar chart
 
 plt.tick_params(axis='y', which='both', left='off', right='off',labelleft='off')
