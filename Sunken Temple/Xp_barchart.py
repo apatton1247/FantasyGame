@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt; plt.rcdefaults()
-import numpy as np
 import matplotlib.pyplot as plt
+plt.rcdefaults()
+import numpy as np
 
 #variables
 char_xp = 250
@@ -17,13 +17,13 @@ ax.barh(y_pos, char_xp, color='lime')
 
 plt.tick_params(axis='y', which='both', left='off', right='off',labelleft='off')
 #Removes the left and right ticks and default tick labels
-plt.ylabel("Xp", rotation='horizontal', fontsize=18, verticalalignment='center')
+plt.ylabel("Xp", rotation='horizontal', fontsize=18)
 #Defines the y axis label and rotates
-ax.yaxis.set_label_coords(1.04,.65)
+ax.yaxis.set_label_coords(1.04,.25)
 #Moves y label to the correct position
 plt.xlim(0,level_xp)
 #Sets limits on the x axis
-plt.ylim(0,.1)
+plt.ylim(0,.8)
 #set limits on the y axis
 plt.subplots_adjust(top=.15)
 #Decreases width of entire chart
