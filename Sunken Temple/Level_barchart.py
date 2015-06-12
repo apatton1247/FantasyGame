@@ -13,13 +13,12 @@ ax.bar(0, char_level, color=char_color)
 
 #Ticker changes
 plt.setp(ax.get_yticklabels(), fontsize=16)
-plt.tick_params(axis='x', which='both', top='off', bottom='off'
-                ,labelright='off', labelbottom='off')
+plt.tick_params(top='off', bottom='off', labelright='off', labelbottom='off')
 ax.yaxis.set_major_locator(MultipleLocator(1))
 ax.yaxis.grid()
 
 #Size changes
-plt.ylim(0,11)
+plt.ylim(1,11)
 plt.xlim(0,.8)
 plt.subplots_adjust(right=.25)
 
