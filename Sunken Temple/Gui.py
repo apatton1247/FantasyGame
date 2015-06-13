@@ -16,8 +16,8 @@ class Gui(Tk):
         self.root.pack(side = "top", fill = "both", expand = True)
         width = self.root.winfo_screenwidth()
         height = self.root.winfo_screenheight()
+        self.geometry("%dx%d+0+0" % (width, height))
         self.resizable(width=FALSE, height=FALSE)
-        self.attributes('-fullscreen', True)
         #print(width, height)
         
         self.create_widgets(height, width)
