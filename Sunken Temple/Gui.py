@@ -2,6 +2,8 @@ import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
+from matplotlib.ticker import MultipleLocator
+import matplotlib.pyplot as plt
 
 from tkinter import *
 #import Gameplay as game
@@ -33,7 +35,40 @@ class Gui(Tk):
         self.input_text.set("")
 
     def char_stats(self):
-        pass
+        #For future implementation
+        #char_stats_stack = Frame(self.root)
+        #for player in game.players:
+        #(pull stats from player, like player.strength, player.spirit, player.name, etc)
+        #name = StringVar(); name.set(player.name)
+#TODO: Once we get to animating the matplotlib objects, we should use that function to update the player name/race/class/status text fields.
+        
+#TODO: Once we have multiple players's stats, this one's parent will be char_stats_stack
+        char_stats = Frame(self.root)
+
+        p_name = "Player 1"
+        p_race = "Reptilian"
+        p_class = "Shaman"
+        p_status = "Confused"
+        player_name_text = StringVar()
+        player_name_text.set("%s\t%s\n%s %s " % (p_name, p_status, p_race, p_class)) 
+        char_stats_name = Label(char_stats_stack, textvariable = player_name_text, width = 100, height = 2)
+        char_stats_name.pack(side = "top")
+
+        mid_frame = Frame(char_stats)
+
+        p_level = 7
+        p_color = "darkviolet"
+        level_fig = Figure()
+        level_bar = level_fig.add_subplot(111)
+        level_bar.title("Level", fontsize = 20)
+        level_bar.bar(0, p_level, color = p_color)
+        level_bar.yaxis.set_major_locator(MultipleLocator(1))
+        level_bar.yaxis.grid()
+        
+
+#TODO: Once we have multiple players's stats, this will return char_stats_stack
+        return char_stats
+        #pass
 
     def bg(self,win_height, win_width):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
