@@ -42,6 +42,6 @@ piechart.text(1.14, .5, str(char_battle_strength), bbox=dict(facecolor='none', p
 canvas = FigureCanvasTkAgg(fig, frame)
 canvas.show()
 canvas.get_tk_widget().pack(side = tk.TOP, fill = tk.BOTH, expand = True)
-canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+#canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
 piechart.axis('equal')

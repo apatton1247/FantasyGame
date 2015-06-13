@@ -3,7 +3,7 @@ matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 from matplotlib.ticker import MultipleLocator
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from tkinter import *
 #import Gameplay as game
@@ -51,20 +51,28 @@ class Gui(Tk):
         p_status = "Confused"
         player_name_text = StringVar()
         player_name_text.set("%s\t%s\n%s %s " % (p_name, p_status, p_race, p_class)) 
-        char_stats_name = Label(char_stats_stack, textvariable = player_name_text, width = 100, height = 2)
+        char_stats_name = Label(char_stats, textvariable = player_name_text, width = 100, height = 2)
         char_stats_name.pack(side = "top")
 
         mid_frame = Frame(char_stats)
+        mid_frame.pack(side = "top")
 
         p_level = 7
         p_color = "darkviolet"
         level_fig = Figure()
         level_bar = level_fig.add_subplot(111)
-        level_bar.title("Level", fontsize = 20)
-        level_bar.bar(0, p_level, color = p_color)
+        level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 20)
+        level_bar.bar(0, p_level, width = .1, color = p_color)
         level_bar.yaxis.set_major_locator(MultipleLocator(1))
         level_bar.yaxis.grid()
-        
+        level_bar.set_ylim(1, 11)
+        level_bar.set_xlim(0, 0.1)
+        level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
+        level_fig.subplots_adjust(right=.25)
+        level_canvas = FigureCanvasTkAgg(level_fig, mid_frame)
+        level_canvas.show()
+        level_canvas.get_tk_widget().pack(side = "left")
+#TODO: Add the pie chart and xp chart        
 
 #TODO: Once we have multiple players's stats, this will return char_stats_stack
         return char_stats
@@ -104,13 +112,16 @@ class Gui(Tk):
         stats_pie_chart = Label(stats_mid_frame, width = 16, height = 6, bg = "light gray", font=("Arial",16), text = "Pie Chart\ngoes here!", relief = "sunken")
         stats_xp_bar = Label(stats_frame, width = 20, height = 2, bg = "light gray", font=("Arial",16), text = "Here is the\nXP bar!", relief = "sunken")
 
-        stats_name.pack(side = "top")
-        stats_level_bar.pack(side = "left")
-        stats_pie_chart.pack(side = "left")
-        stats_mid_frame.pack(side = "top")
-        stats_xp_bar.pack(side = "top")
+        char_stats_frame = self.char_stats()
+        self.bg_canvas.create_window((8*win_width/10), (win_height/8), anchor = "nw", window = char_stats_frame)
 
-        self.bg_canvas.create_window((8*win_width/10), (win_height/4), anchor = "nw", window = stats_frame)
+
+#        stats_name.pack(side = "top")
+#        stats_level_bar.pack(side = "left")
+#        stats_pie_chart.pack(side = "left")
+#        stats_mid_frame.pack(side = "top")
+#        stats_xp_bar.pack(side = "top")
+#        self.bg_canvas.create_window((8*win_width/10), (win_height/4), anchor = "nw", window = stats_frame)
 
         
 gui = Gui()
