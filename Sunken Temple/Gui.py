@@ -4,7 +4,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 from matplotlib.ticker import MultipleLocator
 from matplotlib.font_manager import FontProperties
-#import matplotlib.pyplot as plt
 
 from tkinter import *
 #import Gameplay as game
@@ -68,8 +67,8 @@ class Gui(Tk):
 
         p_level = 7
         p_color = "darkviolet"
-        level_fig = Figure(figsize = (10, 6))
-        level_bar = level_fig.add_subplot(171)
+        plot_fig = Figure(figsize = (10, 6), frameon = True)
+        level_bar = plot_fig.add_subplot(171)
         level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 20)
         level_bar.bar(0, p_level, width = .1, color = p_color)
         level_bar.yaxis.set_major_locator(MultipleLocator(1))
@@ -78,9 +77,9 @@ class Gui(Tk):
         level_bar.set_xlim(0, 0.1)
         level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
         #level_fig.subplots_adjust(right=.25)
-        level_canvas = FigureCanvasTkAgg(level_fig, mid_frame)
+        level_canvas = FigureCanvasTkAgg(plot_fig, mid_frame)
         level_canvas.show()
-        level_canvas.get_tk_widget().pack(side = "left")
+        level_canvas.get_tk_widget().pack(side = "top")
 
         pie_strength = 15
         pie_spirit = 2
@@ -89,18 +88,30 @@ class Gui(Tk):
         pie_labels = ['Strength', 'Spirit', 'Intellect']
         pie_values = [pie_strength, pie_spirit, pie_intellect]
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
-        #pie_fig = Figure()
-        pie_chart = level_fig.add_subplot(111)
+        pie_chart = plot_fig.add_subplot(111)
         pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_chart.axis("equal")
-        pie_legend = pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values)
-                         ,framealpha = 0, loc=(.82, .01), fontsize=16)
+        pie_legend = pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
+                         framealpha = 0, loc=(.82, .01), fontsize=16)
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 20))
         pie_chart.text(1.14, .5, str(char_battle_strength), bbox = dict(facecolor="none", pad=20), fontsize = 80)
         #pie_canvas = FigureCanvasTkAgg(level_fig, mid_frame)
         #pie_canvas.show()
         #pie_canvas.get_tk_widget().pack(side = "left")
-#TODO: Add the xp chart        
+#TODO: Add the xp chart
+
+        xp_fig = Figure(figsize = (10, 1), frameon = True, linewidth = 0)
+        xp_owned = 250
+        xp_for_level = 350
+        xp_bar = xp_fig.add_subplot(312)
+        xp_bar.barh(0, xp_owned, color = "lime", hatch = "*")
+        xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
+        xp_bar.yaxis.set_label_coords(1.04, .25)
+        xp_bar.set_xlim(0, xp_for_level)
+        xp_bar.set_ylim(0, 0.8)
+        xp_canvas = FigureCanvasTkAgg(xp_fig, mid_frame)
+        xp_canvas.show()
+        xp_canvas.get_tk_widget().pack(side = "left")
 
         
         #Maybe figure out if instead of using subplots_adjust() we can just modify the overall
