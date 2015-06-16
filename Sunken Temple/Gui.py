@@ -70,6 +70,14 @@ class Gui(Tk):
         p_level = 7
         p_color = "darkviolet"
         plot_fig = Figure(figsize = (5.5, 4))
+        level_canvas = FigureCanvasTkAgg(plot_fig, mid_frame)
+        level_canvas.show()
+        level_canvas.get_tk_widget().pack(side = "left")
+        bs = "25"
+        bs_label = Label(mid_frame, text = bs, font=("Arial", 60))
+        bs_label.pack(side = "right")
+        level_canvas.get_tk_widget().create_window(355, 25, anchor = "nw", window = bs_label)
+
         level_bar = plot_fig.add_subplot(gs[:28,0:4])
         level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 16)
         level_bar.bar(0, p_level, width = .1, color = p_color)
@@ -78,10 +86,7 @@ class Gui(Tk):
         level_bar.set_ylim(1, 11)
         level_bar.set_xlim(0, 0.1)
         level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
-        level_canvas = FigureCanvasTkAgg(plot_fig, mid_frame)
-        level_canvas.show()
-        level_canvas.get_tk_widget().pack(side = "left")
-
+        
         pie_strength = 15
         pie_spirit = 2
         pie_intellect = 5
@@ -105,6 +110,8 @@ class Gui(Tk):
         xp_bar.yaxis.set_label_coords(1.04, -.3)
         xp_bar.set_xlim(0, xp_for_level)
         xp_bar.set_ylim(0, 0.8)
+
+        
 
 #TODO: Once we have multiple players's stats, this will return char_stats_stack
         return char_stats
