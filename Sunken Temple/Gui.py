@@ -66,12 +66,12 @@ class Gui(Tk):
         mid_frame = Frame(char_stats)
         mid_frame.pack(side = "top")
 
-        gs = gridspec.GridSpec(16,16, left = .075)
+        gs = gridspec.GridSpec(32,32, left = .075)
         p_level = 7
         p_color = "darkviolet"
-        plot_fig = Figure(figsize = (6, 4))
-        level_bar = plot_fig.add_subplot(gs[:14,0:3])
-        level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 20)
+        plot_fig = Figure(figsize = (5.5, 4))
+        level_bar = plot_fig.add_subplot(gs[:28,0:4])
+        level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 16)
         level_bar.bar(0, p_level, width = .1, color = p_color)
         level_bar.yaxis.set_major_locator(MultipleLocator(1))
         level_bar.yaxis.grid()
@@ -89,21 +89,20 @@ class Gui(Tk):
         pie_labels = ['Strength', 'Spirit', 'Intellect']
         pie_values = [pie_strength, pie_spirit, pie_intellect]
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
-        pie_chart = plot_fig.add_subplot(gs[0:14,1:])
+        pie_chart = plot_fig.add_subplot(gs[0:28,0:])
         pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_chart.axis("equal")
         pie_legend = pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
                          framealpha = 0, loc=(.78, .01), fontsize=11)
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
-        pie_chart.text(1.15, .60, str(char_battle_strength), bbox = dict(facecolor="none", pad=20), fontsize = 65)
 
         xp_owned = 250
         xp_for_level = 350
-        xp_bar = plot_fig.add_subplot(gs[15:,:])
+        xp_bar = plot_fig.add_subplot(gs[30:,:])
         xp_bar.barh(0, xp_owned, color = "lime")
         xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
         xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=18)
-        xp_bar.yaxis.set_label_coords(1.04, .1)
+        xp_bar.yaxis.set_label_coords(1.04, -.3)
         xp_bar.set_xlim(0, xp_for_level)
         xp_bar.set_ylim(0, 0.8)
 
