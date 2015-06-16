@@ -4,6 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 from matplotlib.ticker import MultipleLocator
 from matplotlib.font_manager import FontProperties
+import matplotlib.gridspec as gridspec
 
 from tkinter import *
 #import Gameplay as game
@@ -59,16 +60,17 @@ class Gui(Tk):
         p_status = "Confused"
         player_name_text = StringVar()
         player_name_text.set("%s\t%s\n%s %s " % (p_name, p_status, p_race, p_class)) 
-        char_stats_name = Label(char_stats, textvariable = player_name_text, width = 100, height = 2)
+        char_stats_name = Label(char_stats, textvariable = player_name_text, width = 30, height = 2)
         char_stats_name.pack(side = "top")
 
         mid_frame = Frame(char_stats)
         mid_frame.pack(side = "top")
 
+        gs = gridspec.GridSpec(16,16, left = .075)
         p_level = 7
         p_color = "darkviolet"
-        plot_fig = Figure(figsize = (10, 6), frameon = True)
-        level_bar = plot_fig.add_subplot(171)
+        plot_fig = Figure(figsize = (6, 4))
+        level_bar = plot_fig.add_subplot(gs[:14,0:3])
         level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 20)
         level_bar.bar(0, p_level, width = .1, color = p_color)
         level_bar.yaxis.set_major_locator(MultipleLocator(1))
@@ -76,10 +78,9 @@ class Gui(Tk):
         level_bar.set_ylim(1, 11)
         level_bar.set_xlim(0, 0.1)
         level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
-        #level_fig.subplots_adjust(right=.25)
         level_canvas = FigureCanvasTkAgg(plot_fig, mid_frame)
         level_canvas.show()
-        level_canvas.get_tk_widget().pack(side = "top")
+        level_canvas.get_tk_widget().pack(side = "left")
 
         pie_strength = 15
         pie_spirit = 2
@@ -88,38 +89,26 @@ class Gui(Tk):
         pie_labels = ['Strength', 'Spirit', 'Intellect']
         pie_values = [pie_strength, pie_spirit, pie_intellect]
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
-        pie_chart = plot_fig.add_subplot(111)
+        pie_chart = plot_fig.add_subplot(gs[0:14,1:])
         pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_chart.axis("equal")
         pie_legend = pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
-                         framealpha = 0, loc=(.82, .01), fontsize=16)
-        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 20))
-        pie_chart.text(1.14, .5, str(char_battle_strength), bbox = dict(facecolor="none", pad=20), fontsize = 80)
-        #pie_canvas = FigureCanvasTkAgg(level_fig, mid_frame)
-        #pie_canvas.show()
-        #pie_canvas.get_tk_widget().pack(side = "left")
-#TODO: Add the xp chart
+                         framealpha = 0, loc=(.78, .01), fontsize=11)
+        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
+        pie_chart.text(1.15, .60, str(char_battle_strength), bbox = dict(facecolor="none", pad=20), fontsize = 65)
 
-        xp_fig = Figure(figsize = (10, 1), frameon = True, linewidth = 0)
         xp_owned = 250
         xp_for_level = 350
-        xp_bar = xp_fig.add_subplot(312)
-        xp_bar.barh(0, xp_owned, color = "lime", hatch = "*")
+        xp_bar = plot_fig.add_subplot(gs[15:,:])
+        xp_bar.barh(0, xp_owned, color = "lime")
         xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
-        xp_bar.yaxis.set_label_coords(1.04, .25)
+        xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=18)
+        xp_bar.yaxis.set_label_coords(1.04, .1)
         xp_bar.set_xlim(0, xp_for_level)
         xp_bar.set_ylim(0, 0.8)
-        xp_canvas = FigureCanvasTkAgg(xp_fig, mid_frame)
-        xp_canvas.show()
-        xp_canvas.get_tk_widget().pack(side = "left")
-
-        
-        #Maybe figure out if instead of using subplots_adjust() we can just modify the overall
-        #figure by adding more subplots, updating the call add_subplot(val1, val2, val3, etc)
 
 #TODO: Once we have multiple players's stats, this will return char_stats_stack
         return char_stats
-        #pass
 
     def bg(self,win_height, win_width):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
