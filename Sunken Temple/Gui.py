@@ -68,7 +68,7 @@ class Gui(Tk):
 
         p_level = 7
         p_color = "darkviolet"
-        level_fig = Figure()
+        level_fig = Figure(figsize = (10, 6))
         level_bar = level_fig.add_subplot(171)
         level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 20)
         level_bar.bar(0, p_level, width = .1, color = p_color)
@@ -90,12 +90,12 @@ class Gui(Tk):
         pie_values = [pie_strength, pie_spirit, pie_intellect]
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
         #pie_fig = Figure()
-        pie_chart = level_fig.add_subplot(122)
+        pie_chart = level_fig.add_subplot(111)
         pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_chart.axis("equal")
         pie_legend = pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values)
                          ,framealpha = 0, loc=(.82, .01), fontsize=16)
-        pie_legend.set_title(pie_legend.get_title(), prop = FontProperties(size = 20))
+        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 20))
         pie_chart.text(1.14, .5, str(char_battle_strength), bbox = dict(facecolor="none", pad=20), fontsize = 80)
         #pie_canvas = FigureCanvasTkAgg(level_fig, mid_frame)
         #pie_canvas.show()
@@ -134,8 +134,8 @@ class Gui(Tk):
         output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 60, height = 18, font=("Arial", 16), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
-        self.bg_canvas.create_window((win_width//4)+20, (win_height//8), anchor = "nw", window = output_label)
-        self.bg_canvas.create_window((win_width//4)+20, (7*win_height//10), anchor = "nw", window = entry)
+        self.bg_canvas.create_window((win_width//6)+10, (win_height//8), anchor = "nw", window = output_label)
+        self.bg_canvas.create_window((win_width//6)+10, (7*win_height//10), anchor = "nw", window = entry)
 
 #        stats_frame = Frame(self.root, height = 250, width = 250)
 #        stats_name = Label(stats_frame, width = 20, height = 2, justify = "left", anchor = "nw", bg = "light gray", font=("Arial",16), text = "Name\t   Status\nClass, Race", relief = "sunken")
@@ -145,7 +145,7 @@ class Gui(Tk):
 #        stats_xp_bar = Label(stats_frame, width = 20, height = 2, bg = "light gray", font=("Arial",16), text = "Here is the\nXP bar!", relief = "sunken")
 
         char_stats_frame = self.char_stats()
-        self.bg_canvas.create_window((8*win_width/10), (win_height/8), anchor = "nw", window = char_stats_frame)
+        self.bg_canvas.create_window((7*win_width/10), (win_height/8), anchor = "nw", window = char_stats_frame)
 
 
 #        stats_name.pack(side = "top")
