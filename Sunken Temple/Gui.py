@@ -63,20 +63,22 @@ class Gui(Tk):
         char_stats_name = Label(char_stats, textvariable = player_name_text, width = 30, height = 2)
         char_stats_name.pack(side = "top")
 
-        mid_frame = Frame(char_stats)
-        mid_frame.pack(side = "top")
+        mid_frame
+
+        lower_frame = Frame(char_stats)
+        lower_frame.pack(side = "top")
 
         gs = gridspec.GridSpec(32,32, left = .075)
         p_level = 7
         p_color = "darkviolet"
         plot_fig = Figure(figsize = (5.5, 4))
-        level_canvas = FigureCanvasTkAgg(plot_fig, mid_frame)
-        level_canvas.show()
-        level_canvas.get_tk_widget().pack(side = "left")
+        char_stats_canvas = FigureCanvasTkAgg(plot_fig, lower_frame)
+        char_stats_canvas.show()
+        char_stats_canvas.get_tk_widget().pack(side = "left")
         bs = "25"
-        bs_label = Label(mid_frame, text = bs, font=("Arial", 60))
+        bs_label = Label(lower_frame, text = bs, font=("Arial", 60))
         bs_label.pack(side = "right")
-        level_canvas.get_tk_widget().create_window(355, 25, anchor = "nw", window = bs_label)
+        char_stats_canvas.get_tk_widget().create_window(355, 25, anchor = "nw", window = bs_label)
 
         level_bar = plot_fig.add_subplot(gs[:28,0:4])
         level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 16)
@@ -111,8 +113,6 @@ class Gui(Tk):
         xp_bar.set_xlim(0, xp_for_level)
         xp_bar.set_ylim(0, 0.8)
 
-        
-
 #TODO: Once we have multiple players's stats, this will return char_stats_stack
         return char_stats
 
@@ -143,23 +143,7 @@ class Gui(Tk):
         self.bg_canvas.create_window((win_width//6)+10, (win_height//8), anchor = "nw", window = output_label)
         self.bg_canvas.create_window((win_width//6)+10, (7*win_height//10), anchor = "nw", window = entry)
 
-#        stats_frame = Frame(self.root, height = 250, width = 250)
-#        stats_name = Label(stats_frame, width = 20, height = 2, justify = "left", anchor = "nw", bg = "light gray", font=("Arial",16), text = "Name\t   Status\nClass, Race", relief = "sunken")
-#        stats_mid_frame = Frame(stats_frame)
-#        stats_level_bar = Label(stats_mid_frame, width = 4, height = 6, justify = "left", anchor = "nw", bg = "light gray", font=("Arial",16), text = "L\ne\nv\ne\nl\n!", relief = "sunken")
-#        stats_pie_chart = Label(stats_mid_frame, width = 16, height = 6, bg = "light gray", font=("Arial",16), text = "Pie Chart\ngoes here!", relief = "sunken")
-#        stats_xp_bar = Label(stats_frame, width = 20, height = 2, bg = "light gray", font=("Arial",16), text = "Here is the\nXP bar!", relief = "sunken")
-
         char_stats_frame = self.char_stats()
         self.bg_canvas.create_window((7*win_width/10), (win_height/8), anchor = "nw", window = char_stats_frame)
-
-
-#        stats_name.pack(side = "top")
-#        stats_level_bar.pack(side = "left")
-#        stats_pie_chart.pack(side = "left")
-#        stats_mid_frame.pack(side = "top")
-#        stats_xp_bar.pack(side = "top")
-#        self.bg_canvas.create_window((8*win_width/10), (win_height/4), anchor = "nw", window = stats_frame)
-
         
 gui = Gui()
