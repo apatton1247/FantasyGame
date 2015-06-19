@@ -19,13 +19,13 @@ class Gui(Tk):
         height = self.root.winfo_screenheight()
         self.geometry("%dx%d+0+0" % (width, height))
         self.resizable(width=FALSE, height=FALSE)
-        #print(width, height)
         
         self.create_widgets(height, width)
         Tk.wm_title(self, "Sunken Temple")
 
-        #self.game = game.New()
-        self.mainloop()
+        #print("Hello")
+        #self.mainloop()
+        #print("bye!")
 
     def write(self, event, *text):
         if text:
@@ -43,34 +43,26 @@ class Gui(Tk):
             lab_val_strings.append(new_pair)
         return lab_val_strings
     
-    def char_stats(self):
-        #For future implementation
-        #char_stats_stack = Frame(self.root)
-        #for player in game.players:
-        #(pull stats from player, like player.strength, player.spirit, player.name, etc)
-        #name = StringVar(); name.set(player.name)
+    def add_char_stats(self, character):
 #TODO: Once we get to animating the matplotlib objects, we should use that function to update the player name/race/class/status text fields.
         
-#TODO: Once we have multiple players's stats, this one's parent will be char_stats_stack
-        char_stats = Frame(self.root)
+        char_stats_frame = Frame(self.char_stats_stack)
 
-        p_name = "Player 1"
-        p_race = "Reptilian"
-        p_class = "Shaman"
-        p_status = "Confused"
+        p_name = character.name
+        p_race = character.char_race
+        p_class = character.char_class
+        p_status = character.status
         player_name_text = StringVar()
         player_name_text.set("%s\t%s\n%s %s " % (p_name, p_status, p_race, p_class)) 
-        char_stats_name = Label(char_stats, textvariable = player_name_text, width = 30, height = 2)
+        char_stats_name = Label(char_stats_frame, textvariable = player_name_text, width = 30, height = 2)
         char_stats_name.pack(side = "top")
 
-        mid_frame
-
-        lower_frame = Frame(char_stats)
+        lower_frame = Frame(char_stats_frame)
         lower_frame.pack(side = "top")
 
         gs = gridspec.GridSpec(32,32, left = .075)
-        p_level = 7
-        p_color = "darkviolet"
+        p_level = character.level
+        p_color = character.color
         plot_fig = Figure(figsize = (5.5, 4))
         char_stats_canvas = FigureCanvasTkAgg(plot_fig, lower_frame)
         char_stats_canvas.show()
@@ -89,12 +81,12 @@ class Gui(Tk):
         level_bar.set_xlim(0, 0.1)
         level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
         
-        pie_strength = 15
-        pie_spirit = 2
-        pie_intellect = 5
-        char_battle_strength = 25
+        p_strength = character.strength
+        p_spirit = character.spirit
+        p_intellect = character.intellect
+        p_battle_strength = character.battle_strength_calc()
         pie_labels = ['Strength', 'Spirit', 'Intellect']
-        pie_values = [pie_strength, pie_spirit, pie_intellect]
+        pie_values = [p_strength, p_spirit, p_intellect]
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
         pie_chart = plot_fig.add_subplot(gs[0:28,0:])
         pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
@@ -103,7 +95,7 @@ class Gui(Tk):
                          framealpha = 0, loc=(.78, .01), fontsize=11)
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
 
-        xp_owned = 250
+        xp_owned = character.xp
         xp_for_level = 350
         xp_bar = plot_fig.add_subplot(gs[30:,:])
         xp_bar.barh(0, xp_owned, color = "lime")
@@ -113,8 +105,8 @@ class Gui(Tk):
         xp_bar.set_xlim(0, xp_for_level)
         xp_bar.set_ylim(0, 0.8)
 
-#TODO: Once we have multiple players's stats, this will return char_stats_stack
-        return char_stats
+        char_stats_frame.grid(column=0, row=0, sticky = "NSEW")
+        self.char_stats[character] = char_stats_frame
 
     def bg(self,win_height, win_width):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
@@ -143,7 +135,11 @@ class Gui(Tk):
         self.bg_canvas.create_window((win_width//6)+10, (win_height//8), anchor = "nw", window = output_label)
         self.bg_canvas.create_window((win_width//6)+10, (7*win_height//10), anchor = "nw", window = entry)
 
-        char_stats_frame = self.char_stats()
-        self.bg_canvas.create_window((7*win_width/10), (win_height/8), anchor = "nw", window = char_stats_frame)
-        
-gui = Gui()
+        self.char_stats_stack = Frame(self.root)
+        self.char_stats = {}
+
+        self.bg_canvas.create_window((7*win_width/10), (win_height/8), anchor = "nw", window = self.char_stats_stack)
+
+    #TODO: implement parsing of the text from the Entry widget, and if it matches
+    # the option show (player name)", raises that player's char_stats frame to
+    # the top of the frame stack.
