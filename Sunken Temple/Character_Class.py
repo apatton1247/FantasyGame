@@ -1,5 +1,3 @@
-#Character class only included in the gameplay main file until we figure out how to import
-# it correctly from another .py file in the same folder or something.
 class Character(object):
   def __init__(self, name, color, level=1, strength=5, spirit=5, intellect=5):
     #This initializes basic Character traits

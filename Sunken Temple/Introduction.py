@@ -1,6 +1,6 @@
 ########## Sunken Temple Intro ##########
 
-from Character_Class import *
+from character_class import *
 #from Options_class import *
 from datetime import date
 

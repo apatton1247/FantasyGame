@@ -7,12 +7,11 @@ from matplotlib.font_manager import FontProperties
 import matplotlib.gridspec as gridspec
 
 from tkinter import *
-#import Gameplay as game
 
 class Gui(Tk):
-    def __init__(self):
+    def __init__(self, game):
         Tk.__init__(self)
-
+        self.game = game
         self.root = Frame(self)
         self.root.pack(side = "top", fill = "both", expand = True)
         width = self.root.winfo_screenwidth()
@@ -27,14 +26,17 @@ class Gui(Tk):
         #self.mainloop()
         #print("bye!")
 
-    def write(self, event, *text):
+    def write(self, event=None, text = ""):
         if text:
             for line in text:
                 self.output_text.set(self.output_text.get() + line)
         else:
-            self.output_text.set(self.output_text.get() + "\n" + self.input_text.get())
-        self.input_text.set("")
-
+            new_text = self.input_text.get()
+            self.input_text.set("")
+            self.output_text.set(self.output_text.get() + "\n" + new_text)
+            self.game.text_parse(new_text)
+            #print(self.input_text.get())
+        
     def format_labels(self, pie_labels, pie_values):
         lab_and_val = zip(pie_labels, pie_values)
         lab_val_strings = []
@@ -107,6 +109,12 @@ class Gui(Tk):
 
         char_stats_frame.grid(column=0, row=0, sticky = "NSEW")
         self.char_stats[character] = char_stats_frame
+
+    def show_char_stats(self, char_name):
+        for player in self.game.players:
+            if player.name.lower() == char_name:
+                self.char_stats[player].lift()
+                break
 
     def bg(self,win_height, win_width):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
