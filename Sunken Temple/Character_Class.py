@@ -4,8 +4,8 @@ class Character(object):
     self.name = name
     self.level = level
     self.bonus = 0
-    self.char_class = ["normal"]
-    self.char_race = ["human"]
+    self.char_class = "Classess"
+    self.char_race = "Human"
     self.status = "Normal"
     self.color = color
     self.xp = 0
