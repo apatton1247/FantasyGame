@@ -14,6 +14,7 @@ class Gui(Tk):
         self.game = game
         self.root = Frame(self)
         self.root.pack(side = "top", fill = "both", expand = True)
+        ####Top Level Frame Fixed and Resolution?####
         width = self.root.winfo_screenwidth()
         height = self.root.winfo_screenheight()
         self.geometry("%dx%d+0+0" % (width, height))
@@ -46,10 +47,12 @@ class Gui(Tk):
         return lab_val_strings
     
     def add_char_stats(self, character):
-#TODO: Once we get to animating the matplotlib objects, we should use that function to update the player name/race/class/status text fields.
         
-        char_stats_frame = Frame(self.char_stats_stack)
+#TODO: Once we get to animating the matplotlib objects, we should use that function to update the player name/race/class/status text fields.
 
+    ########Character Stats Frame########
+        char_stats_frame = Frame(self.char_stats_stack)
+        ####Player Label####
         p_name = character.name
         p_race = character.char_race
         p_class = character.char_class
@@ -61,19 +64,20 @@ class Gui(Tk):
 
         lower_frame = Frame(char_stats_frame)
         lower_frame.pack(side = "top")
-
+        
         gs = gridspec.GridSpec(32,32, left = .075)
-        p_level = character.level
-        p_color = character.color
         plot_fig = Figure(figsize = (5.5, 4))
         char_stats_canvas = FigureCanvasTkAgg(plot_fig, lower_frame)
         char_stats_canvas.show()
         char_stats_canvas.get_tk_widget().pack(side = "left")
+        ####Battle Strength####
         bs = "25"
         bs_label = Label(lower_frame, text = bs, font=("Arial", 60))
         bs_label.pack(side = "right")
         char_stats_canvas.get_tk_widget().create_window(355, 25, anchor = "nw", window = bs_label)
-
+        ####LEVEL####
+        p_level = character.level
+        p_color = character.color
         level_bar = plot_fig.add_subplot(gs[:28,0:4])
         level_bar.set_title(level_bar.get_title(), text = "Level", fontsize = 16)
         level_bar.bar(0, p_level, width = .1, color = p_color)
@@ -82,7 +86,7 @@ class Gui(Tk):
         level_bar.set_ylim(1, 11)
         level_bar.set_xlim(0, 0.1)
         level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
-        
+        ####ATTRIBUTES####
         p_strength = character.strength
         p_spirit = character.spirit
         p_intellect = character.intellect
@@ -96,7 +100,7 @@ class Gui(Tk):
         pie_legend = pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
                          framealpha = 0, loc=(.78, .01), fontsize=11)
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
-
+        ####Expierence####
         xp_owned = character.xp
         xp_for_level = 350
         xp_bar = plot_fig.add_subplot(gs[30:,:])
@@ -115,7 +119,8 @@ class Gui(Tk):
             if player.name.lower() == char_name:
                 self.char_stats[player].lift()
                 break
-
+            
+    ########Background Image########
     def bg(self,win_height, win_width):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
         self.bg_canvas.pack(expand = True, fill = "both")
@@ -124,6 +129,7 @@ class Gui(Tk):
         self.bg_canvas.img = wall
         self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
 
+    ########Entry and Ouput Widgets########
     def create_widgets(self, scr_height, scr_width):
         win_height = int(0.75 * scr_height)
         win_width = int(0.75 * scr_width)
