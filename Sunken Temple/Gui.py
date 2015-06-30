@@ -190,14 +190,18 @@ class Gui(Tk):
         self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
         self.bg_canvas.pack(expand = True, fill = "both")
 
+        winh = int(round((win_height/968),1) * 10)
+        winw = int(round((win_width/1536),1) * 10)
         wall = PhotoImage(file = "crypt_wall_tessl.gif")
+        wall = wall.zoom(winw+1, winh+1)
+        wall = wall.subsample(10, 10)
         self.bg_canvas.img = wall
         self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
 
     ########Entry and Ouput Widgets########
     def create_widgets(self, scr_height, scr_width):
-        win_height = int(0.75 * scr_height)
-        win_width = int(0.75 * scr_width)
+        win_height = (scr_height)
+        win_width = (scr_width)
 
         self.bg(win_height, win_width)
         
