@@ -2,8 +2,8 @@
 # runtime, and calls the char_stats frame creator/populator for each.
 
 import random
-from Character_Class import Character
-import Gui as g
+from character_class import Character
+import gui as g
 import options
 
 class New_Game():
