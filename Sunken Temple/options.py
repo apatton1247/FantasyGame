@@ -41,6 +41,8 @@ class Options(object):
     #
     #do_option is now deprecated in favor of option methods, like show_char_stats
 
+    #def show(self, something)
+
     def interpret(self, *words):
         if len(words) > 1 and words[0] in ("look", "see", "show", "view"):
             name_set = set(words) & {player.name.lower() for player in self.gameplay.players}
