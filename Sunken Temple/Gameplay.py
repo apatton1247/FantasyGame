@@ -39,3 +39,7 @@ if __name__ == "__main__":
     game.add_player("Dave", level=8, strength=2, intellect=18)
     game.add_player("Victoria", level=6, strength=17, spirit=9)
     game.add_player("Frank", level=6, strength=3, intellect=20, spirit=12)
+
+
+#    game.gui.mainloop()
+    print("hi")
