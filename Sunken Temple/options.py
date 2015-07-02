@@ -36,20 +36,13 @@ class Options(object):
     # instance.  They will get the required access to things in-game or the
     # gui by going through self.gameplay.
     
-    #def do_option(self, option_text):
-    #    pass
-    #
-    #do_option is now deprecated in favor of option methods, like show_char_stats
-
-    #def show(self, something)
+    def show(self, something):
+        if something in {player.name.lower() for player in self.gameplay.players}:
+            self.gameplay.gui.show_char_stats(something)
 
     def interpret(self, *words):
-        if len(words) > 1 and words[0] in ("look", "see", "show", "view"):
-            name_set = set(words) & {player.name.lower() for player in self.gameplay.players}
-            if len(name_set) > 1:
-                self.gameplay.gui.write(text = "\nI don't understand, too many names!")
-            elif len(name_set) == 1:
-                name = name_set.pop()
-                self.gameplay.gui.show_char_stats(name)
-            else:
-                return 2
+        if len(words) > 1 and words[0].lower() == "show":
+            self.show(words[1])
+        else:
+            words_string = "".join(words)
+            exec(words_string)

@@ -4,6 +4,7 @@
 import random
 from character_class import Character
 import gui as g
+import matplotlib.animation as animation
 import options
 
 class New_Game():
@@ -24,13 +25,13 @@ class New_Game():
         p_color = self.assign_color()
         player = Character(name, color = p_color, **kwargs)
         self.players.append(player)
-        self.gui.add_char_stats(player)
+        self.gui.char_shown = player
 
     def text_parse(self, text_string):
         text_string = text_string.lower()
         text_string = text_string.replace("'", " ").strip()
-        #TODO: look into regex to split properly around punctuation, including
-        #      apostrophes, periods, etc.
+        #TODO: look into regex to split properly around punctuation,
+        # including apostrophes, periods, etc.
         words = text_string.split()
         self.opt.interpret(*words)
 
@@ -40,6 +41,5 @@ if __name__ == "__main__":
     game.add_player("Victoria", level=6, strength=17, spirit=9)
     game.add_player("Frank", level=6, strength=3, intellect=20, spirit=12)
 
-
-#    game.gui.mainloop()
-    print("hi")
+    game.gui_ani = animation.FuncAnimation(game.gui.plot_fig, game.gui.animate, 50000)
+    game.gui.mainloop()

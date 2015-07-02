@@ -9,6 +9,7 @@ class Character(object):
     self.status = "Normal"
     self.color = color
     self.xp = 0
+    self.xp_for_level = 100
     #This initializes equipment (equipped items)
     self.equipment = {
       "headgear": [],
