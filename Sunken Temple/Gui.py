@@ -18,12 +18,12 @@ class Gui(Tk):
         self.root = Frame(self)
         self.root.pack(side = "top", fill = "both", expand = True)
         ####Top Level Frame Fixed and Resolution?####
-        width = self.root.winfo_screenwidth()
-        height = self.root.winfo_screenheight()
-        self.geometry("%dx%d+0+0" % (width, height))
+        self.width = self.root.winfo_screenwidth()
+        self.height = self.root.winfo_screenheight()
+        self.geometry("%dx%d+0+0" % (self.width, self.height))
         self.resizable(width=FALSE, height=FALSE)
         
-        self.create_widgets(height, width)
+        self.create_widgets()
         Tk.wm_title(self, "Sunken Temple")
 
     def animate(self, interval):
@@ -117,7 +117,7 @@ class Gui(Tk):
         lower_frame.pack(side = "top")
         
         gs = gridspec.GridSpec(32,32, left = .075)
-        self.plot_fig = Figure(figsize = (5.5, 4))
+        self.plot_fig = Figure(figsize = (self.width/290, self.height/260))
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, lower_frame)
         char_stats_canvas.show()
         char_stats_canvas.get_tk_widget().pack(side = "left")
@@ -155,41 +155,41 @@ class Gui(Tk):
                 break
             
     ########Background Image########
-    def bg(self,win_height, win_width):
-        self.bg_canvas = Canvas(self.root, height = win_height, width = win_width)
+    def bg(self):
+        self.bg_canvas = Canvas(self.root, height = self.height, width = self.width)
         self.bg_canvas.pack(expand = True, fill = "both")
 
-        winh = int(round((win_height/968),1) * 10)
-        winw = int(round((win_width/1536),1) * 10)
         wall = PhotoImage(file = "crypt_wall_tessl.gif")
+
+        winh = int(round((self.height/968),1) * 10)
+        winw = int(round((self.width/1536),1) * 10)
         wall = wall.zoom(winw+1, winh+1)
         wall = wall.subsample(10, 10)
+        
         self.bg_canvas.img = wall
         self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
 
     ########Entry and Ouput Widgets########
-    def create_widgets(self, scr_height, scr_width):
-        win_height = (scr_height)
-        win_width = (scr_width)
-
-        self.bg(win_height, win_width)
+    def create_widgets(self):
+        
+        self.bg()
         
         self.input_text = StringVar()
         self.input_text.set("")
-        entry = Entry(self.root, bg = "light gray", width = 60, font=("Arial", 16), textvariable = self.input_text, relief = "sunken")
+        entry = Entry(self.root, bg = "light gray", width = 90, font=("Arial", 16), textvariable = self.input_text, relief = "sunken")
         entry.bind("<Return>", self.write)
 
         self.output_text = StringVar()
         self.output_text.set("This is the sample text!\rHello World!\rTo set players's attributes, type 'self.gameplay.players[N].attr',\rreplacing N with the index of the player you want to affect (currently 0\rfor Dave, 1 for Victoria, 2 for Frank), and attr with the \rattribute (e.g. strength, level) you want to affect, and a code-like\rchange like so:\rself.gameplay.players[2].level += 1")
-        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 60, height = 18, font=("Arial", 16), relief = "sunken")
+        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 90, height = 25, font=("Arial", 16), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
-        self.bg_canvas.create_window((win_width//6)+10, (win_height//8), anchor = "nw", window = output_label)
-        self.bg_canvas.create_window((win_width//6)+10, (7*win_height//10), anchor = "nw", window = entry)
+        self.bg_canvas.create_window((self.width/20), (self.height/8), anchor = "nw", window = output_label)
+        self.bg_canvas.create_window((self.width/20), (6*self.height/8), anchor = "nw", window = entry)
 
         self.add_char_stats_frame()
 
-        self.bg_canvas.create_window((7*win_width/10), (win_height/8), anchor = "nw", window = self.char_stats_frame)
+        self.bg_canvas.create_window((7*self.width/10), (self.height/8), anchor = "nw", window = self.char_stats_frame)
 
 if __name__ == "__main__":
     print("Run gameplay.py instead.")
