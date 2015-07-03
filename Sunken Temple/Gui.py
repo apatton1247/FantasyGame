@@ -81,7 +81,7 @@ class Gui(Tk):
             self.input_text.set("")
             self.output_text.set(self.output_text.get() + "\n" + new_text)
             self.game.text_parse(new_text)
-            #print(self.input_text.get())
+            #TODO: once the options widget exists, should also clear its contents.
         
     def format_labels(self, pie_labels, pie_values):
         lab_and_val = zip(pie_labels, pie_values)

@@ -52,6 +52,18 @@ class Character(object):
 
   def level_up(self, amount):
     self.level += amount
+    #TODO: is this where there should be a check to see if this can be the
+    # game-winning level? Like maybe have it be def level_up(self, amount, win_ok = False),
+    # and if it's an acceptable way to win, like with the xp-level-up below, it'd just
+    # say self.level_up(1, win_ok = True) ?
+
+  def xp_up(self, amount):
+    self.xp += amount
+    while self.xp > self.xp_for_level:
+      self.level_up(1)
+      self.xp = self.xp - self.xp_for_level
+      #TODO: Should the xp scaling per level work differently from this?
+      self.xp_for_level +=50
 
   def equip(self, equipment):
     #Should be able to check what type of object (e.g. footgear, slotless) the
