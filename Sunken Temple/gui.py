@@ -61,7 +61,7 @@ class Gui(Tk):
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
         self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
-                                           framealpha = 0, loc=(.78, .01), fontsize=11)
+                                           framealpha = 0, loc=(.73, .01), fontsize=11)
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
 
         ####XP Bar Chart Update####
@@ -124,9 +124,9 @@ class Gui(Tk):
         
         ####Battle Strength####
         self.p_bs = StringVar()
-        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", 60))
+        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", 50))
         bs_label.pack(side = "right")
-        char_stats_canvas.get_tk_widget().create_window(355, 25, anchor = "nw", window = bs_label)
+        char_stats_canvas.get_tk_widget().create_window(275, 25, anchor = "nw", window = bs_label)
         
         ####LEVEL####
         self.p_level = IntVar()
