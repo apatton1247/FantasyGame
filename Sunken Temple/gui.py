@@ -48,7 +48,7 @@ class Gui(Tk):
 
         ####Level Bar Chart Update####
         self.level_bar.bar(0, self.p_level.get(), width = .1, color = self.p_color.get())
-        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = 16)
+        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = 14)
         self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
         self.level_bar.yaxis.grid()
         self.level_bar.set_ylim(1, 11)
@@ -63,11 +63,12 @@ class Gui(Tk):
         pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
                                            framealpha = 0, loc=(.73, .01), fontsize=11)
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
-
+########       self.subplots_adjust(left=.10)
+        
         ####XP Bar Chart Update####
         self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
         self.xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
-        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=18)
+        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=16)
         self.xp_bar.yaxis.set_label_coords(1.04, -.3)
         self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
         self.xp_bar.set_ylim(0, 0.8)
@@ -107,26 +108,26 @@ class Gui(Tk):
                                 width = 30, height = 1, font = ("Arial", 16))
         race_class_label.pack(side = "bottom")
         name_label = Label(upper_frame, textvariable = self.p_name, width = 15,
-                                height = 1, font = ("Arial", 20), anchor = "e")
+                                height = 1, font = ("Arial bold", 20), anchor = "e")
         name_label.pack(side = "left")
         status_label = Label(upper_frame, textvariable = self.p_status, width = 15,
-                                  height = 1, font = ("Arial", 16), anchor = "w")
+                                  height = 1, font = ("Arial italic", 16), anchor = "w")
         status_label.pack(side = "left")
         
         lower_frame = Frame(self.char_stats_frame)
         lower_frame.pack(side = "top")
         
         gs = gridspec.GridSpec(32,32, left = .075)
-        self.plot_fig = Figure(figsize = (self.width/290, self.height/260))
+        self.plot_fig = Figure(figsize = (self.width/275, self.height/255))
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, lower_frame)
         char_stats_canvas.show()
         char_stats_canvas.get_tk_widget().pack(side = "left")
         
         ####Battle Strength####
         self.p_bs = StringVar()
-        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", 50))
+        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", 60))
         bs_label.pack(side = "right")
-        char_stats_canvas.get_tk_widget().create_window(275, 25, anchor = "nw", window = bs_label)
+        char_stats_canvas.get_tk_widget().create_window(285, 25, anchor = "nw", window = bs_label)
         
         ####LEVEL####
         self.p_level = IntVar()
@@ -176,20 +177,20 @@ class Gui(Tk):
         
         self.input_text = StringVar()
         self.input_text.set("")
-        entry = Entry(self.root, bg = "light gray", width = 90, font=("Arial", 16), textvariable = self.input_text, relief = "sunken")
+        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20), textvariable = self.input_text, relief = "sunken")
         entry.bind("<Return>", self.write)
 
         self.output_text = StringVar()
         self.output_text.set("This is the sample text!\rHello World!\rTo set players's attributes, type 'self.gameplay.players[N].attr',\rreplacing N with the index of the player you want to affect (currently 0\rfor Dave, 1 for Victoria, 2 for Frank), and attr with the \rattribute (e.g. strength, level) you want to affect, and a code-like\rchange like so:\rself.gameplay.players[2].level += 1")
-        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 90, height = 25, font=("Arial", 16), relief = "sunken")
+        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 65, height = 20, font=("Arial", 20), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
-        self.bg_canvas.create_window((self.width/20), (self.height/8), anchor = "nw", window = output_label)
-        self.bg_canvas.create_window((self.width/20), (6*self.height/8), anchor = "nw", window = entry)
+        self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = output_label)
+        self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
 
         self.add_char_stats_frame()
 
-        self.bg_canvas.create_window((7*self.width/10), (self.height/8), anchor = "nw", window = self.char_stats_frame)
+        self.bg_canvas.create_window((66*self.width/100), (10*self.height/100), anchor = "nw", window = self.char_stats_frame)
 
 if __name__ == "__main__":
     print("Run gameplay.py instead.")
