@@ -76,7 +76,7 @@ class Gui(Tk):
     def write(self, event=None, text = ""):
         if text:
             for line in text:
-                self.output_text.set(self.output_text.get() + line)
+                self.output_text.set(self.output_text.get() + "\n\t" + line)
         else:
             new_text = self.input_text.get()
             self.input_text.set("")

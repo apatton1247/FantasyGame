@@ -13,18 +13,16 @@ class Options(object):
 
     #Displays all "visible" options to the player
     def show_options(self):
-        for option in self.options.keys():
-            if self.options[option][1] == "visible":
-                #self.gameplay.gui.write(option)
-                print(option)
+        opts = [option for option in self.options if self.options[option][1] == "visible"]
+        #print(opts)
+        self.gameplay.gui.write(text = opts)
 
     #Secret method for displaying all "hidden" options to the player
     def show_hidden_options(self):
-        for option in self.options.keys():
-            if self.options[option][1] == "hidden":
-                #self.gameplay.gui.write(option)
-                print(option)
-
+        opts = [option for option in self.options if self.options[option][1] == "hidden"]
+        #print(opts)
+        self.gameplay.gui.write(text = opts)
+        
     #Adds an option (or list of options) to the options list. Second
     # parameter determines if the option is "visible" or "hidden".
     def add_option(self, **option):
@@ -56,7 +54,7 @@ class Options(object):
     def char_attr_up(self, words):
         words = words.split()
         if len(words) != 3:
-            self.gameplay.gui.write("option should be of the form 'attr up (strength/spirit/intellect) (amount) (player name)'.")
+            self.gameplay.gui.write(text = ["option should be of the form 'attr up (attribute) (amount) (player name)'."])
         else:
             attr, amt, char = words
             for player in self.gameplay.players:
@@ -67,7 +65,7 @@ class Options(object):
     def char_level_up(self, words):
         words = words.split()
         if len(words) != 2:
-            self.gameplay.gui.write("option should be of the form 'level up (amount) (player name)'.")
+            self.gameplay.gui.write(text = ["option should be of the form 'level up (amount) (player name)'."])
         else:
             amt, char = words
             for player in self.gameplay.players:
@@ -78,7 +76,7 @@ class Options(object):
     def char_xp_up(self, words):
         words = words.split()
         if len(words) != 2:
-            self.gameplay.gui.write("option should be of the form 'xp up (amount) (player name)'.")
+            self.gameplay.gui.write(text = ["option should be of the form 'xp up (amount) (player name)'."])
         else:
             amt, char = words
             for player in self.gameplay.players:
