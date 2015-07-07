@@ -15,7 +15,8 @@ class New_Game():
                           "goldenrod", "yellow", "black"]
         self.gui = g.Gui(self)
         self.opt = options.Options(self)
-
+        self.opt.populate()
+        
     def assign_color(self):
         color = random.choice(self.colorbank)
         self.colorbank.remove(color)

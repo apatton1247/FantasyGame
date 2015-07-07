@@ -180,7 +180,7 @@ class Gui(Tk):
         entry.bind("<Return>", self.write)
 
         self.output_text = StringVar()
-        self.output_text.set("This is the sample text!\rHello World!\rTo set players's attributes, type 'self.gameplay.players[N].attr',\rreplacing N with the index of the player you want to affect (currently 0\rfor Dave, 1 for Victoria, 2 for Frank), and attr with the \rattribute (e.g. strength, level) you want to affect, and a code-like\rchange like so:\rself.gameplay.players[2].level += 1")
+        self.output_text.set("This is the sample text!\rHello World!\rTo change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then\r the proper arguments to go with the option.  For example:\r'show Dave'\r'level up 1 Dave'\r'attr up intellect -4 Dave'")
         output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 90, height = 25, font=("Arial", 16), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
