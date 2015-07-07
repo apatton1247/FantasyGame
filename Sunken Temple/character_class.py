@@ -6,7 +6,7 @@ class Character(object):
         self.bonus = 0
         self.char_class = "Classess"
         self.char_race = "Human"
-        self.status = "Normal"
+        self.status = "            Normal"
         self.color = color
         self.xp = 0
         self.xp_for_level = 100
