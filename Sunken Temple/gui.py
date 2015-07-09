@@ -158,8 +158,8 @@ class Gui(Tk):
     def add_options_frame(self):
         self.options_frame = Frame(self.root)
         self.options_text = StringVar()
-        self.options_label = Label(self.options_frame, bg = "light gray", width = 45, height = 12, anchor = "nw",
-                                   justify = "left", font=("Arial", (self.width//80)), textvariable = self.options_text, relief = "sunken")
+        self.options_label = Label(self.options_frame, bg = "light gray", width = 35, height = 8, anchor = "nw",
+                                   justify = "left", font=("Arial", 20), textvariable = self.options_text, relief = "sunken")
         self.options_label.pack()
         self.options_frame.pack()
         
@@ -186,12 +186,12 @@ class Gui(Tk):
         
         self.input_text = StringVar()
         self.input_text.set("")
-        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20, textvariable = self.input_text, relief = "sunken")
+        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20), textvariable = self.input_text, relief = "sunken")
         entry.bind("<Return>", self.write)
 
         self.output_text = StringVar()
         self.output_text.set("This is the sample text!\rHello World!\rTo change players's attributes, type an option (e.g. 'level up', 'show hidden options')\r and then the proper arguments to go with the option.  For example:\r'show Dave'\r'level up 1 Dave'\r'attr up intellect -4 Dave'")
-        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 65, height = 20, font=("Arial", 20, relief = "sunken")
+        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 65, height = 20, font=("Arial", 20), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
         self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = output_label)
