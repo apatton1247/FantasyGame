@@ -9,7 +9,7 @@ class Character(object):
         self.status = "            Normal"
         self.color = color
         self.xp = 0
-        self.xp_for_level = 100
+        self.xp_for_level = (100 + 50*level)
         #This initializes equipment (equipped items)
         self.equipment = {
             "headgear": [],
@@ -57,12 +57,13 @@ class Character(object):
         # and if it's an acceptable way to win, like with the xp-level-up below, it'd just
         # say self.level_up(1, win_ok = True) ?
         #TODO: Should the xp scaling per level work differently from this?
+        self.xp = 0
         self.xp_for_level += (50*amount)
     
     
     def xp_up(self, amount):
         self.xp += amount
-        while self.xp > self.xp_for_level:
+        while self.xp >= self.xp_for_level:
             self.xp = self.xp - self.xp_for_level
             self.level_up(1)
     

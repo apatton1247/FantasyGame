@@ -33,8 +33,7 @@ class New_Game():
         text_string = text_string.replace("'", " ").strip()
         #TODO: look into regex to split properly around punctuation,
         # including apostrophes, periods, etc.
-        words = text_string.split()
-        self.opt.interpret(*words)
+        self.opt.interpret(text_string)
 
 if __name__ == "__main__":
     game = New_Game()

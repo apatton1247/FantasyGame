@@ -75,12 +75,12 @@ class Gui(Tk):
 
     def write(self, event=None, text = ""):
         if text:
-            for line in text:
-                self.output_text.set(self.output_text.get() + "\n\t" + line)
+            self.output_text.set(self.output_text.get() + "\n" + line)
         else:
             new_text = self.input_text.get()
             self.input_text.set("")
             self.output_text.set(self.output_text.get() + "\n" + new_text)
+            self.options_text.set("")
             self.game.text_parse(new_text)
             #TODO: once the options widget exists, should also clear its contents.
         
@@ -154,7 +154,16 @@ class Gui(Tk):
             if player.name.lower() == char_name:
                 self.char_shown = player
                 break
-            
+
+    def add_options_frame(self):
+        self.options_frame = Frame(self.root)
+        self.options_text = StringVar()
+        self.options_label = Label(self.options_frame, bg = "light gray", width = 45, height = 12, anchor = "nw",
+                                   justify = "left", font=("Arial", 16), textvariable = self.options_text, relief = "sunken")
+        self.options_label.pack()
+        self.options_frame.pack()
+        
+    
     ########Background Image########
     def bg(self):
         self.bg_canvas = Canvas(self.root, height = self.height, width = self.width)
@@ -189,8 +198,10 @@ class Gui(Tk):
         self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
 
         self.add_char_stats_frame()
-
         self.bg_canvas.create_window((66*self.width/100), (10*self.height/100), anchor = "nw", window = self.char_stats_frame)
+
+        self.add_options_frame()
+        self.bg_canvas.create_window((66*self.width/100), (55*self.height/100), anchor = "nw", window = self.options_frame)
 
 if __name__ == "__main__":
     print("Run gameplay.py instead.")
