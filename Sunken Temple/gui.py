@@ -48,7 +48,7 @@ class Gui(Tk):
 
         ####Level Bar Chart Update####
         self.level_bar.bar(0, self.p_level.get(), width = .1, color = self.p_color.get())
-        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = 14)
+        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = (self.width//91))
         self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
         self.level_bar.yaxis.grid()
         self.level_bar.set_ylim(1, 11)
@@ -62,13 +62,13 @@ class Gui(Tk):
         self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
                                            framealpha = 0, loc=(.73, .01), fontsize=11)
-        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = 14))
+        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
 ########       self.subplots_adjust(left=.10)
         
         ####XP Bar Chart Update####
         self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
         self.xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
-        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=16)
+        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=(self.width//80))
         self.xp_bar.yaxis.set_label_coords(1.04, -.3)
         self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
         self.xp_bar.set_ylim(0, 0.8)
@@ -105,13 +105,13 @@ class Gui(Tk):
         self.p_status = StringVar()
 
         race_class_label = Label(upper_frame, textvariable = self.p_race_class,
-                                width = 30, height = 1, font = ("Arial", 16))
+                                width = 30, height = 1, font = ("Arial", (self.width//80)))
         race_class_label.pack(side = "bottom")
         name_label = Label(upper_frame, textvariable = self.p_name, width = 15,
-                                height = 1, font = ("Arial bold", 20), anchor = "e")
+                                height = 1, font = ("Arial bold", (self.width//64)), anchor = "e")
         name_label.pack(side = "left")
         status_label = Label(upper_frame, textvariable = self.p_status, width = 15,
-                                  height = 1, font = ("Arial italic", 16), anchor = "w")
+                                  height = 1, font = ("Arial italic", (self.width//80)), anchor = "w")
         status_label.pack(side = "left")
         
         lower_frame = Frame(self.char_stats_frame)
@@ -125,11 +125,10 @@ class Gui(Tk):
         
         ####Battle Strength####
         self.p_bs = StringVar()
-        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", 60))
+        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", (self.width//22)))
         bs_label.pack(side = "right")
-        char_stats_canvas.get_tk_widget().create_window((22*self.width/100), (3*self.height/100), anchor = "nw", window = bs_label)
-        print(22*self.width/100)
-        print(3*self.height/100)
+        char_stats_canvas.get_tk_widget().create_window((25*self.width/100), (3*self.height/100), anchor = "n", window = bs_label)
+
         ####LEVEL####
         self.p_level = IntVar()
         self.p_color = StringVar()
@@ -160,7 +159,7 @@ class Gui(Tk):
         self.options_frame = Frame(self.root)
         self.options_text = StringVar()
         self.options_label = Label(self.options_frame, bg = "light gray", width = 45, height = 12, anchor = "nw",
-                                   justify = "left", font=("Arial", 16), textvariable = self.options_text, relief = "sunken")
+                                   justify = "left", font=("Arial", (self.width//80)), textvariable = self.options_text, relief = "sunken")
         self.options_label.pack()
         self.options_frame.pack()
         
@@ -187,12 +186,12 @@ class Gui(Tk):
         
         self.input_text = StringVar()
         self.input_text.set("")
-        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20), textvariable = self.input_text, relief = "sunken")
+        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", (self.width//64)), textvariable = self.input_text, relief = "sunken")
         entry.bind("<Return>", self.write)
 
         self.output_text = StringVar()
         self.output_text.set("This is the sample text!\rHello World!\rTo change players's attributes, type an option (e.g. 'level up', 'show hidden options')\r and then the proper arguments to go with the option.  For example:\r'show Dave'\r'level up 1 Dave'\r'attr up intellect -4 Dave'")
-        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 65, height = 20, font=("Arial", 20), relief = "sunken")
+        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 65, height = 20, font=("Arial", (self.width//64)), relief = "sunken")
         output_label.config(textvariable = self.output_text, justify = "left")
 
         self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = output_label)
