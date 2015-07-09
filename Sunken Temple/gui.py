@@ -127,8 +127,9 @@ class Gui(Tk):
         self.p_bs = StringVar()
         bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", 60))
         bs_label.pack(side = "right")
-        char_stats_canvas.get_tk_widget().create_window(425, 25, anchor = "nw", window = bs_label)
-        
+        char_stats_canvas.get_tk_widget().create_window((22*self.width/100), (3*self.height/100), anchor = "nw", window = bs_label)
+        print(22*self.width/100)
+        print(3*self.height/100)
         ####LEVEL####
         self.p_level = IntVar()
         self.p_color = StringVar()
