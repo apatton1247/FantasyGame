@@ -4,9 +4,9 @@ class Character(object):
         self.name = name
         self.level = level
         self.bonus = 0
-        self.char_class = "Classess"
+        self.char_class = "Classless"
         self.char_race = "Human"
-        self.status = "            Normal"
+        self.status = "Normal"
         self.color = color
         self.xp = 0
         self.xp_for_level = (100 + 50*level)
@@ -45,24 +45,34 @@ class Character(object):
     def attr_up(self, attribute, amount):
         if attribute == "strength":
             self.strength += amount
+            if self.strength < 0:
+                self.strength = 0
         elif attribute == "spirit":
             self.spirit += amount
+            if self.spirit < 0:
+                self.spirit = 0
         elif attribute == "intellect":
             self.intellect += amount
-    
+            if self.intellect < 0:
+                self.intellect = 0
+
     def level_up(self, amount):
         self.level += amount
+        if self.level < 0:
+            self.level = 0
         #TODO: is this where there should be a check to see if this can be the
         # game-winning level? Like maybe have it be def level_up(self, amount, win_ok = False),
         # and if it's an acceptable way to win, like with the xp-level-up below, it'd just
         # say self.level_up(1, win_ok = True) ?
         #TODO: Should the xp scaling per level work differently from this?
         self.xp = 0
-        self.xp_for_level += (50*amount)
+        self.xp_for_level = (100 + 50*self.level)
     
     
     def xp_up(self, amount):
         self.xp += amount
+        if self.xp < 0:
+            self.xp = 0
         while self.xp >= self.xp_for_level:
             self.xp = self.xp - self.xp_for_level
             self.level_up(1)

@@ -51,7 +51,7 @@ class Gui(Tk):
         self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = (self.width//91))
         self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
         self.level_bar.yaxis.grid()
-        self.level_bar.set_ylim(1, 11)
+        self.level_bar.set_ylim(0, 11)
         self.level_bar.set_xlim(0, 0.1)
         self.level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
 
@@ -104,15 +104,17 @@ class Gui(Tk):
         self.p_race_class = StringVar()
         self.p_status = StringVar()
 
-        race_class_label = Label(upper_frame, textvariable = self.p_race_class,
-                                width = 30, height = 1, font = ("Arial", (self.width//80)))
-        race_class_label.pack(side = "bottom")
+        blank_label = Label(upper_frame, width = 9, height = 2, font = ("Arial", (self.width//100)))
+        blank_label.pack(side = "left")
+        status_label = Label(upper_frame, textvariable = self.p_status, width = 9,
+                                  height = 2, font = ("Arial italic", (self.width//100)), anchor = "w", justify = "left")
+        status_label.pack(side = "right")
         name_label = Label(upper_frame, textvariable = self.p_name, width = 15,
-                                height = 1, font = ("Arial bold", (self.width//64)), anchor = "e")
-        name_label.pack(side = "left")
-        status_label = Label(upper_frame, textvariable = self.p_status, width = 15,
-                                  height = 1, font = ("Arial italic", (self.width//80)), anchor = "w")
-        status_label.pack(side = "left")
+                                height = 1, font = ("Arial bold", (self.width//80)))
+        name_label.pack(side = "top")
+        race_class_label = Label(upper_frame, textvariable = self.p_race_class,
+                                width = 18, height = 1, font = ("Arial", (self.width//100)))
+        race_class_label.pack(side = "top")
         
         lower_frame = Frame(self.char_stats_frame)
         lower_frame.pack(side = "top")
