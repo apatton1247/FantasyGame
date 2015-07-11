@@ -28,6 +28,9 @@ class Gui(Tk):
 
     def animate(self, interval):
 
+        if self.game.players:
+            self.char_stats_frame.lift()
+        
         ####Char Stats Update####
         self.p_name.set(self.char_shown.name)
         self.p_race_class.set(self.char_shown.char_race + " " + self.char_shown.char_class)
@@ -150,6 +153,9 @@ class Gui(Tk):
         self.xp_bar = self.plot_fig.add_subplot(gs[30:,:])
         
         self.char_stats_frame.pack()
+
+        if not self.game.players:
+            self.char_stats_frame.lower()
 
     def show_char_stats(self, char_name):
         for player in self.game.players:

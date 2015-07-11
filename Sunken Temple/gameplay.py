@@ -37,9 +37,10 @@ class New_Game():
 
 if __name__ == "__main__":
     game = New_Game()
-    game.add_player("Dave", level=8, strength=2, intellect=18)
-    game.add_player("Victoria", level=6, strength=17, spirit=9)
-    game.add_player("Frank", level=6, strength=3, intellect=20, spirit=12)
+    #game.add_player("Dave", level=8, strength=2, intellect=18)
+    #game.add_player("Victoria", level=6, strength=17, spirit=9)
+    #game.add_player("Frank", level=6, strength=3, intellect=20, spirit=12)
+    game.gui.char_shown = Character("", color = "white")
 
     game.gui_ani = animation.FuncAnimation(game.gui.plot_fig, game.gui.animate, 50000)
     game.gui.mainloop()

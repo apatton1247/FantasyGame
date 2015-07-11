@@ -70,12 +70,11 @@ class Character(object):
     
     
     def xp_up(self, amount):
-        self.xp += amount
-        if self.xp < 0:
-            self.xp = 0
-        while self.xp >= self.xp_for_level:
-            self.xp = self.xp - self.xp_for_level
+        while (self.xp + amount) >= self.xp_for_level:
+            amount -= self.xp_for_level
             self.level_up(1)
+        else:
+            self.xp += amount
     
     def equip(self, equipment):
         #Should be able to check what type of object (e.g. footgear, slotless) the
