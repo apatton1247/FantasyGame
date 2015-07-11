@@ -9,12 +9,12 @@ class Options(object):
                          "level up": [self.char_level_up, "hidden"],
                          "xp up": [self.char_xp_up, "hidden"],
                          "attr up": [self.char_attr_up, "hidden"],
-                         "add player": [self.add_player, "hidden"]})
+                         "add player": [self.add_player, "hidden"],
+                         "clear output": [self.clear_output, "hidden"]})
 
     #Displays all "visible" options to the player
     def show_options(self):
         opts = [option for option in self.options if self.options[option][1] == "visible"]
-        #print(opts)
         self.gameplay.gui.options_text.set("\n".join(opts))
 
     #Secret method for displaying all "hidden" options to the player
@@ -39,10 +39,9 @@ class Options(object):
     def clear_options(self):
         self.options = {}
 
-    #All the options should probably just be methods of the Options class/
-    # instance.  They will get the required access to things in-game or the
-    # gui by going through self.gameplay.
-    
+    def clear_output(self, words):
+        self.gameplay.gui.clear_output()
+
     def show(self, words):
         words = " ".join(words)
         if words == "options":

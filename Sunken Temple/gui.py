@@ -77,15 +77,22 @@ class Gui(Tk):
         self.xp_bar.set_ylim(0, 0.8)
 
     def write(self, event=None, text = ""):
+        self.output_text.config(state = "normal")
         if text:
-            self.output_text.set(self.output_text.get() + "\n" + line)
+            self.output_text.insert("end", "\n"+text)
         else:
             new_text = self.input_text.get()
             self.input_text.set("")
-            self.output_text.set(self.output_text.get() + "\n" + new_text)
+            self.output_text.insert("end", "\n"+new_text)
             self.options_text.set("")
             self.game.text_parse(new_text)
-            #TODO: once the options widget exists, should also clear its contents.
+        self.output_text.config(state = "disabled")
+        self.output_text.see("end")
+
+    def clear_output(self):
+        self.output_text.config(state = "normal")
+        self.output_text.delete("1.0", "end")
+        self.output_text.config(state = "disabled")
         
     def format_labels(self, pie_labels, pie_values):
         lab_and_val = zip(pie_labels, pie_values)
@@ -197,12 +204,11 @@ class Gui(Tk):
         entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20), textvariable = self.input_text, relief = "sunken")
         entry.bind("<Return>", self.write)
 
-        self.output_text = StringVar()
-        self.output_text.set("This is the sample text!\rHello World!\rTo change players's attributes, type an option (e.g. 'level up', 'show hidden options')\r and then the proper arguments to go with the option.  For example:\r'show Dave'\r'level up 1 Dave'\r'attr up intellect -4 Dave'")
-        output_label = Label(self.root, bg = "light gray", anchor = "nw", width = 65, height = 20, font=("Arial", 20), relief = "sunken")
-        output_label.config(textvariable = self.output_text, justify = "left")
+        self.output_text = Text(self.root, bg = "light gray", width = 65, height = 20, font=("Arial", 20), relief = "sunken", state = "normal", wrap = "word")
+        self.output_text.insert("end", "To change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'show Dave'\n'level up 1 Dave'\n'attr up intellect -4 Dave'")
+        self.output_text.config(state = "disabled")
 
-        self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = output_label)
+        self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = self.output_text)
         self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
 
         self.add_char_stats_frame()
