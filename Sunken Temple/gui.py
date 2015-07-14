@@ -137,7 +137,9 @@ class Gui(Tk):
         
         ####Battle Strength####
         self.p_bs = StringVar()
-        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", (self.width//22)))
+        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", (round((self.width/self.height)*36.25))))
+        print(round((self.width/self.height)*36.25))
+              
         bs_label.pack(side = "right")
         char_stats_canvas.get_tk_widget().create_window((25*self.width/100), (3*self.height/100), anchor = "n", window = bs_label)
 
