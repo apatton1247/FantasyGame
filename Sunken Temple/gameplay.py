@@ -28,6 +28,13 @@ class New_Game():
         self.players.append(player)
         self.gui.char_shown = player
 
+    def remove_player(self, name):
+        for player in self.players:
+            if player.name.lower() == name:
+                self.players.remove(player)
+                #Need to change what self.gui.char_shown shows now.
+                break
+
     def text_parse(self, text_string):
         text_string = text_string.lower()
         text_string = text_string.replace("'", " ").strip()

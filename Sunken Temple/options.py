@@ -89,9 +89,13 @@ class Options(object):
             name = name[0].upper() + name[1:]
             self.gameplay.add_player(name)
 
+    #Remove a player, but make it so that it only works on the player's own turn.
     def remove_player(self, words):
-        #Remove a player, but make it so that it only works on the player's own turn.
-        pass
+        if len(words) != 1:
+            self.gameplay.gui.write(text = "Option should be of the form 'remove player (name)'.")
+        else:
+            name = words[0]
+            self.gameplay.remove_player(name)
 
     def interpret(self, words):
         opt_keys = {keywords for keywords in self.options}
