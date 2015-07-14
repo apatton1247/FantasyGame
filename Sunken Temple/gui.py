@@ -66,7 +66,6 @@ class Gui(Tk):
         pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
                                            framealpha = 0, loc=(.73, .01), fontsize=(self.width//116))
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
-########       self.subplots_adjust(left=.10)
         
         ####XP Bar Chart Update####
         self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
@@ -117,20 +116,22 @@ class Gui(Tk):
         blank_label = Label(upper_frame, width = 9, height = 2, font = ("Arial", (self.width//100)))
         blank_label.pack(side = "left")
         status_label = Label(upper_frame, textvariable = self.p_status, width = 9,
-                                  height = 2, font = ("Arial italic", (self.width//100)), anchor = "w", justify = "left")
+                                  height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
         status_label.pack(side = "right")
         name_label = Label(upper_frame, textvariable = self.p_name, width = 15,
-                                height = 1, font = ("Arial bold", (self.width//80)))
+                                height = 1, font = ("Arial bold", (round((self.width/self.height)*15))))
         name_label.pack(side = "top")
         race_class_label = Label(upper_frame, textvariable = self.p_race_class,
-                                width = 18, height = 1, font = ("Arial", (self.width//100)))
+                                width = 18, height = 1, font = ("Arial", (round((self.width/self.height)*12))))
         race_class_label.pack(side = "top")
         
         lower_frame = Frame(self.char_stats_frame)
         lower_frame.pack(side = "top")
         
         gs = gridspec.GridSpec(32,32, left = .075)
+        gs.update(wspace=.95)
         self.plot_fig = Figure(figsize = (self.width/275, self.height/255))
+        self.plot_fig.subplots_adjust(wspace=.10)
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, lower_frame)
         char_stats_canvas.show()
         char_stats_canvas.get_tk_widget().pack(side = "left")
