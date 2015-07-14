@@ -4,7 +4,7 @@
 import random
 from character_class import Character
 import gui as g
-import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
 import options
 
 class New_Game():
@@ -39,5 +39,5 @@ if __name__ == "__main__":
     game = New_Game()
     game.gui.char_shown = Character("", color = "white")
 
-    game.gui_ani = animation.FuncAnimation(game.gui.plot_fig, game.gui.animate, 50000)
+    game.gui_ani = FuncAnimation(game.gui.plot_fig, game.gui.animate, 50000)
     game.gui.mainloop()
