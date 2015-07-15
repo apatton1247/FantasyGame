@@ -64,7 +64,7 @@ class Gui(Tk):
         pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
         self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
         pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
-                                           framealpha = 0, loc=(.73, .01), fontsize=(self.width//116))
+                                           framealpha = 0, loc=(.76, .01), fontsize=(self.width//116))
         pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
         
         ####XP Bar Chart Update####
@@ -113,16 +113,16 @@ class Gui(Tk):
         self.p_race_class = StringVar()
         self.p_status = StringVar()
 
-        blank_label = Label(upper_frame, width = 9, height = 2, font = ("Arial", (self.width//100)))
+        blank_label = Label(upper_frame, width = 8, height = 2, font = ("Arial", (self.width//100)))
         blank_label.pack(side = "left")
-        status_label = Label(upper_frame, textvariable = self.p_status, width = 9,
+        status_label = Label(upper_frame, textvariable = self.p_status, width = 8,
                                   height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
         status_label.pack(side = "right")
-        name_label = Label(upper_frame, textvariable = self.p_name, width = 15,
-                                height = 1, font = ("Arial bold", (round((self.width/self.height)*15))))
+        name_label = Label(upper_frame, textvariable = self.p_name, width = 13,
+                                height = 1, font = ("Arial bold", (round((self.width/self.height)*13))))
         name_label.pack(side = "top")
         race_class_label = Label(upper_frame, textvariable = self.p_race_class,
-                                width = 18, height = 1, font = ("Arial", (round((self.width/self.height)*12))))
+                                width = 16, height = 1, font = ("Arial", (round((self.width/self.height)*10))))
         race_class_label.pack(side = "top")
         
         lower_frame = Frame(self.char_stats_frame)
@@ -130,7 +130,7 @@ class Gui(Tk):
         
         gs = gridspec.GridSpec(32,32, left = .075)
         gs.update(wspace=.95)
-        self.plot_fig = Figure(figsize = (self.width/275, self.height/255))
+        self.plot_fig = Figure(figsize = (self.width/300, self.height/255))
         self.plot_fig.subplots_adjust(wspace=.10)
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, lower_frame)
         char_stats_canvas.show()
@@ -140,19 +140,19 @@ class Gui(Tk):
         self.p_bs = StringVar()
         bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", (round((self.width/self.height)*36.25))))
         bs_label.pack(side = "right")
-        char_stats_canvas.get_tk_widget().create_window((25*self.width/100), (3*self.height/100), anchor = "n", window = bs_label)
+        char_stats_canvas.get_tk_widget().create_window((45*self.width/200), (3*self.height/100), anchor = "n", window = bs_label)
 
         ####LEVEL####
         self.p_level = IntVar()
         self.p_color = StringVar()
         
-        self.level_bar = self.plot_fig.add_subplot(gs[:28,0:4])
+        self.level_bar = self.plot_fig.add_subplot(gs[:28,1:5])
         
         ####ATTRIBUTES####
         self.p_strength = IntVar()
         self.p_spirit = IntVar()
         self.p_intellect = IntVar()
-        self.pie_chart = self.plot_fig.add_subplot(gs[0:28,0:])
+        self.pie_chart = self.plot_fig.add_subplot(gs[0:28,0:-3])
         self.pie_chart.axis("equal")
 
         ####Experience####
@@ -174,7 +174,7 @@ class Gui(Tk):
     def add_options_frame(self):
         self.options_frame = Frame(self.root)
         self.options_text = StringVar()
-        self.options_label = Label(self.options_frame, bg = "light gray", width = 35, height = 8, anchor = "nw",
+        self.options_label = Label(self.options_frame, bg = "light gray", width = 32, height = 8, anchor = "nw",
                                    justify = "left", font=("Arial", 20), textvariable = self.options_text, relief = "sunken")
         self.options_label.pack()
         self.options_frame.pack()
@@ -213,10 +213,10 @@ class Gui(Tk):
         self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
 
         self.add_char_stats_frame()
-        self.bg_canvas.create_window((66*self.width/100), (10*self.height/100), anchor = "nw", window = self.char_stats_frame)
+        self.bg_canvas.create_window((67*self.width/100), (10*self.height/100), anchor = "nw", window = self.char_stats_frame)
 
         self.add_options_frame()
-        self.bg_canvas.create_window((66*self.width/100), (55*self.height/100), anchor = "nw", window = self.options_frame)
+        self.bg_canvas.create_window((67*self.width/100), (55*self.height/100), anchor = "nw", window = self.options_frame)
 
 if __name__ == "__main__":
     print("Run gameplay.py instead.")
