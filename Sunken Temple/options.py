@@ -10,7 +10,7 @@ class Options(object):
                          "xp up": [self.char_xp_up, "hidden"],
                          "attr up": [self.char_attr_up, "hidden"],
                          "add player": [self.add_player, "hidden"],
-                         "clear output": [self.clear_output, "hidden"]
+                         "clear output": [self.clear_output, "hidden"],
                          "enter": [self.enter, "visible"]})
 
     #Displays all "visible" options to the player
@@ -96,25 +96,34 @@ class Options(object):
             self.gameplay.gui.write(text = "Option should be of the form 'remove player (name)'.")
         else:
             name = words[0]
-            self.gameplay.remove_player(name)
+            for player in self.gameplay.players:
+                if name == player.name.lower():
+                    self.gameplay.remove_player(name)
 
     def enter(self, words):
     #Causes a player to enter a different dimension.  Here's where there will be any checking of
     # whether the move is allowed or possible.
-        if len(words) == 0:
-            self.gameplay.gui.write(text = "Option should be of the form 'enter (dimension name)'.")
-        words = " ".join(words)
-        if words not in self.gameplay.all_dimensions:
+        if len(words) < 2:
+            self.gameplay.gui.write(text = "Option should be of the form '(player name) enter (dimension name)'.")
+        name = words[0]
+        dim = " ".join(words[1:])
+        if dim not in self.gameplay.all_dimensions:
             self.gameplay.gui.write(text = "Unrecognizable dimension name.")
         else:
             #Should check here for whether the move is allowed (e.g. you can't teleport out of a battle into your shrine.)
             #Need to get the player whose turn it is and do this to them.
-            pass
+            for player in self.gameplay.players:
+                if name == player.name.lower():
+                    player.chg_dimension(dim)
+                self.gameplay.gui.write(text = player.name + " has entered the " + dim +
+                                        " dimension!")
 
     def use(self, words):
     #Player uses the specified item.  Any remaining words must follow the item/item-type's rules.
         if len(words) == 0:
             self.gameplay.gui.write(text = "Option should be of the form 'use (item name) (optional qualifying words)'.")
+        #May want to pass the player who's using the item as well as the remaining words, and
+        # have the item sort out what should happen.
         pass
 
     def interpret(self, words):

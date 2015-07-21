@@ -32,6 +32,9 @@ class Character(object):
         self.backpack = []
         #This initializes shrine (stored items)
         self.shrine = []
+        #This initializes gem pouch
+        self.gems = {"ruby": 0, "citrine": 0, "topaz": 0, "emerald": 0,
+                     "sapphire": 0, "amethyst": 0, "diamond": 0}
 
         #Your location determines your available actions, including which
         # items you can use.
