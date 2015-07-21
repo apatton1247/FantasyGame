@@ -27,11 +27,15 @@ class Character(object):
         self.headgear_slots_used = 0
         self.armor_slots = 1
         self.armor_slots_used = 0
-        #This initializes backpack (hand)
+        #This initializes backpack
         self.backpack_size = 25#revise later
         self.backpack = []
-        #This initializes closet (unequipped items)
+        #This initializes shrine (stored items)
         self.shrine = []
+
+        #Your location determines your available actions, including which
+        # items you can use.
+        self.dimension = "temple"
     
         #This initializes your Attributes
         self.strength = strength
@@ -86,3 +90,8 @@ class Character(object):
         #Checks to see if the equipment is equipped, and if so unequips it (it goes
         # in the backpack? or the closet?
         pass
+
+    def chg_dimension(self, dim_name):
+        #Sets the player's current dimension to the named dimension.  This will only
+        # be called when it is allowed to be called.
+        self.dimension = dim_name

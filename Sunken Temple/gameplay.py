@@ -10,12 +10,15 @@ import options
 class New_Game():
     def __init__(self):
         self.players = []
+        self.whose_turn = None
         self.colorbank = ["coral", "darkolivegreen", "dodgerblue", "darkviolet",
                           "orangered", "darkslategray", "dimgray", "salmon", "sienna",
                           "goldenrod", "yellow", "black"]
         self.gui = g.Gui(self)
         self.opt = options.Options(self)
         self.opt.populate()
+        self.all_dimensions = {"temple", "shrine", "guardian"}
+        #May revise what the guardian one is called, remember to add more.
         
     def assign_color(self):
         color = random.choice(self.colorbank)
@@ -33,6 +36,7 @@ class New_Game():
             if player.name.lower() == name:
                 self.players.remove(player)
                 #Need to change what self.gui.char_shown shows now.
+                #Also need to make sure players can only remove themselves.
                 break
 
     def text_parse(self, text_string):
