@@ -10,7 +10,7 @@ class Options(object):
                          "xp up": [self.char_xp_up, "hidden"],
                          "attr up": [self.char_attr_up, "hidden"],
                          "add player": [self.add_player, "hidden"],
-                         "clear output": [self.clear_output, "hidden"]
+                         "clear output": [self.clear_output, "hidden"],
                          "enter": [self.enter, "visible"]})
 
     #Displays all "visible" options to the player
