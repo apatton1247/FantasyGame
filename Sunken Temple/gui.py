@@ -6,75 +6,23 @@ from matplotlib.ticker import MultipleLocator
 from matplotlib.font_manager import FontProperties
 import matplotlib.gridspec as gridspec
 import matplotlib.style as style
-
 from tkinter import *
 
-#style.use("ggplot")
-
+#################### GUI ROOT FRAME ####################
 class Gui(Tk):
     def __init__(self, game):
         Tk.__init__(self)
         self.game = game
         self.root = Frame(self)
         self.root.pack(side = "top", fill = "both", expand = True)
-        ####Top Level Frame Fixed and Resolution?####
         self.width = self.root.winfo_screenwidth()
         self.height = self.root.winfo_screenheight()
         self.geometry("%dx%d+0+0" % (self.width, self.height))
         self.resizable(width=FALSE, height=FALSE)
-        
         self.create_widgets()
         Tk.wm_title(self, "Sunken Temple")
 
-    def animate(self, interval):
-
-        if self.game.players:
-            self.char_stats_frame.lift()
-        
-        ####Char Stats Update####
-        self.p_name.set(self.char_shown.name)
-        self.p_race_class.set(self.char_shown.char_race + " " + self.char_shown.char_class)
-        self.p_status.set(self.char_shown.status)
-        self.p_bs.set(str(self.char_shown.battle_strength_calc()))
-        self.p_level.set(self.char_shown.level)
-        self.p_color.set(self.char_shown.color)
-        self.p_strength.set(self.char_shown.strength)
-        self.p_spirit.set(self.char_shown.spirit)
-        self.p_intellect.set(self.char_shown.intellect)
-        self.p_xp.set(self.char_shown.xp)
-        self.p_xp_for_level.set(self.char_shown.xp_for_level)
-
-        ####Charts Clear####
-        self.level_bar.clear()
-        self.pie_chart.clear()
-        self.xp_bar.clear()
-
-        ####Level Bar Chart Update####
-        self.level_bar.bar(0, self.p_level.get(), width = .1, color = self.p_color.get())
-        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = (self.width//91))
-        self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
-        self.level_bar.yaxis.grid()
-        self.level_bar.set_ylim(0, 11)
-        self.level_bar.set_xlim(0, 0.1)
-        self.level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
-
-        ####Attribute Pie Chart Update####
-        pie_labels = ['Strength', 'Spirit', 'Intellect']
-        pie_values = [self.p_strength.get(), self.p_spirit.get(), self.p_intellect.get()]
-        pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
-        self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
-        pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
-                                           framealpha = 0, loc=(.76, .01), fontsize=(self.width//116))
-        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
-        
-        ####XP Bar Chart Update####
-        self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
-        self.xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
-        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=(self.width//80))
-        self.xp_bar.yaxis.set_label_coords(1.04, -.3)
-        self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
-        self.xp_bar.set_ylim(0, 0.8)
-
+######## WRITE METHOD ########
     def write(self, event=None, text = ""):
         self.output_text.config(state = "normal")
         if text:
@@ -88,11 +36,58 @@ class Gui(Tk):
         self.output_text.config(state = "disabled")
         self.output_text.see("end")
 
+######## CLEAR OUTPUT METHOD ########
     def clear_output(self):
         self.output_text.config(state = "normal")
         self.output_text.delete("1.0", "end")
         self.output_text.config(state = "disabled")
         
+######## ANIMATE METHOD #########
+    def animate(self, interval):
+        if self.game.players:
+            self.char_stats_frame.lift()
+        #### CHARACTER VARIABLES ####
+        self.p_name.set(self.char_shown.name)
+        self.p_race_class.set(self.char_shown.char_race + " " + self.char_shown.char_class)
+        self.p_status.set(self.char_shown.status)
+        self.p_bs.set(str(self.char_shown.battle_strength_calc()))
+        self.p_level.set(self.char_shown.level)
+        self.p_color.set(self.char_shown.color)
+        self.p_strength.set(self.char_shown.strength)
+        self.p_spirit.set(self.char_shown.spirit)
+        self.p_intellect.set(self.char_shown.intellect)
+        self.p_xp.set(self.char_shown.xp)
+        self.p_xp_for_level.set(self.char_shown.xp_for_level)
+        self.p_dimension.set(self.char_shown.dimension)
+        #### CLEARS ALL CHARTS ####
+        self.level_bar.clear()
+        self.pie_chart.clear()
+        self.xp_bar.clear()
+        #### LEVEL UPDATE ####
+        self.level_bar.bar(0, self.p_level.get(), width = .1, color = self.p_color.get())
+        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = (self.width//91))
+        self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
+        self.level_bar.yaxis.grid()
+        self.level_bar.set_ylim(0, 11)
+        self.level_bar.set_xlim(0, 0.1)
+        self.level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
+        #### ATTRIBUTES UPDATE ####
+        pie_labels = ['Strength', 'Spirit', 'Intellect']
+        pie_values = [self.p_strength.get(), self.p_spirit.get(), self.p_intellect.get()]
+        pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
+        self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
+        pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
+                                           framealpha = 0, loc=(.76, .01), fontsize=(self.width//116))
+        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
+        #### EXPERIENCE UPDATE ####
+        self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
+        self.xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
+        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=(self.width//80))
+        self.xp_bar.yaxis.set_label_coords(1.04, -.3)
+        self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
+        self.xp_bar.set_ylim(0, 0.8)
+
+######## FORMAT LABELS METHOD ########        
     def format_labels(self, pie_labels, pie_values):
         lab_and_val = zip(pie_labels, pie_values)
         lab_val_strings = []
@@ -100,67 +95,85 @@ class Gui(Tk):
             new_pair = pair[0] + ": " + str(pair[1])
             lab_val_strings.append(new_pair)
         return lab_val_strings
-    
-    def add_char_stats_frame(self):
-        
-    ########Character Stats Frame########
+      
+######## CHARACTER STATS FRAME ########
+    def add_char_stats_frame(self): 
         self.char_stats_frame = Frame(self.root)
+    ###### TOP PLAYER LABEL ######
         upper_frame = Frame(self.char_stats_frame)
         upper_frame.pack(side = "top")
-
-        ####Player Label####
+                ## VARIABLES ##
         self.p_name = StringVar()
         self.p_race_class = StringVar()
         self.p_status = StringVar()
-
+                ## CREATES BLANK LEFT LABEL ##
         blank_label = Label(upper_frame, width = 8, height = 2, font = ("Arial", (self.width//100)))
         blank_label.pack(side = "left")
-        status_label = Label(upper_frame, textvariable = self.p_status, width = 8,
-                                  height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
-        status_label.pack(side = "right")
+                ## CREATES CENTER NAME, CLASS, RACE LABELS ##
         name_label = Label(upper_frame, textvariable = self.p_name, width = 13,
-                                height = 1, font = ("Arial bold", (round((self.width/self.height)*13))))
+                           height = 1, font = ("Arial bold", (round((self.width/self.height)*13))))
         name_label.pack(side = "top")
         race_class_label = Label(upper_frame, textvariable = self.p_race_class,
-                                width = 16, height = 1, font = ("Arial", (round((self.width/self.height)*10))))
+                                 width = 16, height = 1, font = ("Arial", (round((self.width/self.height)*10))))
         race_class_label.pack(side = "top")
-        
-        lower_frame = Frame(self.char_stats_frame)
-        lower_frame.pack(side = "top")
-        
+                ## CREATES RIGHT STATUS LABEL ##
+        status_label = Label(upper_frame, textvariable = self.p_status, width = 8,
+                             height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
+        status_label.pack(side = "right")
+    ###### MIDDLE PLAYER GRAPHS ######
+        middle_frame = Frame(self.char_stats_frame)
+        middle_frame.pack(side = "top")
+                ## CREATES GRID ##
         gs = gridspec.GridSpec(32,32, left = .075)
         gs.update(wspace=.95)
+                ## FIGURE SIZE ##
         self.plot_fig = Figure(figsize = (self.width/300, self.height/255))
         self.plot_fig.subplots_adjust(wspace=.10)
-        char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, lower_frame)
+                ## TURNS FIGURE INTO CANVAS ##
+        char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, middle_frame)
         char_stats_canvas.show()
         char_stats_canvas.get_tk_widget().pack(side = "left")
-        
-        ####Battle Strength####
+        #### BATTLE STRENGTH ####
+                ## VARIABLES ##
         self.p_bs = StringVar()
-        bs_label = Label(lower_frame, textvariable = self.p_bs, font=("Arial", (round((self.width/self.height)*36.25))))
+                ## CREATES LABEL ##
+        bs_label = Label(middle_frame, textvariable = self.p_bs, font=("Arial", (round((self.width/self.height)*36.25))))
         bs_label.pack(side = "right")
+                ## POSITION ##
         char_stats_canvas.get_tk_widget().create_window((45*self.width/200), (3*self.height/100), anchor = "n", window = bs_label)
-
-        ####LEVEL####
+        #### LEVEL ####
+                ## VARIABLES ##
         self.p_level = IntVar()
         self.p_color = StringVar()
-        
+                ## POSITION ##
         self.level_bar = self.plot_fig.add_subplot(gs[:28,1:5])
-        
-        ####ATTRIBUTES####
+        #### ATTRIBUTES ####
+                ## VARIABLES ##
         self.p_strength = IntVar()
         self.p_spirit = IntVar()
         self.p_intellect = IntVar()
+                ## POSITION ##
         self.pie_chart = self.plot_fig.add_subplot(gs[0:28,0:-3])
+                ## SHAPE ##
         self.pie_chart.axis("equal")
-
-        ####Experience####
+        #### EXPERIENCE ####
+                ## VARIABLES ##
         self.p_xp = IntVar()
         self.p_xp_for_level = IntVar()
+                ## POSITION ##
         self.xp_bar = self.plot_fig.add_subplot(gs[30:,:])
-        
+    ###### LOWER DIMENSION LABEL ######                                               
+        lower_frame = Frame(self.char_stats_frame)
+        lower_frame.pack(side = "top")
+                ## VARIABLES ##
+        self.p_dimension = StringVar()
+                ## CREATES LABEL ##
+        dimension_label = Label(lower_frame, textvariable = self.p_dimension, width = 29,
+                                height = 1, font = ("Arial", (round((self.width/self.height)*13))))
+        dimension_label.pack(side = "top")
+
         self.char_stats_frame.pack()
+
 
         if not self.game.players:
             self.char_stats_frame.lower()
