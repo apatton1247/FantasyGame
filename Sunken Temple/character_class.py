@@ -10,26 +10,23 @@ class Character(object):
         self.color = color
         self.xp = 0
         self.xp_for_level = (100 + 50*level)
-        #This initializes equipment (equipped items)
-        self.equipment = {
-            "headgear": [],
-            "armor": [],
-            "weapons": [],
-            "footgear": [],
-            "slotless": []
-            }
         #This initializes equipment slots
         self.hand_slots = 2
-        self.hand_slots_used = 0
         self.footgear_slots = 1
-        self.footgear_slots_used = 0
         self.headgear_slots = 1
-        self.headgear_slots_used = 0
         self.armor_slots = 1
-        self.armor_slots_used = 0
+        self.slotless_slots = 65536
+        #This initializes equipment (equipped items)
+        self.equipment = {
+            "headgear": [self.headgear_slots, []],
+            "armor": [self.armor_slots, []],
+            "weapons": [self.hand_slots, []],
+            "footgear": [self.footgear_slots, []],
+            "slotless": [self.slotless_slots, []]
+            }
         #This initializes backpack
         self.backpack_size = 25#revise later
-        self.backpack = []
+        self.backpack = [self.backpack_size, []]
         #This initializes shrine (stored items)
         self.shrine = []
         #This initializes gem pouch
