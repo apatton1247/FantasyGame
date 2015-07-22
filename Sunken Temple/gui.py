@@ -22,80 +22,22 @@ class Gui(Tk):
         self.create_widgets()
         Tk.wm_title(self, "Sunken Temple")
 
-######## WRITE METHOD ########
-    def write(self, event=None, text = ""):
-        self.output_text.config(state = "normal")
-        if text:
-            self.output_text.insert("end", "\n"+text)
-        else:
-            new_text = self.input_text.get()
-            self.input_text.set("")
-            self.output_text.insert("end", "\n"+new_text)
-            self.options_text.set("")
-            self.game.text_parse(new_text)
-        self.output_text.config(state = "disabled")
-        self.output_text.see("end")
+######## BACKGROUND IMAGE ########
+    def bg(self):
+                ## CREATES BACKGROUND CANVAS ##
+        self.bg_canvas = Canvas(self.root, height = self.height, width = self.width)
+        self.bg_canvas.pack(expand = True, fill = "both")
+                ## READS IN IMAGE FILE ##
+        wall = PhotoImage(file = "crypt_wall_tessl.gif")
+                ## SIZE AND RESOLUTION ##
+        winh = int(round((self.height/968),1) * 10)
+        winw = int(round((self.width/1536),1) * 10)
+        wall = wall.zoom(winw+1, winh+1)
+        wall = wall.subsample(10, 10)
+        self.bg_canvas.img = wall
+                ## POSITION IN ROOT FRAME ##
+        self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
 
-######## CLEAR OUTPUT METHOD ########
-    def clear_output(self):
-        self.output_text.config(state = "normal")
-        self.output_text.delete("1.0", "end")
-        self.output_text.config(state = "disabled")
-        
-######## ANIMATE METHOD #########
-    def animate(self, interval):
-        if self.game.players:
-            self.char_stats_frame.lift()
-        #### CHARACTER VARIABLES ####
-        self.p_name.set(self.char_shown.name)
-        self.p_race_class.set(self.char_shown.char_race + " " + self.char_shown.char_class)
-        self.p_status.set(self.char_shown.status)
-        self.p_bs.set(str(self.char_shown.battle_strength_calc()))
-        self.p_level.set(self.char_shown.level)
-        self.p_color.set(self.char_shown.color)
-        self.p_strength.set(self.char_shown.strength)
-        self.p_spirit.set(self.char_shown.spirit)
-        self.p_intellect.set(self.char_shown.intellect)
-        self.p_xp.set(self.char_shown.xp)
-        self.p_xp_for_level.set(self.char_shown.xp_for_level)
-        self.p_dimension.set(self.char_shown.dimension)
-        #### CLEARS ALL CHARTS ####
-        self.level_bar.clear()
-        self.pie_chart.clear()
-        self.xp_bar.clear()
-        #### LEVEL UPDATE ####
-        self.level_bar.bar(0, self.p_level.get(), width = .1, color = self.p_color.get())
-        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = (self.width//91))
-        self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
-        self.level_bar.yaxis.grid()
-        self.level_bar.set_ylim(0, 11)
-        self.level_bar.set_xlim(0, 0.1)
-        self.level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
-        #### ATTRIBUTES UPDATE ####
-        pie_labels = ['Strength', 'Spirit', 'Intellect']
-        pie_values = [self.p_strength.get(), self.p_spirit.get(), self.p_intellect.get()]
-        pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
-        self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
-        pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
-                                           framealpha = 0, loc=(.76, .01), fontsize=(self.width//116))
-        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
-        #### EXPERIENCE UPDATE ####
-        self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
-        self.xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
-        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=(self.width//80))
-        self.xp_bar.yaxis.set_label_coords(1.04, -.3)
-        self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
-        self.xp_bar.set_ylim(0, 0.8)
-
-######## FORMAT LABELS METHOD ########        
-    def format_labels(self, pie_labels, pie_values):
-        lab_and_val = zip(pie_labels, pie_values)
-        lab_val_strings = []
-        for pair in lab_and_val:
-            new_pair = pair[0] + ": " + str(pair[1])
-            lab_val_strings.append(new_pair)
-        return lab_val_strings
-      
 ######## CHARACTER STATS FRAME ########
     def add_char_stats_frame(self): 
         self.char_stats_frame = Frame(self.root)
@@ -106,9 +48,13 @@ class Gui(Tk):
         self.p_name = StringVar()
         self.p_race_class = StringVar()
         self.p_status = StringVar()
-                ## CREATES BLANK LEFT LABEL ##
+                ## CREATES LEFT BLANK LABEL ##
         blank_label = Label(upper_frame, width = 8, height = 2, font = ("Arial", (self.width//100)))
         blank_label.pack(side = "left")
+                ## CREATES RIGHT STATUS LABEL ##
+        status_label = Label(upper_frame, textvariable = self.p_status, width = 8,
+                             height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
+        status_label.pack(side = "right")
                 ## CREATES CENTER NAME, CLASS, RACE LABELS ##
         name_label = Label(upper_frame, textvariable = self.p_name, width = 13,
                            height = 1, font = ("Arial bold", (round((self.width/self.height)*13))))
@@ -116,10 +62,6 @@ class Gui(Tk):
         race_class_label = Label(upper_frame, textvariable = self.p_race_class,
                                  width = 16, height = 1, font = ("Arial", (round((self.width/self.height)*10))))
         race_class_label.pack(side = "top")
-                ## CREATES RIGHT STATUS LABEL ##
-        status_label = Label(upper_frame, textvariable = self.p_status, width = 8,
-                             height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
-        status_label.pack(side = "right")
     ###### MIDDLE PLAYER GRAPHS ######
         middle_frame = Frame(self.char_stats_frame)
         middle_frame.pack(side = "top")
@@ -128,7 +70,6 @@ class Gui(Tk):
         gs.update(wspace=.95)
                 ## FIGURE SIZE ##
         self.plot_fig = Figure(figsize = (self.width/300, self.height/255))
-        self.plot_fig.subplots_adjust(wspace=.10)
                 ## TURNS FIGURE INTO CANVAS ##
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, middle_frame)
         char_stats_canvas.show()
@@ -173,63 +114,125 @@ class Gui(Tk):
         dimension_label.pack(side = "top")
 
         self.char_stats_frame.pack()
-
-
+    ###### HIDES CHAR STATS WHEN 0 PLAYERS ######
         if not self.game.players:
             self.char_stats_frame.lower()
 
+######## FORMAT ATTRIBUTE LABELS METHOD ########        
+    def format_labels(self, pie_labels, pie_values):
+        lab_and_val = zip(pie_labels, pie_values)
+        lab_val_strings = []
+        for pair in lab_and_val:
+            new_pair = pair[0] + ": " + str(pair[1])
+            lab_val_strings.append(new_pair)
+        return lab_val_strings
+        
+######## ANIMATE METHOD #########
+    def animate(self, interval):
+        if self.game.players:
+            self.char_stats_frame.lift()
+        #### CHARACTER VARIABLES ####
+        self.p_name.set(self.char_shown.name)
+        self.p_race_class.set(self.char_shown.char_race + " " + self.char_shown.char_class)
+        self.p_status.set(self.char_shown.status)
+        self.p_bs.set(str(self.char_shown.battle_strength_calc()))
+        self.p_level.set(self.char_shown.level)
+        self.p_color.set(self.char_shown.color)
+        self.p_strength.set(self.char_shown.strength)
+        self.p_spirit.set(self.char_shown.spirit)
+        self.p_intellect.set(self.char_shown.intellect)
+        self.p_xp.set(self.char_shown.xp)
+        self.p_xp_for_level.set(self.char_shown.xp_for_level)
+        self.p_dimension.set(self.char_shown.dimension)
+        #### CLEARS ALL CHARTS ####
+        self.level_bar.clear()
+        self.pie_chart.clear()
+        self.xp_bar.clear()
+        #### UPDATES LEVEL ####
+        self.level_bar.bar(0, self.p_level.get(), width = .1, color = self.p_color.get())
+        self.level_bar.set_title(self.level_bar.get_title(), text = "Level", fontsize = (self.width//91))
+        self.level_bar.yaxis.set_major_locator(MultipleLocator(1))
+        self.level_bar.yaxis.grid()
+        self.level_bar.set_ylim(0, 11)
+        self.level_bar.set_xlim(0, 0.1)
+        self.level_bar.tick_params(axis = "x", top = "off", bottom = "off", labelbottom = "off")
+        #### UPDATES ATTRIBUTES ####
+        pie_labels = ['Strength', 'Spirit', 'Intellect']
+        pie_values = [self.p_strength.get(), self.p_spirit.get(), self.p_intellect.get()]
+        pie_colors = ['FireBrick', 'Khaki', 'SteelBlue']
+        self.pie_chart.pie(pie_values, colors = pie_colors, startangle = 90)
+        pie_legend = self.pie_chart.legend(title="Attributes", labels= self.format_labels(pie_labels, pie_values),
+                                           framealpha = 0, loc=(.76, .01), fontsize=(self.width//116))
+        pie_legend.set_title(title = "Attributes", prop = FontProperties(size = (self.width//91)))
+        #### UPDATES EXPERIENCE ####
+        self.xp_bar.barh(0, self.p_xp.get(), color = "lime")
+        self.xp_bar.tick_params(axis = "y", left = "off", right = "off", labelleft = "off")
+        self.xp_bar.set_ylabel("Xp", rotation='horizontal', fontsize=(self.width//80))
+        self.xp_bar.yaxis.set_label_coords(1.04, -.3)
+        self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
+        self.xp_bar.set_ylim(0, 0.8)
+
+######## ADD OPTIONS FRAME ########
+    def add_options_frame(self):
+        self.options_frame = Frame(self.root)
+                ## VARIABLES ##
+        self.options_text = StringVar()
+                ## CREATES LABEL ##
+        self.options_label = Label(self.options_frame, bg = "light gray", width = 32, height = 8, anchor = "nw",
+                                   justify = "left", font=("Arial", 20), textvariable = self.options_text, relief = "sunken")
+        self.options_label.pack()
+        self.options_frame.pack()
+            
+######### CREATE GUI WIDGETS METHOD #######
+    def create_widgets(self):
+                ## VARIABLES ##
+        self.bg()
+        self.input_text = StringVar()
+        self.input_text.set("")
+        #### CREATES ENTRY WIDGET ####
+        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20), textvariable = self.input_text, relief = "sunken")
+        entry.bind("<Return>", self.write)
+                ## POSITION ##
+        self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
+        #### CREATES OUTPUT WIDGET ####
+        self.output_text = Text(self.root, bg = "light gray", width = 65, height = 20, font=("Arial", 20), relief = "sunken", state = "normal", wrap = "word")
+        self.output_text.insert("end", "To change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'show Dave'\n'level up 1 Dave'\n'attr up intellect -4 Dave'")
+        self.output_text.config(state = "disabled")
+                ## POSITION ##
+        self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = self.output_text)
+        #### CHAR STATS WIDGET POSITION ####
+        self.add_char_stats_frame()
+        self.bg_canvas.create_window((67*self.width/100), (10*self.height/100), anchor = "nw", window = self.char_stats_frame)
+        #### OPTIONS WIDGET POSITION ####
+        self.add_options_frame()
+        self.bg_canvas.create_window((67*self.width/100), (60*self.height/100), anchor = "nw", window = self.options_frame)
+
+######## SHOW CHARACTER STATS METHOD ########
     def show_char_stats(self, char_name):
         for player in self.game.players:
             if player.name.lower() == char_name:
                 self.char_shown = player
                 break
 
-    def add_options_frame(self):
-        self.options_frame = Frame(self.root)
-        self.options_text = StringVar()
-        self.options_label = Label(self.options_frame, bg = "light gray", width = 32, height = 8, anchor = "nw",
-                                   justify = "left", font=("Arial", 20), textvariable = self.options_text, relief = "sunken")
-        self.options_label.pack()
-        self.options_frame.pack()
-        
-    
-    ########Background Image########
-    def bg(self):
-        self.bg_canvas = Canvas(self.root, height = self.height, width = self.width)
-        self.bg_canvas.pack(expand = True, fill = "both")
-
-        wall = PhotoImage(file = "crypt_wall_tessl.gif")
-
-        winh = int(round((self.height/968),1) * 10)
-        winw = int(round((self.width/1536),1) * 10)
-        wall = wall.zoom(winw+1, winh+1)
-        wall = wall.subsample(10, 10)
-        
-        self.bg_canvas.img = wall
-        self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
-
-    ########Entry and Ouput Widgets########
-    def create_widgets(self):
-        
-        self.bg()
-        
-        self.input_text = StringVar()
-        self.input_text.set("")
-        entry = Entry(self.root, bg = "light gray", width = 65, font=("Arial", 20), textvariable = self.input_text, relief = "sunken")
-        entry.bind("<Return>", self.write)
-
-        self.output_text = Text(self.root, bg = "light gray", width = 65, height = 20, font=("Arial", 20), relief = "sunken", state = "normal", wrap = "word")
-        self.output_text.insert("end", "To change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'show Dave'\n'level up 1 Dave'\n'attr up intellect -4 Dave'")
+######## WRITE METHOD ########
+    def write(self, event=None, text = ""):
+        self.output_text.config(state = "normal")
+        if text:
+            self.output_text.insert("end", "\n"+text)
+        else:
+            new_text = self.input_text.get()
+            self.input_text.set("")
+            self.output_text.insert("end", "\n"+new_text)
+            self.options_text.set("")
+            self.game.text_parse(new_text)
         self.output_text.config(state = "disabled")
+        self.output_text.see("end")
 
-        self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = self.output_text)
-        self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
-
-        self.add_char_stats_frame()
-        self.bg_canvas.create_window((67*self.width/100), (10*self.height/100), anchor = "nw", window = self.char_stats_frame)
-
-        self.add_options_frame()
-        self.bg_canvas.create_window((67*self.width/100), (55*self.height/100), anchor = "nw", window = self.options_frame)
+######## CLEAR OUTPUT METHOD ########
+    def clear_output(self):
+        self.output_text.config(state = "normal")
+        self.output_text.delete("1.0", "end")
+        self.output_text.config(state = "disabled")
 
 if __name__ == "__main__":
     print("Run gameplay.py instead.")
