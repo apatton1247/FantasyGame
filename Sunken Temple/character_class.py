@@ -10,23 +10,18 @@ class Character(object):
         self.color = color
         self.xp = 0
         self.xp_for_level = (100 + 50*level)
-        #This initializes equipment slots
-        self.hand_slots = 2
-        self.footgear_slots = 1
-        self.headgear_slots = 1
-        self.armor_slots = 1
-        self.slotless_slots = 65536
-        #This initializes equipment (equipped items)
+        #Initializes equipment (equipped items), which is of the form:
+        # equipment_type: [total_slots_of_this_type, [equipped_item_1, equipped_item_2 ...]]
         self.equipment = {
-            "headgear": [self.headgear_slots, []],
-            "armor": [self.armor_slots, []],
-            "weapons": [self.hand_slots, []],
-            "footgear": [self.footgear_slots, []],
-            "slotless": [self.slotless_slots, []]
+            "headgear": [1, []],
+            "armor": [1, []],
+            "weapons": [2, []],
+            "footgear": [1, []],
+            "slotless": [65536, []]
             }
-        #This initializes backpack
-        self.backpack_size = 25#revise later
-        self.backpack = [self.backpack_size, []]
+        #This initializes backpack (carried, unequipped items), which is of
+        # the same form as an equipment entry.
+        self.backpack = [25, []]
         #This initializes shrine (stored items)
         self.shrine = []
         #This initializes gem pouch
@@ -41,6 +36,7 @@ class Character(object):
         self.strength = strength
         self.spirit = spirit
         self.intellect = intellect
+
     
     def battle_strength_calc(self):
         bs = self.level + self.strength + self.spirit + self.intellect
@@ -81,17 +77,71 @@ class Character(object):
             self.xp += amount
     
     def equip(self, equipment):
-        #Should be able to check what type of object (e.g. footgear, slotless) the
-        # equipment is, and if it's slotted check the self.(type)_slots vs the
-        # self.(type)_slots_used to see if there's room to equip it.  If so, does.
+    #Should be able to check what type of object (e.g. footgear, slotless) the
+    # equipment is, and if it's slotted check the self.(type)_slots vs the
+    # self.(type)_slots_used to see if there's room to equip it.  If so, does.
         pass
       
     def unequip(self, equipment):
-        #Checks to see if the equipment is equipped, and if so unequips it (it goes
-        # in the backpack? or the closet?
+    #Checks to see if the equipment is equipped, and if so unequips it (it goes
+    # in the backpack? or the closet?
         pass
 
+    def add_gems(self, gem_dict):
+    #Adds gems to the player's gem pouch.
+        for gem in gem_dict:
+            self.gems[gem] += gem_dict[gem]
+
+    def rem_gems(self, gem_dict):
+    #Removes gems from the player's pouch.
+#TODO: Does this need to do something special if they don't have the proper number
+    # of gems they're asking to remove?
+        for gem in gem_dict:
+            gem_dict[gem] = -1*(gem_dict[gem])
+        self.add_gems(gem_dict)
+
+    def add_backpack(self, item):
+    #Adds an item to the player's backpack.
+        if len(self.backpack[1]) < self.backpack[0]:
+            self.backpack[1].append(item)
+        else:
+            #TODO: This may be where we want to do checking to see if the player's backpack
+            # can hold more items, or if they have to choose which items to leave behind.
+            pass
+
+    def rem_backpack(self, item):
+    #Removes an item from the player's backpack.
+        if item in self.backpack[1]:
+            self.backpack.remove(item)
+
+    def add_shrine(self, item):
+    #Adds an item from the player's equipment or backpack to the shrine.
+        if item in self.backpack[1]:
+            self.backpack[1].remove(item)
+            self.shrine.append(item)
+        else:
+            location = equipment_loc(item)
+            if location:
+                self.equipment[location][1].remove(item)
+                self.shrine.append(item)
+
+    def rem_shrine(self, item):
+    #Removes an item from the player's shrine.  Is this the equivalent of a player throwing
+    # the item away?
+        if item in self.shrine:
+            self.shrine.remove(item)
+            
+    def equipment_loc(self, item):
+    #If a specified piece of equipment exists in the player's equipment, gives its location.
+    #Else it returns an empty string.
+        location = ""
+        for equipment_type in self.equipment:
+            for eq_item in self.equipment[equipment_type][1]:
+                if item == eq_item:
+                    location = equipment_type
+        return location
+
     def chg_dimension(self, dim_name):
-        #Sets the player's current dimension to the named dimension.  This will only
-        # be called when it is allowed to be called.
+    #Sets the player's current dimension to the named dimension.  This will only
+    # be called when it is allowed to be called.
         self.dimension = dim_name
