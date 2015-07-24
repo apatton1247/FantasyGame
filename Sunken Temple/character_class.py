@@ -1,11 +1,14 @@
+from races import Human, Dwarf, Elf, Golem, Reptilian, Phantasm, Alien, Cyborg
+from classes import Classless, Sorceror, Necromancer, Shaman, Druid, Telepath, Assassin, Warrior
+
 class Character(object):
     def __init__(self, name, color, level=1, strength=5, spirit=5, intellect=5):
         #This initializes basic Character traits
         self.name = name
         self.level = level
         self.bonus = 0
-        self.char_class = "Classless"
-        self.char_race = "Human"
+        self.char_class = Classless()
+        self.char_race = Human()
         self.status = "Normal"
         self.color = color
         self.xp = 0
@@ -40,6 +43,7 @@ class Character(object):
     
     def battle_strength_calc(self):
         bs = self.level + self.strength + self.spirit + self.intellect
+            #+ self.char_class.battle_calc() + self.char_race.battle_calc()
         return bs
     
     def attr_up(self, attribute, amount):
@@ -97,8 +101,7 @@ class Character(object):
 #TODO: Does this need to do something special if they don't have the proper number
     # of gems they're asking to remove?
         for gem in gem_dict:
-            gem_dict[gem] = -1*(gem_dict[gem])
-        self.add_gems(gem_dict)
+            self.gems[gem] -= gem_dict[gem]
 
     def add_backpack(self, item):
     #Adds an item to the player's backpack.

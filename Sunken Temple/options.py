@@ -124,6 +124,7 @@ class Options(object):
             self.gameplay.gui.write(text = "Option should be of the form 'use (item name) (optional qualifying words)'.")
         #May want to pass the player who's using the item as well as the remaining words, and
         # have the item sort out what should happen.
+        #Maybe something like if item.usable(character, self.gameplay), then item.use(character, self.gameplay).
         pass
 
     def interpret(self, words):
