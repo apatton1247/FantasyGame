@@ -23,7 +23,11 @@ class Class_Race_Items(Items):
         Items.__init__(self, name)
         self.dimensions = ["shrine"]
 
-    def use(self, char
+    def useable(self, game, character):
+        if character.dimension == "shrine":
+            return True
+        else:
+            return False
 
 class Enchanted_Flask_Of_Ale(Class_Race_Items):
 """The Enchanted Flask of Ale changes a player into a Dwarf."""

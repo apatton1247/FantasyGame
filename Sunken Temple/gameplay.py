@@ -39,6 +39,11 @@ class New_Game():
                 #Also need to make sure players can only remove themselves.
                 break
 
+    def get_player(self, name):
+        for player in self.players:
+            if player.name.lower() == name:
+                return player
+
     def text_parse(self, text_string):
         text_string = text_string.lower()
         text_string = text_string.replace("'", " ").strip()
