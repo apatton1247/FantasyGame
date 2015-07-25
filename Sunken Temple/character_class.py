@@ -33,7 +33,7 @@ class Character(object):
 
         #Your location determines your available actions, including which
         # items you can use.
-        self.dimension = "temple"
+        self.dimension = "Temple"
     
         #This initializes your Attributes
         self.strength = strength

@@ -40,27 +40,27 @@ class Gui(Tk):
 
 ######## CHARACTER STATS FRAME ########
     def add_char_stats_frame(self): 
-        self.char_stats_frame = Frame(self.root)
+        self.char_stats_frame = Frame(self.root,pady=6)
     ###### TOP PLAYER LABEL ######
-        upper_frame = Frame(self.char_stats_frame)
+        upper_frame = Frame(self.char_stats_frame, bg='light gray')
         upper_frame.pack(side = "top")
                 ## VARIABLES ##
         self.p_name = StringVar()
         self.p_race_class = StringVar()
         self.p_status = StringVar()
                 ## CREATES LEFT BLANK LABEL ##
-        blank_label = Label(upper_frame, width = 8, height = 2, font = ("Arial", (self.width//100)))
+        blank_label = Label(upper_frame, width = 11, height = 3, bg='light gray', font = ("Arial", (self.width//100)))
         blank_label.pack(side = "left")
                 ## CREATES RIGHT STATUS LABEL ##
-        status_label = Label(upper_frame, textvariable = self.p_status, width = 8,
-                             height = 2, font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
+        status_label = Label(upper_frame, textvariable = self.p_status, width = 9,
+                             height = 2, bg='light gray',font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
         status_label.pack(side = "right")
                 ## CREATES CENTER NAME, CLASS, RACE LABELS ##
-        name_label = Label(upper_frame, textvariable = self.p_name, width = 13,
-                           height = 1, font = ("Arial bold", (round((self.width/self.height)*13))))
+        name_label = Label(upper_frame, textvariable = self.p_name, width = 12,
+                           height = 1, bg='light gray', font = ("Arial bold", (round((self.width/self.height)*13))))
         name_label.pack(side = "top")
         race_class_label = Label(upper_frame, textvariable = self.p_race_class,
-                                 width = 16, height = 1, font = ("Arial", (round((self.width/self.height)*10))))
+                                 width = 18, height = 1, bg='light gray', font = ("Arial", (round((self.width/self.height)*10))))
         race_class_label.pack(side = "top")
     ###### MIDDLE PLAYER GRAPHS ######
         middle_frame = Frame(self.char_stats_frame)
@@ -109,8 +109,8 @@ class Gui(Tk):
                 ## VARIABLES ##
         self.p_dimension = StringVar()
                 ## CREATES LABEL ##
-        dimension_label = Label(lower_frame, textvariable = self.p_dimension, width = 29,
-                                height = 1, font = ("Arial", (round((self.width/self.height)*13))))
+        dimension_label = Label(lower_frame, textvariable = self.p_dimension, width = 27,
+                                height = 1, bg='light gray', font = ("Arial", (round((self.width/self.height)*13))))
         dimension_label.pack(side = "top")
 
         self.char_stats_frame.pack()
