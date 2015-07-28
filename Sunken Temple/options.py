@@ -121,11 +121,28 @@ class Options(object):
     def use(self, words):
     #Player uses the specified item.  Any remaining words must follow the item/item-type's rules.
         if len(words) == 0:
-            self.gameplay.gui.write(text = "Option should be of the form 'use (item name) (optional qualifying words)'.")
-        #May want to pass the player who's using the item as well as the remaining words, and
-        # have the item sort out what should happen.
-        #Maybe something like if item.usable(character, self.gameplay), then item.use(character, self.gameplay).
-        pass
+            self.gameplay.gui.write(text = "Option should be of the form '(player name) use (item name) (optional qualifying words)'.")
+        #Pass the player who's using the item as well as the remaining words, and have the item sort
+        # out what should happen.
+        for word in words:
+            if word in [player.name.lower() for player in self.gameplay.players]:
+                player_temp = self.gameplay.get_player(word)
+                words.remove(word)
+                break
+        words = " ".join(words)
+        for item in player_temp.backpack:
+            if item.name in words:
+                words = words.split()
+                start = words.index(item.name.split()[0])
+                #This will remove the words making up the item name, in order, from the
+                # remaining words.
+                for word in item.name.split():
+                    words.pop(start)
+                item_to_use = item
+                #Probably won't/shouldn't be more than one item called at a time.
+                break
+        if item_to_use.useable(self.gameplay, player_temp, words):
+            item_to_use.use(self.gameplay, player_temp, words)
 
     def interpret(self, words):
         opt_keys = {keywords for keywords in self.options}
