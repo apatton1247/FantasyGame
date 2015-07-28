@@ -127,3 +127,14 @@ class War_Horn(Class_Race_Items):
     def use(self, gameplay, character, words):
         character.char_class = Warrior()
 
+class Bone():
+    """A bone earned from defeating a monster in combat."""
+    #After you defeat a monster, you earn a certain percentage of experience,
+    # and you may loot the corpse for treasure and bone(s).  If you take a
+    # bone to the shrine, you can use the bone as a sacrificial offering to
+    # earn an additional 50 XP (Shamans earn additional XP (75?)).
+    # In battle, Necromancers may use any bones they're carrying to summon
+    # skeletons, which boost the Necromancer's battle strength. (perhaps they
+    # also gain some battle strength as a passive ability based on the number
+    # of bones they have?)
+    pass
