@@ -32,6 +32,7 @@ class Gui(Tk):
                 ## SIZE AND RESOLUTION ##
         winh = int(round((self.height/968),1) * 10)
         winw = int(round((self.width/1536),1) * 10)
+        print(winh, winw)
         wall = wall.zoom(winw+1, winh+1)
         wall = wall.subsample(10, 10)
         self.bg_canvas.img = wall
@@ -40,7 +41,7 @@ class Gui(Tk):
 
 ######## CHARACTER STATS FRAME ########
     def add_char_stats_frame(self): 
-        self.char_stats_frame = Frame(self.root,pady=6)
+        self.char_stats_frame = Frame(self.root, pady=6)
     ###### TOP PLAYER LABEL ######
         upper_frame = Frame(self.char_stats_frame, bg='light gray')
         upper_frame.pack(side = "top")
@@ -53,7 +54,7 @@ class Gui(Tk):
         blank_label.pack(side = "left")
                 ## CREATES RIGHT STATUS LABEL ##
         status_label = Label(upper_frame, textvariable = self.p_status, width = 9,
-                             height = 2, bg='light gray',font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
+                             height = 2, bg='light gray', font = ("Arial italic", (round((self.width/self.height)*12))), anchor = "w", justify = "left")
         status_label.pack(side = "right")
                 ## CREATES CENTER NAME, CLASS, RACE LABELS ##
         name_label = Label(upper_frame, textvariable = self.p_name, width = 12,
@@ -133,7 +134,7 @@ class Gui(Tk):
             self.char_stats_frame.lift()
         #### CHARACTER VARIABLES ####
         self.p_name.set(self.char_shown.name)
-        self.p_race_class.set(self.char_shown.char_race + " " + self.char_shown.char_class)
+        self.p_race_class.set(str(self.char_shown.char_race) + " " + str(self.char_shown.char_class))
         self.p_status.set(self.char_shown.status)
         self.p_bs.set(str(self.char_shown.battle_strength_calc()))
         self.p_level.set(self.char_shown.level)

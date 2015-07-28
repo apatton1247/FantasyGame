@@ -1,11 +1,15 @@
-class Human():
+class Char_Race():
+    def __str__(self):
+        return self.__class__.__name__
+
+class Human(Char_Race):
     def __init__(self):
         self.powers = {}
         pass
     def battle_calc(self, strength, intellect, spirit):
         pass
 
-class Dwarf():
+class Dwarf(Char_Race):
     def __init__(self):
         self.powers = {"Gem Finder"}
         pass
@@ -14,7 +18,7 @@ class Dwarf():
     def gem_finder(self):
         pass
 
-class Elf():
+class Elf(Char_Race):
     def __init__(self):
         self.powers = {"Agility"}
         pass
@@ -23,7 +27,7 @@ class Elf():
     def agility(self):
         pass
 
-class Golem():
+class Golem(Char_Race):
     def __init__(self):
         self.powers = {"Magic Resistance", "Volcanic Pressure", "Explode"}
         pass
@@ -36,7 +40,7 @@ class Golem():
     def explode(self):
         pass
 
-class Reptilian():
+class Reptilian(Char_Race):
     def __init__(self):
         self.powers = {"Predator"}
         pass
@@ -45,7 +49,7 @@ class Reptilian():
     def predator(self):
         pass
 
-class Phantasm():
+class Phantasm(Char_Race):
     def __init__(self):
         self.powers = {"Wisp Of Smoke"}
         pass
@@ -54,7 +58,7 @@ class Phantasm():
     def wisp_of_smoke(self):
         pass
 
-class Alien():
+class Alien(Char_Race):
     def __init__(self):
         self.powers = {"Multiple Arms", "Flying"}
         pass
@@ -65,7 +69,7 @@ class Alien():
     def flying(self):
         pass
 
-class Cyborg():
+class Cyborg(Char_Race):
     def __init__(self):
         self.powers = {"Precision", "First Strike"}
         pass

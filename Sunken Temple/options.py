@@ -119,6 +119,7 @@ class Options(object):
                                         " dimension!")
 
     def use(self, words):
+#TODO:  modify so that this can also activate race/class abilities!
     #Player uses the specified item.  Any remaining words must follow the item/item-type's rules.
         if len(words) == 0:
             self.gameplay.gui.write(text = "Option should be of the form '(player name) use (item name) (optional qualifying words)'.")
@@ -131,6 +132,7 @@ class Options(object):
                 break
         words = " ".join(words)
         for item in player_temp.backpack:
+#TODO:  if the player is in the shrine, it should search the shrine's items too.
             if item.name in words:
                 words = words.split()
                 start = words.index(item.name.split()[0])

@@ -1,11 +1,15 @@
-class Classless():
+class Char_Class():
+    def __str__(self):
+        return self.__class__.__name__
+
+class Classless(Char_Class):
     def __init__(self):
         self.powers = {}
         pass
     def battle_calc(self, strength, intellect, spirit):
         pass
 
-class Sorceror():
+class Sorceror(Char_Class):
     def __init__(self):
         self.powers = {"Lightning Bolt", "Fire Ball"}
         pass
@@ -16,7 +20,7 @@ class Sorceror():
     def fire_ball(self):
         pass
 
-class Necromancer():
+class Necromancer(Char_Class):
     def __init__(self):
         self.powers = {"Icy Touch", "Summon"}
         pass
@@ -27,7 +31,7 @@ class Necromancer():
     def summon(self):
         pass
 
-class Shaman():
+class Shaman(Char_Class):
     def __init__(self):
         self.powers = {"Sacrifice", "Summon"}
         pass
@@ -38,7 +42,7 @@ class Shaman():
     def summon(self):
         pass
 
-class Druid():
+class Druid(Char_Class):
     def __init__(self):
         self.powers = {"In Tune With Nature", "Growth"}
         pass
@@ -49,7 +53,7 @@ class Druid():
     def growth(self):
         pass
 
-class Telepath():
+class Telepath(Char_Class):
     def __init__(self):
         self.powers = {"Third Eye", "Foresight"}
         pass
@@ -60,7 +64,7 @@ class Telepath():
     def foresight(self):
         pass
 
-class Assassin():
+class Assassin(Char_Class):
     def __init__(self):
         self.powers = {"Stealth", "Master Of Disguise", "Theft", "Hidden Blade"}
         pass
@@ -75,7 +79,7 @@ class Assassin():
     def hidden_blade(self):
         pass
 
-class Warrior():
+class Warrior(Char_Class):
     def __init__(self):
         self.powers = {"Strength"}
         pass
