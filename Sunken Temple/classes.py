@@ -7,7 +7,7 @@ class Classless(Char_Class):
         self.powers = {}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (strength + intellect + spirit)
 
 class Sorceror(Char_Class):
     def __init__(self):

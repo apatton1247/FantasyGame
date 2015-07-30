@@ -6,6 +6,8 @@ from matplotlib.ticker import MultipleLocator
 from matplotlib.font_manager import FontProperties
 import matplotlib.gridspec as gridspec
 import matplotlib.style as style
+from PIL import Image as PILImg
+from PIL import ImageTk
 from tkinter import *
 
 #################### GUI ROOT FRAME ####################
@@ -28,20 +30,25 @@ class Gui(Tk):
         self.bg_canvas = Canvas(self.root, height = self.height, width = self.width)
         self.bg_canvas.pack(expand = True, fill = "both")
                 ## READS IN IMAGE FILE ##
-        wall = PhotoImage(file = "crypt_wall_tessl.gif")
+#        wall = PhotoImage(file = "crypt_wall_tessl.gif")
+        wall2 = PILImg.open("crypt_wall_tessl.gif")
+
                 ## SIZE AND RESOLUTION ##
         winh = int(round((self.height/968),1) * 10)
         winw = int(round((self.width/1536),1) * 10)
-        print(winh, winw)
-        wall = wall.zoom(winw+1, winh+1)
-        wall = wall.subsample(10, 10)
-        self.bg_canvas.img = wall
+#        wall = wall.zoom(winw+1, winh+1)
+#        wall = wall.subsample(10, 10)
+#        self.bg_canvas.img = wall
+        self.wall2 = wall2.resize((self.width, self.height), PILImg.ANTIALIAS)
+        self.bg_canvas.img2 = ImageTk.PhotoImage(self.wall2)
+
                 ## POSITION IN ROOT FRAME ##
-        self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
+#        self.bg_canvas.create_image(0, 0, anchor = "nw", image = wall)
+        self.bg_canvas.create_image(0, 0, anchor = "nw", image = self.bg_canvas.img2)
 
 ######## CHARACTER STATS FRAME ########
     def add_char_stats_frame(self): 
-        self.char_stats_frame = Frame(self.root, pady=6)
+        self.char_stats_frame = Frame(self.root, pady=6, bg ='light gray')
     ###### TOP PLAYER LABEL ######
         upper_frame = Frame(self.char_stats_frame, bg='light gray')
         upper_frame.pack(side = "top")

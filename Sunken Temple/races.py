@@ -7,7 +7,7 @@ class Human(Char_Race):
         self.powers = {}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (strength + intellect + spirit)
 
 class Dwarf(Char_Race):
     def __init__(self):

@@ -42,8 +42,11 @@ class Character(object):
 
     
     def battle_strength_calc(self):
-        bs = self.level + self.strength + self.spirit + self.intellect
-            #+ self.char_class.battle_calc() + self.char_race.battle_calc()
+        bs = (self.level
+             + self.char_class.battle_calc(self.strength, self.spirit, self.intellect)
+             + self.char_race.battle_calc(self.strength, self.spirit, self.intellect)
+             #+ self.dimension(self.strength + self.spirit + self.intellect)
+             )
         return bs
     
     def attr_up(self, attribute, amount):
