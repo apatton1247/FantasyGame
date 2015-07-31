@@ -221,6 +221,11 @@ class Gui(Tk):
             if player.name.lower() == char_name:
                 self.char_shown = player
                 break
+        #Temporarily supports both passing a lower-case name (which will be compared
+        # against all players' names) or a player object, which will exhaust the for-
+        # loop above and get to this else-block.
+        else:
+            self.char_shown = char_name
 
 ######## WRITE METHOD ########
     def write(self, event=None, text = ""):

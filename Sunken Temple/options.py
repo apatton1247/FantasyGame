@@ -1,9 +1,13 @@
-class Options(object):
+class Options():
     """Provides the user input options and basic ways to interact with it."""
     def __init__(self, gameplay):
         self.gameplay = gameplay
         self.options = {}
+        #Will be able to initialize self.options with instances of all the options
+        # on startup, since they'll be classes external to the Options class and will
+        # be defined once the options.py file is read into gameplay.py.
 
+    #Won't need a populate method anymore (see above comment) once options are classes.
     def populate(self):
         self.add_option(**{"show": [self.show, "visible"],
                          "level up": [self.char_level_up, "hidden"],
@@ -13,7 +17,20 @@ class Options(object):
                          "clear output": [self.clear_output, "hidden"],
                          "enter": [self.enter, "visible"]})
 
-    #Displays all "visible" options to the player
+    def interpret(self, words):
+        opt_keys = {keywords for keywords in self.options}
+        for key in opt_keys:
+            if key in words:
+                remaining_words = words.replace(key, "").strip().split()
+                self.options[key][0](remaining_words)
+        #New interpret for once all options are classes and gameplay.whose_Turn is implemented.
+        #for opt in self.options:
+            #if opt.text in words:
+                #remaining_words = words.replace(key, "").strip().split()
+                #if opt.useable(self.gameplay, self.gameplay.whose_Turn, remaining_words):
+                    #opt.use(self.gameplay, self.gameplay.whose_Turn, remaining_words)
+
+        
     def show_options(self):
         opts = [option for option in self.options if self.options[option][1] == "visible"]
         self.gameplay.gui.options_text.set("\n".join(opts))
@@ -146,10 +163,30 @@ class Options(object):
         if item_to_use.useable(self.gameplay, player_temp, words):
             item_to_use.use(self.gameplay, player_temp, words)
 
-    def interpret(self, words):
-        opt_keys = {keywords for keywords in self.options}
-        for key in opt_keys:
-            if key in words:
-                remaining_words = words.replace(key, "").strip().split()
-                self.options[key][0](remaining_words)
-        
+class Show(Options):
+    """Displays information for the player to see. Depending on the player's input
+    text, may show a character's stats, an ongoing encounter, or the player's valid
+    options."""
+    def __init__(self):
+        self.visibile = True
+        self.text = "show"
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        words = " ".join(words)
+        if words == "options":
+            self.show_options()
+        elif words == "hidden options":
+            self.show_hidden_options()
+        elif words in {char.name.lower() for char in self.gameplay.players}:
+            self.gameplay.gui.show_char_stats(words)
+        #Can easily add elifs for battle (maybe even monster's name) or guardian game.
+
+    def show_options(self):
+        opts = [option.text for option in self.options if option.visible == True]
+        self.gameplay.gui.options_text.set("\n".join(opts))
+
+    #Secret method for displaying all "hidden" options to the player
+    def show_hidden_options(self):
+        opts = [option.text for option in self.options if option.visible == False]
+        self.gameplay.gui.options_text.set("\n".join(opts))
