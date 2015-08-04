@@ -41,22 +41,6 @@ class Options():
         #print(opts)
         self.gameplay.gui.options_text.set("\n".join(opts))
         
-    #Adds an option (or list of options) to the options list. Second
-    # parameter determines if the option is "visible" or "hidden".
-    def add_option(self, **option):
-        for entry in option:
-            self.options[entry] = option.get(entry)
-        
-    #Deletes an option (or list of options) from the options list.
-    def del_option(self, **option):
-        for entry in option:
-            if entry in self.options:
-                self.options.remove(entry)
-        
-    #Clears all options from the options list.
-    def clear_options(self):
-        self.options = {}
-
     def clear_output(self, words):
         self.gameplay.gui.clear_output()
 
@@ -190,3 +174,14 @@ class Show(Options):
     def show_hidden_options(self):
         opts = [option.text for option in self.options if option.visible == False]
         self.gameplay.gui.options_text.set("\n".join(opts))
+
+class Clear_Output(Options):
+    """Clears the output screen.  Mainly used, as an Option, for debugging."""
+    def __init__(self):
+        self.visible = False
+        self.text = "clear output"
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        gameplay.gui.clear_output()
+
