@@ -14,7 +14,7 @@ class Sorceror(Char_Class):
         self.powers = {"Lightning Bolt", "Fire Ball"}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (strength + 2*intellect + int(1.5*spirit))
     def lightning_bolt(self):
         pass
     def fire_ball(self):
@@ -25,7 +25,7 @@ class Necromancer(Char_Class):
         self.powers = {"Icy Touch", "Summon"}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (strength + int(.5*spirit) + 2*intellect)
     def icy_touch(self):
         pass
     def summon(self):
@@ -34,7 +34,7 @@ class Necromancer(Char_Class):
 class Shaman(Char_Class):
     def __init__(self):
         self.powers = {"Sacrifice", "Summon"}
-        pass
+        return (int(1.5*strength) + 2*spirit + intellect)
     def battle_calc(self, strength, intellect, spirit):
         pass
     def sacrifice(self):
@@ -47,7 +47,7 @@ class Druid(Char_Class):
         self.powers = {"In Tune With Nature", "Growth"}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (strength + 3*spirit + intellect)
     def in_tune_with_nature(self):
         pass
     def growth(self):
@@ -58,7 +58,7 @@ class Telepath(Char_Class):
         self.powers = {"Third Eye", "Foresight"}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (strength + spirit + 3*intellect)
     def third_eye(self):
         pass
     def foresight(self):
@@ -69,7 +69,7 @@ class Assassin(Char_Class):
         self.powers = {"Stealth", "Master Of Disguise", "Theft", "Hidden Blade"}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (2*strength + spirit + int(1.5*intellect))
     def stealth(self):
         pass
     def master_of_disguise(self):
@@ -84,7 +84,7 @@ class Warrior(Char_Class):
         self.powers = {"Strength"}
         pass
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (3*strength + spirit + intellect)
     def strength(self):
         pass
 

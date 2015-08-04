@@ -20,7 +20,7 @@ class Character(object):
             "armor": [1, []],
             "weapons": [2, []],
             "footgear": [1, []],
-            "slotless": [65536, []]
+            "slotless": [65535, []]
             }
         #This initializes backpack (carried, unequipped items), which is of
         # the same form as an equipment entry.
@@ -39,12 +39,10 @@ class Character(object):
         self.strength = strength
         self.spirit = spirit
         self.intellect = intellect
-
     
     def battle_strength_calc(self):
         bs = (self.level
              + self.char_class.battle_calc(self.strength, self.spirit, self.intellect)
-             + self.char_race.battle_calc(self.strength, self.spirit, self.intellect)
              #+ self.dimension(self.strength + self.spirit + self.intellect)
              )
         return bs
@@ -63,6 +61,16 @@ class Character(object):
             if self.intellect < 0:
                 self.intellect = 0
 
+    def recalc_attr(self):
+        #base attributes values
+        self.strength = 5
+        self.spirit = 5
+        self.intellect = 5
+        #add attributes that come from items
+#        self.strength, self.spirit, self.intellect = self.equip_calc()
+        #add attributes that come from race bonus
+        self.strength, self.spirit, self.intellect = self.char_race.race_bonus_calc(self)
+
     def level_up(self, amount):
         self.level += amount
         if self.level < 0:
@@ -74,7 +82,7 @@ class Character(object):
         #TODO: Should the xp scaling per level work differently from this?
         self.xp = 0
         self.xp_for_level = (100 + 50*self.level)
-    
+        self.recalc_attr()
     
     def xp_up(self, amount):
         while (self.xp + amount) >= self.xp_for_level:

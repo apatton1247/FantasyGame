@@ -35,6 +35,7 @@ class Enchanted_Flask_Of_Ale(Class_Race_Items):
         Class_Race_Items(self, "Enchanted Flask of Ale")
     def use(self, gameplay, character, words):
         character.char_race = Dwarf()
+        character.recalc_attr()
 
 class Magical_Flute(Class_Race_Items):
     """The Magical_Flute changes a player into an Elf."""
@@ -42,49 +43,55 @@ class Magical_Flute(Class_Race_Items):
         Class_Race_Items(self, "Magical Flute")
     def use(self, gameplay, character, words):
         character.char_race = Elf()
-
+        character.recalc_attr()
+        
 class Obsidian_Shard(Class_Race_Items):
     """The Obsidian Shard changes a player into a Golem."""
     def __init__(self):
         Class_Race_Items(self, "Obsidian Shard")
     def use(self, gameplay, character, words):
         character.char_race = Golem()
-
+        character.recalc_attr()
+        
 class Petrified_Egg(Class_Race_Items):
     """The Petrified Egg changes a player into a Reptilian."""
     def __init__(self):
         Class_Race_Items(self, "Petrified Egg")
     def use(self, gameplay, character, words):
         character.char_race = Reptilian()
-
+        character.recalc_attr()
+        
 class Dark_Orb(Class_Race_Items):
     """The Dark Orb changes a player into a Phantasm."""
     def __init__(self):
         Class_Race_Items(self, "Dark Orb")
     def use(self, gameplay, character, words):
         character.char_race = Phantasm()
-
+        character.recalc_attr()
+        
 class Strange_Moon_Rock(Class_Race_Items):
     """The Strange Moon Rock changes a player into an Alien."""
     def __init__(self):
         Class_Race_Items(self, "Strange Moon Rock")
     def use(self, gameplay, character, words):
         character.char_race = Alien()
-
+        character.recalc_attr()
+        
 class Vial_Of_Quicksilver(Class_Race_Items):
     """The Vial of Quicksilver changes a player into a Cyborg."""
     def __init__(self):
         Class_Race_Items(self, "Vial of Quicksilver")
     def use(self, gameplay, character, words):
         character.char_race = Cyborg()
-
+        character.recalc_attr()
+        
 class Sorcerors_Tome(Class_Race_Items):
     """The Sorceror's Tome changes a player into a Sorceror."""
     def __init__(self):
         Class_Race_Items(self, "Sorceror's Tome")
     def use(self, gameplay, character, words):
         character.char_class = Sorceror()
-
+        
 class Cursed_Skull(Class_Race_Items):
     """The Cursed Skull changes a player into a Necromancer."""
     def __init__(self):
