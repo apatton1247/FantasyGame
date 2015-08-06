@@ -9,13 +9,14 @@ class Options():
 
     #Won't need a populate method anymore (see above comment) once options are classes.
     def populate(self):
-        self.add_option(**{"show": [self.show, "visible"],
-                         "level up": [self.char_level_up, "hidden"],
-                         "xp up": [self.char_xp_up, "hidden"],
-                         "attr up": [self.char_attr_up, "hidden"],
-                         "add player": [self.add_player, "hidden"],
-                         "clear output": [self.clear_output, "hidden"],
-                         "enter": [self.enter, "visible"]})
+        self.options = {"show": [self.show, "visible"],
+                        "level up": [self.char_level_up, "hidden"],
+                        "xp up": [self.char_xp_up, "hidden"],
+                        "attr up": [self.char_attr_up, "hidden"],
+                        "add player": [self.add_player, "hidden"],
+                        "clear output": [self.clear_output, "hidden"],
+                        "enter": [self.enter, "visible"],
+                        "use": [self.use, "visible"]}
 
     def interpret(self, words):
         opt_keys = {keywords for keywords in self.options}
@@ -107,6 +108,8 @@ class Options():
         if len(words) < 2:
             self.gameplay.gui.write(text = "Option should be of the form '(player name) enter (dimension name)'.")
         name = words[0]
+        for index, word in enumerate(words):
+            words[index] = word[0].upper() + word[1:]
         dim = " ".join(words[1:])
         if dim not in self.gameplay.all_dimensions:
             self.gameplay.gui.write(text = "Unrecognizable dimension name.")
@@ -147,6 +150,10 @@ class Options():
         if item_to_use.useable(self.gameplay, player_temp, words):
             item_to_use.use(self.gameplay, player_temp, words)
 
+    #Loots the body of a slain monster.  Internally, transforms items-as-text into item objects.
+    def loot(self, words):
+        pass
+
 class Show(Options):
     """Displays information for the player to see. Depending on the player's input
     text, may show a character's stats, an ongoing encounter, or the player's valid
@@ -154,6 +161,7 @@ class Show(Options):
     def __init__(self):
         self.visibile = True
         self.text = "show"
+        self.err_text = "Option should be of the form 'Show (character name/battle/options)'."
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):

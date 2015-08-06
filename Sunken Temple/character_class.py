@@ -83,6 +83,13 @@ class Character(object):
         self.xp = 0
         self.xp_for_level = (100 + 50*self.level)
         self.recalc_attr()
+
+    def change_race(self, new_race):
+        self.char_race = new_race()
+        self.recalc_attr()
+
+    def change_class(self, new_class):
+        self.char_class = new_class()
     
     def xp_up(self, amount):
         while (self.xp + amount) >= self.xp_for_level:

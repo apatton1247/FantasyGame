@@ -23,7 +23,7 @@ class Elf(Char_Race):
         self.powers = {"Agility"}
         pass
     def race_bonus_calc(self, player):
-        return (player.strength), (player.spirit+ 1*player.level*1), (player.intellect+ 1*player.level)
+        return (player.strength), (player.spirit+ 1*player.level), (player.intellect+ 1*player.level)
     def agility(self):
         pass
 
@@ -45,7 +45,7 @@ class Reptilian(Char_Race):
         self.powers = {"Predator"}
         pass
     def race_bonus_calc(self, player):
-        return (player.strength + player.level*1), (player.spirit+ 1*player.level*1), (player.intellect)
+        return (player.strength + 1*player.level), (player.spirit+ 1*player.level), (player.intellect)
     def predator(self):
         pass
 
@@ -54,7 +54,7 @@ class Phantasm(Char_Race):
         self.powers = {"Wisp Of Smoke"}
         pass
     def race_bonus_calc(self, player):
-        return (player.strength), (player.spirit + player.level*2), (player.intellect)
+        return (player.strength), (player.spirit + 2*player.level), (player.intellect)
     def wisp_of_smoke(self):
         pass
 
@@ -63,7 +63,7 @@ class Alien(Char_Race):
         self.powers = {"Multiple Arms", "Flying"}
         pass
     def race_bonus_calc(self, player):
-        return (player.strength), (player.spirit), (player.intellect + player.level*1)
+        return (player.strength), (player.spirit), (player.intellect + 2*player.level)
     def multiple_arms(self):
         pass
     def flying(self):
@@ -74,7 +74,7 @@ class Cyborg(Char_Race):
         self.powers = {"Precision", "First Strike"}
         pass
     def race_bonus_calc(self, player):
-        return (player.strength + player.level*1), (player.spirit), (player.intellect + player.level*1)
+        return (player.strength + 1*player.level), (player.spirit), (player.intellect + 1*player.level)
     def precision(self):
         pass
     def first_strike(self):
