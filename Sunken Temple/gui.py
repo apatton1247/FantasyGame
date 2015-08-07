@@ -132,6 +132,8 @@ class Gui(Tk):
     def animate(self, interval):
         if self.game.players:
             self.char_stats_frame.lift()
+        else:
+            self.char_stats_frame.lower()
         #### CHARACTER VARIABLES ####
         self.p_name.set(self.char_shown.name)
         self.p_race_class.set(str(self.char_shown.char_race) + " " + str(self.char_shown.char_class))
@@ -197,7 +199,7 @@ class Gui(Tk):
         self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
         #### CREATES OUTPUT WIDGET ####
         self.output_text = Text(self.root, bg = "light gray", width = 65, height = 20, font=("Arial", 20), relief = "sunken", state = "normal", wrap = "word")
-        self.output_text.insert("end", "To change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'show Dave'\n'level up 1 Dave'\n'attr up intellect -4 Dave'")
+        self.output_text.insert("end", "To change players's attributes, type player's name and an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'show Dave'\n'Dave level up 1'\n'Dave attr up intellect -4'")
         self.output_text.config(state = "disabled")
                 ## POSITION ##
         self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = self.output_text)
@@ -230,7 +232,7 @@ class Gui(Tk):
             self.input_text.set("")
             self.output_text.insert("end", "\n"+new_text)
             self.options_text.set("")
-            self.game.text_parse(new_text)
+            self.game.interpret(new_text)
         self.output_text.config(state = "disabled")
         self.output_text.see("end")
 

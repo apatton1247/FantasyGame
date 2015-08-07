@@ -10,7 +10,7 @@ import options
 class New_Game():
     def __init__(self):
         self.players = []
-        self.whose_turn = None
+        self.whose_action = None
         self.colorbank = ["coral", "darkolivegreen", "dodgerblue", "darkviolet",
                           "orangered", "darkslategray", "dimgray", "salmon", "sienna",
                           "goldenrod", "yellow", "black"]
@@ -32,24 +32,41 @@ class New_Game():
         self.gui.char_shown = player
 
     def remove_player(self, name):
-        for player in self.players:
-            if player.name.lower() == name:
-                self.players.remove(player)
-                #Need to change what self.gui.char_shown shows now.
-                #Also need to make sure players can only remove themselves.
-                break
+        player = get_player(name)
+        #Through the magic of list indexing using negative numbers, next_player is the
+        # player immediately following the player who's removing themself from play.
+        next_player = self.players[self.players.index(player) - (len(self.players)-1)]
+        if player == self.gui.char_shown:
+            self.gui.char_shown = next_player
+        self.whose_action = next_player
+        #Note: no provision currently made for the corner-case of there being only one
+        # player who subsequently removes themself.
+        #Maybe something to the effect of:
+        #if not self.players:
+        #    self.gui.char_shown = Character("", color = "white")
+        self.players.remove(player)
 
     def get_player(self, name):
         for player in self.players:
             if player.name.lower() == name:
                 return player
+        else:
+            return None
 
-    def text_parse(self, text_string):
+    def interpret(self, text_string):
         text_string = text_string.lower()
         text_string = text_string.replace("'", " ").strip()
         #TODO: look into regex to split properly around punctuation,
         # including apostrophes, periods, etc.
-        self.opt.interpret(text_string)
+        player_name = text_string.split()[0]
+        player = self.get_player(player_name)
+        #Allows backwards compatibility with giving commands in third-person,
+        # while also allowing an acting-player variable to be set, and reference
+        # that variable in the same way we'll hope to do once we can use websockets.
+        if player:
+            self.opt.text_parse(player, text_string.replace(player_name, ""))
+        else:
+            self.opt.text_parse(self.whose_action, text_string)
 
 if __name__ == "__main__":
     game = New_Game()
