@@ -13,18 +13,11 @@ class Character(object):
         self.color = color
         self.xp = 0
         self.xp_for_level = (100 + 50*level)
-        #Initializes equipment (equipped items), which is of the form:
-        # equipment_type: [total_slots_of_this_type, [equipped_item_1, equipped_item_2 ...]]
-        self.equipment = {
-            "headgear": [1, []],
-            "armor": [1, []],
-            "weapons": [2, []],
-            "footgear": [1, []],
-            "slotless": [65535, []]
-            }
+        #Initializes equipment (equipped items)
+        self.equipment = Equipment()
         #This initializes backpack (carried, unequipped items), which is of
         # the same form as an equipment entry.
-        self.backpack = [25, []]
+        self.backpack = Backpack()
         #This initializes shrine (stored items)
         self.shrine = []
         #This initializes gem pouch
@@ -98,17 +91,6 @@ class Character(object):
         else:
             self.xp += amount
     
-    def equip(self, equipment):
-    #Should be able to check what type of object (e.g. footgear, slotless) the
-    # equipment is, and if it's slotted check the self.(type)_slots vs the
-    # self.(type)_slots_used to see if there's room to equip it.  If so, does.
-        pass
-      
-    def unequip(self, equipment):
-    #Checks to see if the equipment is equipped, and if so unequips it (it goes
-    # in the backpack? or the closet?
-        pass
-
     def add_gems(self, gem_dict):
     #Adds gems to the player's gem pouch.
         for gem in gem_dict:
@@ -121,30 +103,14 @@ class Character(object):
         for gem in gem_dict:
             self.gems[gem] -= gem_dict[gem]
 
-    def add_backpack(self, item):
-    #Adds an item to the player's backpack.
-        if len(self.backpack[1]) < self.backpack[0]:
-            self.backpack[1].append(item)
-        else:
-            #TODO: This may be where we want to do checking to see if the player's backpack
-            # can hold more items, or if they have to choose which items to leave behind.
-            pass
-
-    def rem_backpack(self, item):
-    #Removes an item from the player's backpack.
-        if item in self.backpack[1]:
-            self.backpack.remove(item)
-
     def add_shrine(self, item):
     #Adds an item from the player's equipment or backpack to the shrine.
-        if item in self.backpack[1]:
-            self.rem_backpack(item)
+        if item in self.backpack:
+            self.backpack.remove(item)
             self.shrine.append(item)
-        else:
-            location = equipment_loc(item)
-            if location:
-                self.equipment[location][1].remove(item)
-                self.shrine.append(item)
+        elif item in self.equipment:
+            self.equipment.remove(item)
+            self.shrine.append(item)
 
     def rem_shrine(self, item):
     #Removes an item from the player's shrine.  Is this the equivalent of a player throwing
@@ -152,17 +118,69 @@ class Character(object):
         if item in self.shrine:
             self.shrine.remove(item)
             
-    def equipment_loc(self, item):
-    #If a specified piece of equipment exists in the player's equipment, gives its location.
-    #Else it returns an empty string.
-        location = ""
-        for equipment_type in self.equipment:
-            for eq_item in self.equipment[equipment_type][1]:
-                if item == eq_item:
-                    location = equipment_type
-        return location
+##    def equipment_loc(self, item):
+##    #If a specified piece of equipment exists in the player's equipment, gives its location.
+##    #Else it returns an empty string.
+##        location = ""
+##        for equipment_type in self.equipment:
+##            for eq_item in self.equipment[equipment_type][1]:
+##                if item == eq_item:
+##                    location = equipment_type
+##        return location
 
     def chg_dimension(self, dim_name):
     #Sets the player's current dimension to the named dimension.  This will only
     # be called when it is allowed to be called.
         self.dimension = dim_name
+
+
+class Backpack():
+    """A backpack stores the player's unequipped items."""
+    def __init__(self):
+        self.size = 25
+        self.contents = []
+    def __contains__(self, item):
+        return (item in self.contents)
+    def __iter__(self):
+        #TODO: add support for iterating through the backpack
+        pass
+    def __next__(self):
+        #TODO: add support for iterating through the backpack
+        pass
+    def add(self, item):
+        if len(self.contents) < self.size:
+            self.contents.append(item)
+        else:
+            #TODO: This may be where we want to do checking to see if the player's backpack
+            # can hold more items, or if they have to choose which items to leave behind.
+            #What should happen at this point?  Some error message?
+            pass
+    def remove(self, item):
+        #This method will only be called when it is possible to be called; checking
+        # to see if the item is already in the backpack will be left up to the caller.
+        self.contents.remove(item)
+        
+class Equipment():
+    """The player's equipped items."""
+    def __init__(self):
+        self.headgear_slots = 1
+        self.armor_slots = 1
+        self.weapons_slots = 2
+        self.footgear_slots = 1
+        self.slotless = 65535
+        self.headgear = []
+        self.armor = []
+        self.weapons = []
+        self.footgear = []
+        self.slotless = []
+    def __contains__(self, item):
+        if (item in self.headgear) or (item in self.armor) or (item in self.weapons) or (item in self.footgear) or (item in self.slotless):
+            return True
+        else:
+            return False
+    def add(self, item):
+        #If item.type == "headgear", and len(self.headgear) < self.headgear_slots: self.headgear.append(item)
+        pass
+    def remove(self, item):
+        #If item.type == "headgear", self.headgear.remove(item)
+        pass

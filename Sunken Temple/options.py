@@ -311,7 +311,8 @@ class Put(Options):
         for index, word in enumerate(words):
             words[index] = word[0].upper() + word[1:]
         target_item_name = " ".join(words)
-        for item in player.backpack[1]:
+        #TODO: Need to figure out a way to search equally for items and their names.
+        for item in player.backpack:
             if target_item_name == item.name:
                 player.add_shrine(item)
                 break
@@ -319,3 +320,9 @@ class Put(Options):
             equip_loc = player.equipment_loc(item)
             if equip_loc:
                 player.add_shrine(item)
+
+class Equip(Options):
+    pass
+
+class Unequip(Options):
+    pass

@@ -54,7 +54,7 @@ class New_Game():
         else:
             return None
 
-    def item_initialize(lower_case_item_name):
+    def item_initialize(self, lower_case_item_name):
         item_name = []
         for word in lower_case_item_name.split():
             word = word[0].upper() + word[1:]
@@ -63,6 +63,10 @@ class New_Game():
         #This command gets the class of the item from items.py, and makes a new object from it.
         item = getattr(items_module, item_name, None)()
         return item
+
+    def move_item(self, item, source, destination):
+        source.remove(item)
+        destination.add(item)
 
     def interpret(self, text_string):
         text_string = text_string.lower()
