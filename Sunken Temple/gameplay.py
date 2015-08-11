@@ -6,6 +6,7 @@ from character_class import Character
 import gui as g
 from matplotlib.animation import FuncAnimation
 import options
+import items as items_module
 
 class New_Game():
     def __init__(self):
@@ -52,6 +53,16 @@ class New_Game():
                 return player
         else:
             return None
+
+    def item_initialize(lower_case_item_name):
+        item_name = []
+        for word in lower_case_item_name.split():
+            word = word[0].upper() + word[1:]
+            item_name.append(word)
+        item_name = " ".join(item_name)
+        #This command gets the class of the item from items.py, and makes a new object from it.
+        item = getattr(items_module, item_name, None)()
+        return item
 
     def interpret(self, text_string):
         text_string = text_string.lower()

@@ -138,7 +138,7 @@ class Character(object):
     def add_shrine(self, item):
     #Adds an item from the player's equipment or backpack to the shrine.
         if item in self.backpack[1]:
-            self.backpack[1].remove(item)
+            self.rem_backpack(item)
             self.shrine.append(item)
         else:
             location = equipment_loc(item)

@@ -278,7 +278,44 @@ class Use(Options):
     pass
 
 class Loot(Options):
-    pass
+    def __init__(self):
+        self.visible = True
+        self.text = "loot"
+        #This may need to change, right now just relies on "loot".
+        self.err_text = "Option should be of the form 'Loot monster'."
+    def useable(self, player, gameplay, words):
+        #TODO: determine when this is useable.  For now, it always is, for the purpose of the OP use-case below.
+        return True
+    def use(self, player, gameplay, words):
+        #TODO: For now, if a player types 'loot (item name), they'll get a copy of that item for free.
+        # Need to change this once we've tested item use so that only monster corpses can be looted.
+        if words:
+            words = " ".join(words)
+            item = gameplay.item_initialize(words)
+            if item:
+                player.add_backpack(item)
 
 class Put(Options):
-    pass
+    """Allows a player to move an item from their backpack or equipment into their shrine.  Only available when a player is in their shrine."""
+    def __init__(self):
+        self.visible = True
+        self.text = "put"
+        self.err_text = "Option should be of the form 'Put (item name) in shrine'."
+    def useable(self, player, gameplay, words):
+        #TODO: We'll need to change this once dimensions have their own classes.
+        if player.dimension == "Shrine":
+            return True
+        else:
+            return False
+    def use(self, player, gameplay, words):
+        for index, word in enumerate(words):
+            words[index] = word[0].upper() + word[1:]
+        target_item_name = " ".join(words)
+        for item in player.backpack[1]:
+            if target_item_name == item.name:
+                player.add_shrine(item)
+                break
+        else:
+            equip_loc = player.equipment_loc(item)
+            if equip_loc:
+                player.add_shrine(item)
