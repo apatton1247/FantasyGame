@@ -74,6 +74,7 @@ class Gui(Tk):
                 ## TURNS FIGURE INTO CANVAS ##
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, middle_frame)
         char_stats_canvas.show()
+        char_stats_canvas.get_tk_widget().configure(background='light gray', highlightcolor='light gray', highlightbackground='light gray')
         char_stats_canvas.get_tk_widget().pack(side = "left")
         #### BATTLE STRENGTH ####
                 ## VARIABLES ##
