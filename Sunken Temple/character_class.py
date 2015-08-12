@@ -142,11 +142,15 @@ class Backpack():
     def __contains__(self, item):
         return (item in self.contents)
     def __iter__(self):
-        #TODO: add support for iterating through the backpack
-        pass
+        self.index = 0
+        return self
     def __next__(self):
-        #TODO: add support for iterating through the backpack
-        pass
+        if self.index >= len(self.contents):
+            raise StopIteration
+        else:
+            item = self.contents[self.index]
+            self.index += 1
+            return item
     def add(self, item):
         if len(self.contents) < self.size:
             self.contents.append(item)
@@ -178,9 +182,15 @@ class Equipment():
             return True
         else:
             return False
+    def __iter__(self):
+        pass
+    def __next__(self):
+        pass
     def add(self, item):
         #If item.type == "headgear", and len(self.headgear) < self.headgear_slots: self.headgear.append(item)
         pass
     def remove(self, item):
         #If item.type == "headgear", self.headgear.remove(item)
         pass
+    def get_item(self, item_name):
+        
