@@ -156,6 +156,8 @@ class Show(Options):
             self.show_options()
         elif words == "hidden options":
             self.show_hidden_options()
+        elif words == "backpack":
+            self.show_backpack(player)
         elif words in {char.name.lower() for char in self.gameplay.players}:
             gameplay.gui.show_char_stats(words)
         #Can easily add elifs for battle (maybe even monster's name) or guardian game.
@@ -171,6 +173,11 @@ class Show(Options):
         opts = [option.text for option in self.options if option.visible == False]
         self.gameplay.gui.options_text.set("\n".join(opts))
 
+    #Shows the player's backpack in the Options widget.
+    def show_backpack(self, player):
+        backpack_items = [item for item in player.backpack]
+        self.gameplay.gui.options_text.set("\n".join(backpack_items))
+        
 class Clear_Output(Options):
     """Clears the output screen.  Mainly used, as an Option, for debugging."""
     def __init__(self):
@@ -264,21 +271,42 @@ class Remove_Player(Options):
         for index, word in enumerate(words):
             words[index] = word[0].upper() + word[1:]
         rem_name = " ".join(words)
-        if not player.name == rem_name:
+        if player.name == rem_name:
             gameplay.gui.write(text = self.err_text)
-            return False
+            return True
         #Should there be any other sort of stipulations about when you can/can't use this method?
         else:
-            return True
+            return False
     def use(self, player, gameplay, words):
         gameplay.remove_player(name)
     
 class Enter(Options):
     """A player enters a specified dimension."""
-    pass
+    def __init__(self):
+        self.visible = True
+        self.text = "enter"
+        self.err_text = "Option should be of the form 'Enter (dimension name)'."
+    def useable(self, player, gameplay, words):
+        #We'll need some advanced criteria so that a player can enter the temple after a battle is over, but not during.  For now,
+        return True
+    def use(self, player, gameplay, words):
+        dim_name = []
+        for word in words:
+            dim_name.append(word[0].upper() + word[1:])
+        dim_name = " ".join(dim_name)
+        if dim_name in self.gameplay.all_dimensions:
+            player.chg_dimension(dim_name)
+            gameplay.gui.write(text = player.name + " has entered the " + dim_name + " dimension!")
+        else:
+            gameplay.gui.write(text = "Unrecognizable dimension name.")
 
 class Use(Options):
     """Allows a player to make use of a specified item or ability."""
+    def __init__(self):
+        self.visible = True
+        self.text = "use"
+        #TODO:  Need to finish the error text
+        self.err_text = "Option should be of the form 'Use '"
     pass
 
 class Loot(Options):
@@ -297,14 +325,14 @@ class Loot(Options):
             words = " ".join(words)
             item = gameplay.item_initialize(words)
             if item:
-                player.add_backpack(item)
+                player.backpack.add(item)
 
-class Put(Options):
+class Place(Options):
     """Allows a player to move an item from their backpack or equipment into their shrine.  Only available when a player is in their shrine."""
     def __init__(self):
         self.visible = True
         self.text = "put"
-        self.err_text = "Option should be of the form 'Put (item name) in shrine'."
+        self.err_text = "Option should be of the form 'Place (item name) in (location)'."
     def useable(self, player, gameplay, words):
         #TODO: We'll need to change this once dimensions have their own classes.
         if player.dimension == "Shrine":
@@ -326,7 +354,9 @@ class Put(Options):
                 player.add_shrine(item)
 
 class Equip(Options):
+    """Players not in battle may put on their equipment from their backpack, or directly from in their Shrine."""
     pass
 
 class Unequip(Options):
+    """Players not in battle may take off their equipment and store it in their backpack, or directly in their Shrine."""
     pass
