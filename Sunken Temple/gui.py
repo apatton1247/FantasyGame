@@ -74,6 +74,7 @@ class Gui(Tk):
                 ## TURNS FIGURE INTO CANVAS ##
         char_stats_canvas = FigureCanvasTkAgg(self.plot_fig, middle_frame)
         char_stats_canvas.show()
+        char_stats_canvas.get_tk_widget().configure(background='light gray', highlightcolor='light gray', highlightbackground='light gray')
         char_stats_canvas.get_tk_widget().pack(side = "left")
         #### BATTLE STRENGTH ####
                 ## VARIABLES ##
@@ -228,11 +229,11 @@ class Gui(Tk):
         if text:
             self.output_text.insert("end", "\n"+text)
         else:
+            self.options_text.set("")
             new_text = self.input_text.get()
+            self.game.interpret(new_text)
             self.input_text.set("")
             self.output_text.insert("end", "\n"+new_text)
-            self.options_text.set("")
-            self.game.interpret(new_text)
         self.output_text.config(state = "disabled")
         self.output_text.see("end")
 
