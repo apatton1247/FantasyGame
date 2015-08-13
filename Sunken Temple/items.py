@@ -6,6 +6,8 @@ class Items(object):
     """An overarching class for all item objects."""
     def __init__(self, name):
         self.name = name
+    def __str__(self):
+        return self.name
 
 class Class_Race_Items(Items):
     """Items whose function is to change the player's race or class."""

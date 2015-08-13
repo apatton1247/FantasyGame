@@ -2,138 +2,22 @@ class Options():
     """Provides the user input options and basic ways to interact with it."""
     def __init__(self, gameplay):
         self.gameplay = gameplay
-        self.options = {}
-        #Will be able to initialize self.options with instances of all the options
-        # on startup, since they'll be classes external to the Options class and will
-        # be defined once the options.py file is read into gameplay.py.
+        self.options = {Show, Clear_Output, Set_Action, Attr_Up, Level_Up, Xp_Up, Add_Player,
+                        Remove_Player, Enter, Use, Loot, Place}
 
-    #Won't need a populate method anymore (see above comment) once options are classes.
-    def populate(self):
-        self.options = {"show": [self.show, "visible"],
-                        "level up": [self.char_level_up, "hidden"],
-                        "xp up": [self.char_xp_up, "hidden"],
-                        "attr up": [self.char_attr_up, "hidden"],
-                        "add player": [self.add_player, "hidden"],
-                        "clear output": [self.clear_output, "hidden"],
-                        "enter": [self.enter, "visible"],
-                        "use": [self.use, "visible"]}
+    def get_options(self):
+        return self.options
 
     def text_parse(self, player, words):
-        opt_keys = {keywords for keywords in self.options}
-        for key in opt_keys:
-            if key in words:
-                remaining_words = words.replace(key, "").strip().split()
-                self.options[key][0](player, remaining_words)
-        #New interpret for once all options are classes and gameplay.whose_action is implemented.
-        #for opt in self.options:
-            #if opt.text in words:
-                #remaining_words = words.replace(opt.text, "").strip().split()
-                #if opt.useable(player, self.gameplay, remaining_words):
-                    #opt.use(player, self.gameplay, remaining_words)
-                    #break
-
+        #New interpret now that all options are classes and gameplay.whose_action is implemented.
+        for opt in self.options:
+            opt = opt()
+            if opt.text in words:
+                remaining_words = words.replace(opt.text, "").strip().split()
+                if opt.useable(player, self.gameplay, remaining_words):
+                    opt.use(player, self.gameplay, remaining_words)
+                    break
         
-    def show_options(self):
-        opts = [option for option in self.options if self.options[option][1] == "visible"]
-        self.gameplay.gui.options_text.set("\n".join(opts))
-
-    #Secret method for displaying all "hidden" options to the player
-    def show_hidden_options(self):
-        opts = [option for option in self.options if self.options[option][1] == "hidden"]
-        #print(opts)
-        self.gameplay.gui.options_text.set("\n".join(opts))
-        
-    def clear_output(self, player, words):
-        self.gameplay.gui.clear_output()
-
-    def show(self, player, words):
-        words = " ".join(words)
-        if words == "options":
-            self.show_options()
-        elif words == "hidden options":
-            self.show_hidden_options()
-        elif words in {player.name.lower() for player in self.gameplay.players}:
-            self.gameplay.gui.show_char_stats(words)
-
-    def char_attr_up(self, player, words):
-        if len(words) != 2:
-            self.gameplay.gui.write(text = "Option should be of the form '(player name) attr up (attribute) (amount)'.")
-        else:
-            attr, amt = words
-            player.attr_up(attr, int(amt))
-
-    def char_level_up(self, player, words):
-        if len(words) != 1:
-            self.gameplay.gui.write(text = "Option should be of the form '(player name) level up (amount)'.")
-        else:
-            amt = int(words[0])
-            player.level_up(int(amt))
-
-    def char_xp_up(self, player, words):
-        if len(words) != 1:
-            self.gameplay.gui.write(text = "Option should be of the form '(player name) xp up (amount)'.")
-        else:
-            amt = int(words[0])
-            player.xp_up(int(amt))
-                
-    def add_player(self, player, words):
-        if not len(words) == 1:
-            self.gameplay.gui.write(text = "Option should be of the form 'add player (name)'.")
-        else:
-            name = words[0]
-            name = name[0].upper() + name[1:]
-            self.gameplay.add_player(name)
-
-    def remove_player(self, player, words):
-    #Remove a player, but make it so that it only works on the player's own turn.
-        if len(words) != 1:
-            self.gameplay.gui.write(text = "Option should be of the form 'remove player (name)'.")
-        else:
-            name = words[0]
-            if name == player.name.lower():
-                self.gameplay.remove_player(name)
-
-    def enter(self, player, words):
-    #Causes a player to enter a different dimension.  Here's where there will be any checking of
-    # whether the move is allowed or possible.
-        if len(words) < 1:
-            self.gameplay.gui.write(text = "Option should be of the form '(player name) enter (dimension name)'.")
-        for index, word in enumerate(words):
-            words[index] = word[0].upper() + word[1:]
-        dim = " ".join(words)
-        if dim not in self.gameplay.all_dimensions:
-            self.gameplay.gui.write(text = "Unrecognizable dimension name.")
-        else:
-            #Should check here for whether the move is allowed (e.g. you can't teleport out of a battle into your shrine.)
-            #Need to get the player whose turn it is and do this to them.
-            player.chg_dimension(dim)
-            self.gameplay.gui.write(text = player.name + " has entered the " + dim + " dimension!")
-
-    def use(self, player, words):
-#TODO:  modify so that this can also activate race/class abilities!
-    #Player uses the specified item.  Any remaining words must follow the item/item-type's rules.
-        if len(words) == 0:
-            self.gameplay.gui.write(text = "Option should be of the form '(player name) use (item name) (optional qualifying words)'.")
-        words = " ".join(words)
-        for item in player.backpack:
-#TODO:  if the player is in the shrine, it should search the shrine's items too.
-            if item.name in words:
-                words = words.split()
-                start = words.index(item.name.split()[0])
-                #This will remove the words making up the item name, in order, from the
-                # remaining words.
-                for word in item.name.split():
-                    words.pop(start)
-                item_to_use = item
-                #Probably won't/shouldn't be more than one item called at a time.
-                break
-        if item_to_use.useable(player, self.gameplay, words):
-            item_to_use.use(player, self.gameplay, words)
-
-    #Loots the body of a slain monster.  Internally, transforms items-as-text into item objects.
-    def loot(self, player, words):
-        pass
-
 #################### Options Subclasses ####################
 
 class Show(Options):
@@ -141,7 +25,7 @@ class Show(Options):
     text, may show a character's stats, an ongoing encounter, or the player's valid
     options."""
     def __init__(self):
-        self.visibile = True
+        self.visible = True
         self.text = "show"
         self.err_text = "Option should be of the form 'Show (character name/battle/options)'."
     def useable(self, player, gameplay, words):
@@ -149,30 +33,30 @@ class Show(Options):
     def use(self, player, gameplay, words):
         words = " ".join(words)
         if words == "options":
-            self.show_options()
+            self.show_options(gameplay)
         elif words == "hidden options":
-            self.show_hidden_options()
+            self.show_hidden_options(gameplay)
         elif words == "backpack":
-            self.show_backpack(player)
-        elif words in {char.name.lower() for char in self.gameplay.players}:
+            self.show_backpack(player, gameplay)
+        elif words in {char.name.lower() for char in gameplay.players}:
             gameplay.gui.show_char_stats(words)
         #Can easily add elifs for battle (maybe even monster's name) or guardian game.
         else:
             gameplay.gui.write(text = self.err_text)
 
-    def show_options(self):
-        opts = [option.text for option in self.options if option.visible == True]
-        self.gameplay.gui.options_text.set("\n".join(opts))
+    def show_options(self, gameplay):
+        opts = [option().text for option in gameplay.opt.get_options() if option().visible == True]
+        gameplay.gui.options_text.set("\n".join(opts))
 
     #Secret method for displaying all "hidden" options to the player
-    def show_hidden_options(self):
-        opts = [option.text for option in self.options if option.visible == False]
-        self.gameplay.gui.options_text.set("\n".join(opts))
+    def show_hidden_options(self, gameplay):
+        opts = [option().text for option in gameplay.opt.get_options() if option().visible == False]
+        gameplay.gui.options_text.set("\n".join(opts))
 
     #Shows the player's backpack in the Options widget.
-    def show_backpack(self, player):
-        backpack_items = [item for item in player.backpack]
-        self.gameplay.gui.options_text.set("\n".join(backpack_items))
+    def show_backpack(self, player, gameplay):
+        backpack_items = [str(item) for item in player.backpack]
+        gameplay.gui.options_text.set("\n".join(backpack_items))
         
 class Clear_Output(Options):
     """Clears the output screen.  Mainly used, as an Option, for debugging."""
@@ -290,7 +174,7 @@ class Enter(Options):
         for word in words:
             dim_name.append(word[0].upper() + word[1:])
         dim_name = " ".join(dim_name)
-        if dim_name in self.gameplay.all_dimensions:
+        if dim_name in gameplay.all_dimensions:
             player.chg_dimension(dim_name)
             gameplay.gui.write(text = player.name + " has entered the " + dim_name + " dimension!")
         else:
@@ -302,8 +186,26 @@ class Use(Options):
         self.visible = True
         self.text = "use"
         #TODO:  Need to finish the error text
-        self.err_text = "Option should be of the form 'Use '"
-    pass
+        self.err_text = "Option should be of the form 'Use (item name / ability) (optional item/ability-dependent words)'."
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        words = " ".join(words)
+        items_to_search = [item for item in player.backpack]
+        if player.dimension == "Shrine":
+            items_to_search += [item for item in player.shrine]
+        for item in items_to_search:
+            if item.name.lower() in words:
+                words = words.replace(item.name.lower(), "")
+                if item.useable(player, gameplay, words):
+                    item_to_use.use(player, gameplay, words)
+                else:
+                    gameplay.gui.write(text = "Item '" + item.name + "' not useable at this time.")
+                #Probably shouldn't be more than one item called at a time. This will also preclude the abilities being searched.
+                break
+        else:
+            #If there's no item that matches, they possibly wanted to use an ability. Code this later.
+            pass
 
 class Loot(Options):
     def __init__(self):
@@ -327,7 +229,7 @@ class Place(Options):
     """Allows a player to move an item from their backpack or equipment into their shrine.  Only available when a player is in their shrine."""
     def __init__(self):
         self.visible = True
-        self.text = "put"
+        self.text = "place"
         self.err_text = "Option should be of the form 'Place (item name) in (location)'."
     def useable(self, player, gameplay, words):
         #TODO: We'll need to change this once dimensions have their own classes.

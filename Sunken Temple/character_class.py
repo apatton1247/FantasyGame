@@ -138,7 +138,7 @@ class Backpack():
     """A backpack stores the player's unequipped items."""
     def __init__(self):
         self.size = 25
-        self.contents = []
+        self.contents = ["Item One", "Item Two", "Item Three"]
     def __contains__(self, item):
         return (item in self.contents)
     def __iter__(self):
@@ -193,4 +193,6 @@ class Equipment():
         #If item.type == "headgear", self.headgear.remove(item)
         pass
     def get_item(self, item_name):
-        
+        #TODO: If an object exists somewhere in the player's equipment, searching its name with this method
+        # should return the object, and/or its location in equipment? Whichever would be more helpful.
+        pass
