@@ -24,6 +24,10 @@ class Options():
             if key in words:
                 remaining_words = words.replace(key, "").strip().split()
                 self.options[key][0](player, remaining_words)
+                break
+        else:
+            self.gameplay.gui.write(text = "Not a valid option")
+            self.show_options()
         #New interpret for once all options are classes and gameplay.whose_action is implemented.
         #for opt in self.options:
             #if opt.text in words:
@@ -31,7 +35,7 @@ class Options():
                 #if opt.useable(player, self.gameplay, remaining_words):
                     #opt.use(player, self.gameplay, remaining_words)
                     #break
-
+        
         
     def show_options(self):
         opts = [option for option in self.options if self.options[option][1] == "visible"]
@@ -100,7 +104,7 @@ class Options():
             self.gameplay.gui.write(text = "Option should be of the form '(player name) enter (dimension name)'.")
         for index, word in enumerate(words):
             words[index] = word[0].upper() + word[1:]
-        dim = " ".join(words[1:])
+        dim = " ".join(words)
         if dim not in self.gameplay.all_dimensions:
             self.gameplay.gui.write(text = "Unrecognizable dimension name.")
         else:

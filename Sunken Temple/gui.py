@@ -229,11 +229,11 @@ class Gui(Tk):
         if text:
             self.output_text.insert("end", "\n"+text)
         else:
+            self.options_text.set("")
             new_text = self.input_text.get()
+            self.game.interpret(new_text)
             self.input_text.set("")
             self.output_text.insert("end", "\n"+new_text)
-            self.options_text.set("")
-            self.game.interpret(new_text)
         self.output_text.config(state = "disabled")
         self.output_text.see("end")
 
