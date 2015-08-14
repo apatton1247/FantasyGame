@@ -34,9 +34,8 @@ class Necromancer(Char_Class):
 class Shaman(Char_Class):
     def __init__(self):
         self.powers = {"Sacrifice", "Summon"}
-        return (int(1.5*strength) + 2*spirit + intellect)
     def battle_calc(self, strength, intellect, spirit):
-        pass
+        return (int(1.5*strength) + 2*spirit + intellect)
     def sacrifice(self):
         pass
     def summon(self):

@@ -4,16 +4,16 @@ from classes import Classless, Sorceror, Necromancer, Shaman, Druid, Telepath, A
 
 class Items(object):
     """An overarching class for all item objects."""
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, item, name):
+        item.name = name
     def __str__(self):
         return self.name
 
 class Class_Race_Items(Items):
     """Items whose function is to change the player's race or class."""
-    def __init__(self, name):
-        Items.__init__(self, name)
-        self.dimensions = ["Shrine"]
+    def __init__(self, item, name):
+        Items.__init__(self, item, name)
+        item.dimensions = ["Shrine"]
 
     def useable(self, character, game, words):
         if character.dimension in self.dimensions:
@@ -70,10 +70,10 @@ class Vial_Of_Quicksilver(Class_Race_Items):
     def use(self, character, gameplay, words):
         character.change_race(Cyborg)
         
-class Sorcerors_Tome(Class_Race_Items):
-    """The Sorceror's Tome changes a player into a Sorceror."""
+class Sorceror_Tome(Class_Race_Items):
+    """The Sorceror Tome changes a player into a Sorceror."""
     def __init__(self):
-        Class_Race_Items(self, "Sorceror's Tome")
+        Class_Race_Items(self, "Sorceror Tome")
     def use(self, character, gameplay, words):
         character.change_class(Sorceror)
         

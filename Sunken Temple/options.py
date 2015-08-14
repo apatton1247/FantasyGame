@@ -17,6 +17,11 @@ class Options():
                 if opt.useable(player, self.gameplay, remaining_words):
                     opt.use(player, self.gameplay, remaining_words)
                     break
+        else:
+            #Only executes if the words you typed don't contain a valid option.
+            self.gameplay.gui.write(text = "Not a valid option.")
+            Show().show_options(self.gameplay)
+            
         
 #################### Options Subclasses ####################
 
@@ -158,7 +163,7 @@ class Remove_Player(Options):
         else:
             return False
     def use(self, player, gameplay, words):
-        gameplay.remove_player(name)
+        gameplay.remove_player(words.strip())
     
 class Enter(Options):
     """A player enters a specified dimension."""
@@ -198,7 +203,11 @@ class Use(Options):
             if item.name.lower() in words:
                 words = words.replace(item.name.lower(), "")
                 if item.useable(player, gameplay, words):
-                    item_to_use.use(player, gameplay, words)
+                    item.use(player, gameplay, words)
+                    if item in player.backpack:
+                        player.backpack.remove(item)
+                    else:
+                        player.shrine.remove(item)
                 else:
                     gameplay.gui.write(text = "Item '" + item.name + "' not useable at this time.")
                 #Probably shouldn't be more than one item called at a time. This will also preclude the abilities being searched.

@@ -58,7 +58,7 @@ class New_Game():
         for word in lower_case_item_name.split():
             word = word[0].upper() + word[1:]
             item_name.append(word)
-        item_name = " ".join(item_name)
+        item_name = "_".join(item_name)
         #This command gets the class of the item from items.py, and makes a new object from it.
         item = getattr(items_module, item_name, None)()
         return item
@@ -69,7 +69,7 @@ class New_Game():
 
     def interpret(self, text_string):
         text_string = text_string.lower()
-        text_string = text_string.replace("'", " ").strip()
+        text_string = text_string.replace("'", "").strip()
         #TODO: look into regex to split properly around punctuation,
         # including apostrophes, periods, etc.
         player_name = text_string.split()[0]

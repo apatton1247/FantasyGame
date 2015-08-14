@@ -138,7 +138,7 @@ class Backpack():
     """A backpack stores the player's unequipped items."""
     def __init__(self):
         self.size = 25
-        self.contents = ["Item One", "Item Two", "Item Three"]
+        self.contents = []
     def __contains__(self, item):
         return (item in self.contents)
     def __iter__(self):
