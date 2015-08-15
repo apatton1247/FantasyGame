@@ -117,16 +117,6 @@ class Character(object):
     # the item away?
         if item in self.shrine:
             self.shrine.remove(item)
-            
-##    def equipment_loc(self, item):
-##    #If a specified piece of equipment exists in the player's equipment, gives its location.
-##    #Else it returns an empty string.
-##        location = ""
-##        for equipment_type in self.equipment:
-##            for eq_item in self.equipment[equipment_type][1]:
-##                if item == eq_item:
-##                    location = equipment_type
-##        return location
 
     def chg_dimension(self, dim_name):
     #Sets the player's current dimension to the named dimension.  This will only
@@ -138,31 +128,35 @@ class Backpack():
     """A backpack stores the player's unequipped items."""
     def __init__(self):
         self.size = 25
-        self.contents = []
+        self.contents = {}
     def __contains__(self, item):
         return (item in self.contents)
     def __iter__(self):
-        self.index = 0
-        return self
-    def __next__(self):
-        if self.index >= len(self.contents):
-            raise StopIteration
-        else:
-            item = self.contents[self.index]
-            self.index += 1
-            return item
+        return iter(self.contents.items())
     def add(self, item):
-        if len(self.contents) < self.size:
-            self.contents.append(item)
-        else:
-            #TODO: This may be where we want to do checking to see if the player's backpack
-            # can hold more items, or if they have to choose which items to leave behind.
+        existing_item = self.get_item(item.name)
+        if existing_item:
+            #If item already exists in backpack, just increment quantity.
+            self.contents[existing_item] += 1
+        elif len(self.contents) >= self.size:
+            #TODO: This is where we want to check to see if the player's backpack can
+            # hold more items, or if they have to choose which items to leave behind.
             #What should happen at this point?  Some error message?
             pass
+        else:
+            #If it doesn't already exist but there's room, add item as a qty 1.
+            self.contents[item] = 1
     def remove(self, item):
         #This method will only be called when it is possible to be called; checking
         # to see if the item is already in the backpack will be left up to the caller.
-        self.contents.remove(item)
+        #Decrements the quantity of a certain item, and if qty hits 0, deletes the item.
+        self.contents[item] -= 1
+        if self.contents[item] < 1:
+            del(self.contents[item])
+    def get_item(self, item_name):
+        for item in self.contents:
+            if item_name == item.name:
+                return item
         
 class Equipment():
     """The player's equipped items."""

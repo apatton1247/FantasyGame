@@ -36,12 +36,7 @@ class New_Game():
 
     def remove_player(self, name):
         player = get_player(name)
-        #Through the magic of list indexing using negative numbers, next_player is the
-        # player immediately following the player who's removing themself from play.
-        next_player = self.players[self.players.index(player) - (len(self.players)-1)]
-        if player == self.gui.char_shown:
-            self.gui.char_shown = next_player
-        self.whose_action = next_player
+        self.next_turn(player)
         #Note: no provision currently made for the corner-case of there being only one
         # player who subsequently removes themself.
         #Maybe something to the effect of:
@@ -59,8 +54,11 @@ class New_Game():
     def next_turn(self, player):
         #Sets the action of the main turn to the next player in self.players.
         index = self.players.index(player)
+        #Through the magic of list indexing using negative numbers, next_player is the
+        # player immediately following the player who's removing themself from play.
         self.whose_action = self.players[index - len(self.players) + 1]
         self.gui.show_char_stats(self.whose_action)
+        self.gui.clear_output()
 
     def item_initialize(self, lower_case_item_name):
         item_name = []

@@ -60,7 +60,10 @@ class Show(Options):
 
     #Shows the player's backpack in the Options widget.
     def show_backpack(self, player, gameplay):
-        backpack_items = [str(item) for item in player.backpack]
+        backpack_items = [(str(item) + "   x" + str(qty)) for item, qty in player.backpack]
+        for index, item in enumerate(backpack_items):
+            if item[-2:] == "x1":
+                backpack_items[index] = item[:-5]
         gameplay.gui.options_text.set("\n".join(backpack_items))
         
 class Clear_Output(Options):
@@ -226,7 +229,7 @@ class Use(Options):
         return True
     def use(self, player, gameplay, words):
         words = " ".join(words)
-        items_to_search = [item for item in player.backpack]
+        items_to_search = [item for item, qty in player.backpack]
         if player.dimension == "Shrine":
             items_to_search += [item for item in player.shrine]
         for item in items_to_search:
@@ -281,7 +284,7 @@ class Place(Options):
             words[index] = word[0].upper() + word[1:]
         target_item_name = " ".join(words)
         #TODO: Need to figure out a way to search equally for items and their names.
-        for item in player.backpack:
+        for item, qty in player.backpack:
             if target_item_name == item.name:
                 player.add_shrine(item)
                 break
