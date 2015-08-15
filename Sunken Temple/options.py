@@ -2,8 +2,8 @@ class Options():
     """Provides the user input options and basic ways to interact with it."""
     def __init__(self, gameplay):
         self.gameplay = gameplay
-        self.options = {Show, Clear_Output, End_Turn, Attr_Up, Level_Up, Xp_Up, Add_Player,
-                        Remove_Player, Enter, Use, Loot, Place}
+        self.options = {Show, Clear_Output, End_Turn, Strength_Up, Spirit_Up, Intellect_Up,
+                        Level_Up, Xp_Up, Add_Player, Remove_Player, Enter, Use, Loot, Place}
 
     def get_options(self):
         return self.options
@@ -87,20 +87,50 @@ class End_Turn(Options):
         if not gameplay.whose_action:
             gameplay.gui.write(text = self.err_text)
 
-class Attr_Up(Options):
-    """Increases the strength, spirit, or intellect of the character.  Mainly used, as an Option, for debugging.\nGiven the new method for calculating a player's attributes, this method is somewhat deprecated."""
+class Strength_Up(Options):
+    """Increases the strength of the character.  Mainly used, as an Option, for debugging.\nGiven the new method for calculating a player's attributes, this method is somewhat deprecated."""
     def __init__(self):
         self.visible = False
-        self.text = "attr up"
-        self.err_text = "Option should be of the form '(player name) attr up (attribute) (amount)'."
+        self.text = "strength up"
+        self.err_text = "Option should be of the form 'Strength up (amount)'."
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
-        if len(words) != 2:
+        if len(words) != 1:
             gameplay.gui.write(text = self.err_text)
         else:
-            attr, amt = words
-            player.attr_up(attr, int(amt))
+            amt = words[0]
+            player.attr_up("strength", int(amt))
+
+class Spirit_Up(Options):
+    """Increases the spirit of the character.  Mainly used, as an Option, for debugging.\nGiven the new method for calculating a player's attributes, this method is somewhat deprecated."""
+    def __init__(self):
+        self.visible = False
+        self.text = "spirit up"
+        self.err_text = "Option should be of the form 'Spirit up (amount)'."
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        if len(words) != 1:
+            gameplay.gui.write(text = self.err_text)
+        else:
+            amt = words[0]
+            player.attr_up("spirit", int(amt))
+
+class Intellect_Up(Options):
+    """Increases the intellect of the character.  Mainly used, as an Option, for debugging.\nGiven the new method for calculating a player's attributes, this method is somewhat deprecated."""
+    def __init__(self):
+        self.visible = False
+        self.text = "intellect up"
+        self.err_text = "Option should be of the form 'intellect up (amount)'."
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        if len(words) != 1:
+            gameplay.gui.write(text = self.err_text)
+        else:
+            amt = words[0]
+            player.attr_up("intellect", int(amt))
 
 class Level_Up(Options):
     """Increases the level of the character.  Mainly used, as an Option, for debugging."""
