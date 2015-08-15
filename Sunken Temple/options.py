@@ -2,7 +2,7 @@ class Options():
     """Provides the user input options and basic ways to interact with it."""
     def __init__(self, gameplay):
         self.gameplay = gameplay
-        self.options = {Show, Clear_Output, Set_Action, Attr_Up, Level_Up, Xp_Up, Add_Player,
+        self.options = {Show, Clear_Output, End_Turn, Attr_Up, Level_Up, Xp_Up, Add_Player,
                         Remove_Player, Enter, Use, Loot, Place}
 
     def get_options(self):
@@ -74,16 +74,16 @@ class Clear_Output(Options):
     def use(self, player, gameplay, words):
         gameplay.gui.clear_output()
 
-class Set_Action(Options):
-    """Manually sets the game's action to be a particular player's.  Mainly used, as an Option, for debugging."""
+class End_Turn(Options):
+    """Scrolls through the turn order to the next player. At the moment, only the player whose turn it is may act."""
     def __init__(self):
         self.visible = False
-        self.text = "set action"
-        self.err_text = "Option should be of the form 'Set action (player name)'."
+        self.text = "end turn"
+        self.err_text = "Option should be of the form 'End Turn'."
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
-        gameplay.whose_action = gameplay.get_player(" ".join(words))
+        gameplay.next_turn(player)
         if not gameplay.whose_action:
             gameplay.gui.write(text = self.err_text)
 

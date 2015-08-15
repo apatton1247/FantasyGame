@@ -28,6 +28,9 @@ class New_Game():
     def add_player(self, name, **kwargs):
         p_color = self.assign_color()
         player = Character(name, color = p_color, **kwargs)
+        if not self.players:
+            #That is, if this player is the first to be added to self.players
+            self.whose_action = player
         self.players.append(player)
         self.gui.char_shown = player
 
@@ -53,6 +56,12 @@ class New_Game():
         else:
             return None
 
+    def next_turn(self, player):
+        #Sets the action of the main turn to the next player in self.players.
+        index = self.players.index(player)
+        self.whose_action = self.players[index - len(self.players) + 1]
+        self.gui.show_char_stats(self.whose_action)
+
     def item_initialize(self, lower_case_item_name):
         item_name = []
         for word in lower_case_item_name.split():
@@ -60,7 +69,11 @@ class New_Game():
             item_name.append(word)
         item_name = "_".join(item_name)
         #This command gets the class of the item from items.py, and makes a new object from it.
-        item = getattr(items_module, item_name, None)()
+        item = getattr(items_module, item_name, None)
+        if item:
+            item = item()
+        else:
+            self.gui.write(text = "No item '" + item_name.replace("_", " ") + "' exists.")
         return item
 
     def move_item(self, item, source, destination):
