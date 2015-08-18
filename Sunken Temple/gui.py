@@ -200,7 +200,7 @@ class Gui(Tk):
         self.bg_canvas.create_window((5*self.width/100), (80*self.height/100), anchor = "nw", window = entry)
         #### CREATES OUTPUT WIDGET ####
         self.output_text = Text(self.root, bg = "light gray", width = 65, height = 20, font=("Arial", 20), relief = "sunken", state = "normal", wrap = "word")
-        self.output_text.insert("end", "After adding a player, use the new 'set action (player name)' command to set which character will be implicitly acting in all commands following this one, until another 'set action (player name)' command is sent.  Once an actor is set, you may (and should) omit their name from future commands.  To change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'set action Dave'\n'level up 1'\n'intellect up -4'\n")
+        self.output_text.insert("end", "After adding a player, use the new 'set action (player name)' command to set which character will be implicitly acting in all commands following this one, until another 'set action (player name)' command is sent.  Once an actor is set, you may (and should) omit their name from future commands.  To change players's attributes, type an option (e.g. 'level up', 'show hidden options') and then the proper arguments to go with the option.  For example:\n'set action Dave'\n'level up 1'\n'attr up intellect -4'\n")
         self.output_text.config(state = "disabled")
                 ## POSITION ##
         self.bg_canvas.create_window((5*self.width/100), (10*self.height/100), anchor = "nw", window = self.output_text)
@@ -229,7 +229,6 @@ class Gui(Tk):
         if text:
             self.output_text.insert("end", text+"\n")
         else:
-            self.options_text.set("")
             new_text = self.input_text.get()
             self.game.interpret(new_text)
             self.input_text.set("")

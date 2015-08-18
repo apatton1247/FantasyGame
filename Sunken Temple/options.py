@@ -20,7 +20,7 @@ class Options():
         else:
             #Only executes if the words you typed don't contain a valid option.
             self.gameplay.gui.write(text = "Not a valid option.")
-            Show().show_options(self.gameplay)
+            Show().show_options(player, self.gameplay)
             
         
 #################### Options Subclasses ####################
@@ -38,9 +38,9 @@ class Show(Options):
     def use(self, player, gameplay, words):
         words = " ".join(words)
         if words == "options":
-            self.show_options(gameplay)
+            self.show_options(player, gameplay)
         elif words == "hidden options":
-            self.show_hidden_options(gameplay)
+            self.show_hidden_options(player, gameplay)
         elif words == "backpack":
             self.show_backpack(player, gameplay)
         elif words == "shrine":
@@ -51,13 +51,13 @@ class Show(Options):
         else:
             gameplay.gui.write(text = self.err_text)
 
-    def show_options(self, gameplay):
-        opts = [option().text for option in gameplay.opt.get_options() if option().visible == True]
+    def show_options(self, player, gameplay):
+        opts = [option().text for option in gameplay.opt.get_options() if option().visible == True and option().useable(player, gameplay, "")]
         gameplay.gui.options_text.set("\n".join(opts))
 
     #Secret method for displaying all "hidden" options to the player
-    def show_hidden_options(self, gameplay):
-        opts = [option().text for option in gameplay.opt.get_options() if option().visible == False]
+    def show_hidden_options(self, player, gameplay):
+        opts = [option().text for option in gameplay.opt.get_options() if option().visible == False and option().useable(player, gameplay, "")]
         gameplay.gui.options_text.set("\n".join(opts))
 
     #Shows the player's backpack in the Options widget.
@@ -287,6 +287,10 @@ class Loot(Options):
             item = gameplay.item_initialize(words)
             if item:
                 player.backpack.add(item)
+                Show().show_backpack(player, gameplay)
+        #If no words other than "loot" are entered, there's nothing to say what to loot
+        else:
+            gameplay.gui.write(text = self.err_text)
 
 class Place(Options):
     """Allows a player to move an item from their backpack or equipment into their shrine, and vice-versa.  Only available when a player is in their shrine."""
