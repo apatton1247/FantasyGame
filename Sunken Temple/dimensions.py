@@ -9,6 +9,8 @@ class Shrine(Dimensions):
         #TODO: this will change once only 1 shrine exists per personal_gameplay instance.
         Dimensions(self, name)
         self.contents = {}
+    def __str__(self):
+        return "The Shrine"
     def __contains__(self, item_name):
         for item in self.contents:
             if item.name == item_name:

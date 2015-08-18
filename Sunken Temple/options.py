@@ -233,7 +233,7 @@ class Enter(Options):
         dim = gameplay.get_dim(dim_name)
         if dim:
             player.chg_dimension(dim)
-            gameplay.gui.write(text = player.name + " has entered the " + dim.name + " dimension!")
+            gameplay.gui.write(text = player.name + " has entered the " + str(dim) + " dimension!")
         else:
             gameplay.gui.write(text = "Unrecognizable dimension name.")
 
