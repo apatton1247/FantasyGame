@@ -2,16 +2,17 @@ class Options():
     """Provides the user input options and basic ways to interact with it."""
     def __init__(self, gameplay):
         self.gameplay = gameplay
-        self.options = {Show, Clear_Output, End_Turn, Strength_Up, Spirit_Up, Intellect_Up,
-                        Level_Up, Xp_Up, Add_Player, Remove_Player, Enter, Use, Loot, Place}
-
+        self.options = {Show(self), Clear_Output(), End_Turn(), Strength_Up(), Spirit_Up(), Intellect_Up(),
+                        Level_Up(), Xp_Up(), Add_Player(), Remove_Player(), Enter(), Use(), Loot(),
+                        Place(), Hide(self), Unhide(self)}
+        self.stored_output_text = ""
+        
     def get_options(self):
         return self.options
 
     def text_parse(self, player, words):
         #New interpret now that all options are classes and gameplay.whose_action is implemented.
         for opt in self.options:
-            opt = opt()
             if opt.text in words:
                 remaining_words = words.replace(opt.text, "").strip().split()
                 if opt.useable(player, self.gameplay, remaining_words):
@@ -20,8 +21,6 @@ class Options():
         else:
             #Only executes if the words you typed don't contain a valid option.
             self.gameplay.gui.write(text = "Not a valid option.")
-            Show().show_options(player, self.gameplay)
-            
         
 #################### Options Subclasses ####################
 
@@ -29,7 +28,7 @@ class Show(Options):
     """Displays information for the player to see. Depending on the player's input
     text, may show a character's stats, an ongoing encounter, or the player's valid
     options."""
-    def __init__(self):
+    def __init__(self, options):
         self.visible = True
         self.text = "show"
         self.err_text = "Option should be of the form 'Show (character name/battle/options)'."
@@ -52,12 +51,12 @@ class Show(Options):
             gameplay.gui.write(text = self.err_text)
 
     def show_options(self, player, gameplay):
-        opts = [option().text for option in gameplay.opt.get_options() if option().visible == True and option().useable(player, gameplay, "")]
+        opts = [option.text for option in gameplay.opt.get_options() if option.visible == True and option.useable(player, gameplay, "")]
         gameplay.gui.options_text.set("\n".join(opts))
 
     #Secret method for displaying all "hidden" options to the player
     def show_hidden_options(self, player, gameplay):
-        opts = [option().text for option in gameplay.opt.get_options() if option().visible == False and option().useable(player, gameplay, "")]
+        opts = [option.text for option in gameplay.opt.get_options() if option.visible == False and option.useable(player, gameplay, "")]
         gameplay.gui.options_text.set("\n".join(opts))
 
     #Shows the player's backpack in the Options widget.
@@ -77,6 +76,29 @@ class Show(Options):
             gameplay.gui.options_text.set("\n".join(shrine_items))
         else:
             gameplay.gui.write(text = "You can only view Shrine contents from within your Shrine.")
+
+class Hide(Options):
+    """Clears the options screen."""
+    def __init__(self, options):
+        self.options = options
+        self.visible = True
+        self.text = "hide"
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        self.options.stored_output_text = gameplay.gui.output_text.get("1.0","end")
+        gameplay.gui.options_text.set("")
+
+class Unhide(Options):
+    """Clears the options screen."""
+    def __init__(self, options):
+        self.options = options
+        self.visible = True
+        self.text = "hide"
+    def useable(self, player, gameplay, words):
+        return True
+    def use(self, player, gameplay, words):
+        gameplay.gui.write(text = self.options.stored_output_text)
         
 class Clear_Output(Options):
     """Clears the output screen.  Mainly used, as an Option, for debugging."""
@@ -102,9 +124,11 @@ class End_Turn(Options):
     def use(self, player, gameplay, words):
         gameplay.next_turn(player)
         gameplay.gui.write(text = gameplay.whose_action.name + "'s turn:")
+        stored_output_text = ""
         if not gameplay.whose_action:
             gameplay.gui.write(text = self.err_text)
-
+            
+            
 class Strength_Up(Options):
     """Increases the strength of the character.  Mainly used, as an Option, for debugging.\nGiven the new method for calculating a player's attributes, this method is somewhat deprecated."""
     def __init__(self):
