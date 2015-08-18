@@ -1,7 +1,8 @@
+from dimensions import Shrine
 from races import Human, Dwarf, Elf, Golem, Reptilian, Phantasm, Alien, Cyborg
 from classes import Classless, Sorceror, Necromancer, Shaman, Druid, Telepath, Assassin, Warrior
 
-class Character(object):
+class Character():
     def __init__(self, name, color, level=1, strength=5, spirit=5, intellect=5):
         #This initializes basic Character traits
         self.name = name
@@ -19,14 +20,14 @@ class Character(object):
         # the same form as an equipment entry.
         self.backpack = Backpack()
         #This initializes shrine (stored items)
-        self.shrine = []
+        self.shrine = Shrine(self.name + " Shrine")
         #This initializes gem pouch
         self.gems = {"ruby": 0, "citrine": 0, "topaz": 0, "emerald": 0,
                      "sapphire": 0, "amethyst": 0, "diamond": 0}
 
         #Your location determines your available actions, including which
         # items you can use.
-        self.dimension = "Temple"
+        self.dimension = None
     
         #This initializes your Attributes
         self.strength = strength
@@ -59,7 +60,7 @@ class Character(object):
         self.strength = 5
         self.spirit = 5
         self.intellect = 5
-        #add attributes that come from items
+        #TODO: add attributes that come from items
 #        self.strength, self.spirit, self.intellect = self.equip_calc()
         #add attributes that come from race bonus
         self.strength, self.spirit, self.intellect = self.char_race.race_bonus_calc(self)
@@ -103,25 +104,22 @@ class Character(object):
         for gem in gem_dict:
             self.gems[gem] -= gem_dict[gem]
 
-    def add_shrine(self, item):
+    def move_item(self, found_item_loc, new_item_loc):
     #Adds an item from the player's equipment or backpack to the shrine.
+        item = found_item_loc.last_item
+        found_item_loc.remove(item)
+        new_item_loc.add(item)
+
+    def drop_item(self, item):
+    #Removes an item from the player's backpack; the equivalent of a player throwing
+    # the item away.
         if item in self.backpack:
             self.backpack.remove(item)
-            self.shrine.append(item)
-        elif item in self.equipment:
-            self.equipment.remove(item)
-            self.shrine.append(item)
 
-    def rem_shrine(self, item):
-    #Removes an item from the player's shrine.  Is this the equivalent of a player throwing
-    # the item away?
-        if item in self.shrine:
-            self.shrine.remove(item)
-
-    def chg_dimension(self, dim_name):
+    def chg_dimension(self, dim):
     #Sets the player's current dimension to the named dimension.  This will only
     # be called when it is allowed to be called.
-        self.dimension = dim_name
+        self.dimension = dim
 
 
 class Backpack():
@@ -129,8 +127,13 @@ class Backpack():
     def __init__(self):
         self.size = 25
         self.contents = {}
-    def __contains__(self, item):
-        return (item in self.contents)
+    def __contains__(self, item_name):
+        for item in self.contents:
+            if item.name == item_name:
+                self.last_item = item
+                return True
+        else:
+            return False
     def __iter__(self):
         return iter(self.contents.items())
     def add(self, item):
@@ -150,13 +153,15 @@ class Backpack():
         #This method will only be called when it is possible to be called; checking
         # to see if the item is already in the backpack will be left up to the caller.
         #Decrements the quantity of a certain item, and if qty hits 0, deletes the item.
-        self.contents[item] -= 1
-        if self.contents[item] < 1:
-            del(self.contents[item])
+        existing_item = self.get_item(item.name)
+        self.contents[existing_item] -= 1
+        if self.contents[existing_item] < 1:
+            del(self.contents[existing_item])
     def get_item(self, item_name):
-        for item in self.contents:
-            if item_name == item.name:
-                return item
+        if item_name in self:
+            return self.last_item
+        else:
+            return None
         
 class Equipment():
     """The player's equipped items."""
@@ -171,9 +176,14 @@ class Equipment():
         self.weapons = []
         self.footgear = []
         self.slotless = []
-    def __contains__(self, item):
-        if (item in self.headgear) or (item in self.armor) or (item in self.weapons) or (item in self.footgear) or (item in self.slotless):
-            return True
+    def __contains__(self, item_name):
+        for loc in (self.headgear, self.armor, self.weapons, self.footgear, self.slotless):
+            for item in loc:
+                if item.name == item_name:
+                    #Sets these attributes as a sort of short-term equipment-memory for the last-found item.
+                    self.last_item = item
+                    self.last_loc = loc
+                    return True
         else:
             return False
     def __iter__(self):

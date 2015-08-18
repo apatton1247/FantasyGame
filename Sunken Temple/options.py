@@ -43,6 +43,8 @@ class Show(Options):
             self.show_hidden_options(gameplay)
         elif words == "backpack":
             self.show_backpack(player, gameplay)
+        elif words == "shrine":
+            self.show_shrine(player, gameplay)
         elif words in {char.name.lower() for char in gameplay.players}:
             gameplay.gui.show_char_stats(words)
         #Can easily add elifs for battle (maybe even monster's name) or guardian game.
@@ -60,11 +62,21 @@ class Show(Options):
 
     #Shows the player's backpack in the Options widget.
     def show_backpack(self, player, gameplay):
-        backpack_items = [(str(item) + "   x" + str(qty)) for item, qty in player.backpack]
+        backpack_items = [(item.name + "   x" + str(qty)) for item, qty in player.backpack]
         for index, item in enumerate(backpack_items):
             if item[-2:] == "x1":
                 backpack_items[index] = item[:-5]
         gameplay.gui.options_text.set("\n".join(backpack_items))
+
+    def show_shrine(self, player, gameplay):
+        if player.dimension == player.shrine:
+            shrine_items = [(item.name + "   x" + str(qty)) for item, qty in player.shrine]
+            for index, item in enumerate(shrine_items):
+                if item[-2:] == "x1":
+                    shrine_items[index] = item[:-5]
+            gameplay.gui.options_text.set("\n".join(shrine_items))
+        else:
+            gameplay.gui.write(text = "You can only view Shrine contents from within your Shrine.")
         
 class Clear_Output(Options):
     """Clears the output screen.  Mainly used, as an Option, for debugging."""
@@ -84,9 +96,12 @@ class End_Turn(Options):
         self.text = "end turn"
         self.err_text = "Option should be of the form 'End Turn'."
     def useable(self, player, gameplay, words):
+        #TODO:  Need to figure out what sort of test to run to make sure that you can't end your turn in the
+        # middle of action, like inside a battle or in the middle of a trade.
         return True
     def use(self, player, gameplay, words):
         gameplay.next_turn(player)
+        gameplay.gui.write(text = gameplay.whose_action.name + "'s turn:")
         if not gameplay.whose_action:
             gameplay.gui.write(text = self.err_text)
 
@@ -178,6 +193,7 @@ class Add_Player(Options):
             words[index] = word[0].upper() + word[1:]
         name = " ".join(words)
         gameplay.add_player(name)
+        gameplay.gui.write(text = "Player " + name + " has joined the game!")
 
 class Remove_Player(Options):
     """Removes a player from the game. May only be used by the player who wishes to be removed."""
@@ -212,9 +228,12 @@ class Enter(Options):
         for word in words:
             dim_name.append(word[0].upper() + word[1:])
         dim_name = " ".join(dim_name)
-        if dim_name in gameplay.all_dimensions:
-            player.chg_dimension(dim_name)
-            gameplay.gui.write(text = player.name + " has entered the " + dim_name + " dimension!")
+        if dim_name == "Shrine":
+            dim_name = player.name + " Shrine"
+        dim = gameplay.get_dim(dim_name)
+        if dim:
+            player.chg_dimension(dim)
+            gameplay.gui.write(text = player.name + " has entered the " + dim.name + " dimension!")
         else:
             gameplay.gui.write(text = "Unrecognizable dimension name.")
 
@@ -223,21 +242,21 @@ class Use(Options):
     def __init__(self):
         self.visible = True
         self.text = "use"
-        #TODO:  Need to finish the error text
         self.err_text = "Option should be of the form 'Use (item name / ability) (optional item/ability-dependent words)'."
     def useable(self, player, gameplay, words):
+        #Will this always be useable?
         return True
     def use(self, player, gameplay, words):
         words = " ".join(words)
         items_to_search = [item for item, qty in player.backpack]
-        if player.dimension == "Shrine":
+        if "Shrine" in player.dimension.name:
             items_to_search += [item for item in player.shrine]
         for item in items_to_search:
             if item.name.lower() in words:
                 words = words.replace(item.name.lower(), "")
                 if item.useable(player, gameplay, words):
                     item.use(player, gameplay, words)
-                    if item in player.backpack:
+                    if item.name in player.backpack:
                         player.backpack.remove(item)
                     else:
                         player.shrine.remove(item)
@@ -247,6 +266,8 @@ class Use(Options):
                 break
         else:
             #If there's no item that matches, they possibly wanted to use an ability. Code this later.
+            #Also may want to put ability-checking ahead of item-checking; there'll likely be fewer to check
+            # and it could end up saving a lot of time.
             pass
 
 class Loot(Options):
@@ -268,30 +289,41 @@ class Loot(Options):
                 player.backpack.add(item)
 
 class Place(Options):
-    """Allows a player to move an item from their backpack or equipment into their shrine.  Only available when a player is in their shrine."""
+    """Allows a player to move an item from their backpack or equipment into their shrine, and vice-versa.  Only available when a player is in their shrine."""
     def __init__(self):
         self.visible = True
         self.text = "place"
-        self.err_text = "Option should be of the form 'Place (item name) in (location)'."
+        self.err_text = "Option should be of the form 'Place (item name) in (shrine/backpack)'."
     def useable(self, player, gameplay, words):
         #TODO: We'll need to change this once dimensions have their own classes.
-        if player.dimension == "Shrine":
+        if "Shrine" in player.dimension.name:
             return True
         else:
             return False
     def use(self, player, gameplay, words):
-        for index, word in enumerate(words):
-            words[index] = word[0].upper() + word[1:]
-        target_item_name = " ".join(words)
-        #TODO: Need to figure out a way to search equally for items and their names.
-        for item, qty in player.backpack:
-            if target_item_name == item.name:
-                player.add_shrine(item)
-                break
+        #TODO: enable the "place (item name) in (shrine/backpack)" syntax.
+        if " ".join(words[-2:]) == "in backpack":
+            words = words[:-2]
+            for index, word in enumerate(words):
+                words[index] = word[0].upper() + word[1:]
+            target_item_name = " ".join(words)
+            if target_item_name in player.shrine:
+                player.move_item(player.shrine, player.backpack)
+        elif " ".join(words[-2:]) == "in shrine":
+            words = words[:-2]
+            for index, word in enumerate(words):
+                words[index] = word[0].upper() + word[1:]
+            target_item_name = " ".join(words)
+            if target_item_name in player.backpack:
+                player.move_item(player.backpack, player.shrine)
+            elif target_item_name in player.equipment:
+                player.move_item(player.equipment, player.shrine)
         else:
-            equip_loc = player.equipment_loc(item)
-            if equip_loc:
-                player.add_shrine(item)
+            gameplay.gui.write(text = self.err_text)
+
+
+        
+
 
 class Equip(Options):
     """Players not in battle may put on their equipment from their backpack, or directly from in their Shrine."""

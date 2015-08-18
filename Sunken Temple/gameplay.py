@@ -1,12 +1,10 @@
-#At this early point, gameplay just has a list of characters that get created at
-# runtime, and calls the char_stats frame creator/populator for each.
-
 import random
 from character_class import Character
 import gui as g
 from matplotlib.animation import FuncAnimation
 import options
 import items as items_module
+import dimensions
 
 class New_Game():
     def __init__(self):
@@ -17,7 +15,8 @@ class New_Game():
                           "goldenrod", "yellow", "black"]
         self.gui = g.Gui(self)
         self.opt = options.Options(self)
-        self.all_dimensions = {"Temple", "Shrine", "Temple Guardian Dimension"}
+        self.temple = dimensions.Temple()
+        self.all_dimensions = {self.temple, dimensions.Guardian_Dimension()}
         #May revise what the guardian one is called, remember to add more.
         
     def assign_color(self):
@@ -28,10 +27,12 @@ class New_Game():
     def add_player(self, name, **kwargs):
         p_color = self.assign_color()
         player = Character(name, color = p_color, **kwargs)
+        player.chg_dimension(self.temple)
         if not self.players:
             #That is, if this player is the first to be added to self.players
             self.whose_action = player
         self.players.append(player)
+        self.all_dimensions.add(player.shrine)
         self.gui.char_shown = player
 
     def remove_player(self, name):
@@ -59,6 +60,13 @@ class New_Game():
         self.whose_action = self.players[index - len(self.players) + 1]
         self.gui.show_char_stats(self.whose_action)
         self.gui.clear_output()
+
+    def get_dim(self, dim_name):
+        for dimension in self.all_dimensions:
+            if dimension.name == dim_name:
+                return dimension
+        else:
+            return None
 
     def item_initialize(self, lower_case_item_name):
         item_name = []
