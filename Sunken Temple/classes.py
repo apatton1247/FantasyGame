@@ -3,6 +3,8 @@ class Char_Class():
         return self.__class__.__name__
 
 class Classless(Char_Class):
+    def __str__(self):
+        return ""
     def __init__(self):
         self.powers = {}
         pass

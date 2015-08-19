@@ -5,8 +5,7 @@ class Options():
         self.options = {Show(self), Clear_Output(), End_Turn(), Strength_Up(), Spirit_Up(), Intellect_Up(),
                         Level_Up(), Xp_Up(), Add_Player(), Remove_Player(), Enter(), Use(), Loot(),
                         Place(), Hide(self), Unhide(self)}
-        self.stored_output_text = ""
-        
+
     def get_options(self):
         return self.options
 
@@ -78,7 +77,7 @@ class Show(Options):
             gameplay.gui.write(text = "You can only view Shrine contents from within your Shrine.")
 
 class Hide(Options):
-    """Clears the options screen."""
+    """Hides the options and output screens."""
     def __init__(self, options):
         self.options = options
         self.visible = True
@@ -86,19 +85,20 @@ class Hide(Options):
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
-        self.options.stored_output_text = gameplay.gui.output_text.get("1.0","end")
-        gameplay.gui.options_text.set("")
-
+        gameplay.gui.options_frame.lower()
+        gameplay.gui.output_text.lower()
+        
 class Unhide(Options):
-    """Clears the options screen."""
+    """Unhides the options and output screens."""
     def __init__(self, options):
         self.options = options
         self.visible = True
-        self.text = "hide"
+        self.text = "unhide"
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
-        gameplay.gui.write(text = self.options.stored_output_text)
+        gameplay.gui.options_frame.lift()
+        gameplay.gui.output_text.lift()
         
 class Clear_Output(Options):
     """Clears the output screen.  Mainly used, as an Option, for debugging."""
@@ -124,7 +124,7 @@ class End_Turn(Options):
     def use(self, player, gameplay, words):
         gameplay.next_turn(player)
         gameplay.gui.write(text = gameplay.whose_action.name + "'s turn:")
-        stored_output_text = ""
+        gameplay.gui.options_text.set("")
         if not gameplay.whose_action:
             gameplay.gui.write(text = self.err_text)
             
@@ -257,7 +257,7 @@ class Enter(Options):
         dim = gameplay.get_dim(dim_name)
         if dim:
             player.chg_dimension(dim)
-            gameplay.gui.write(text = player.name + " has entered the " + str(dim) + " dimension!")
+            gameplay.gui.write(text = player.name + " has entered " + str(dim) + " dimension!")
         else:
             gameplay.gui.write(text = "Unrecognizable dimension name.")
 

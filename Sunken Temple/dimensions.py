@@ -43,8 +43,8 @@ class Shrine(Dimensions):
 
 class Temple(Dimensions):
     def __init__(self):
-        Dimensions(self, "Temple")
+        Dimensions(self, "The Temple")
 
 class Guardian_Dimension(Dimensions):
     def __init__(self):
-        Dimensions(self, "Guardian Dimension")
+        Dimensions(self, "The Guardian Dimension")
