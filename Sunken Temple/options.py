@@ -4,14 +4,13 @@ class Options():
         self.gameplay = gameplay
         self.options = {Show(self), Clear_Output(), End_Turn(), Strength_Up(), Spirit_Up(), Intellect_Up(),
                         Level_Up(), Xp_Up(), Add_Player(), Remove_Player(), Enter(), Use(), Loot(self),
-                        Place(), Hide(self), Unhide(self)}
+                        Place(), Hide()}
         self.last_shown = ""
 
     def get_options(self):
         return self.options
 
     def text_parse(self, player, words):
-        #New interpret now that all options are classes and gameplay.whose_action is implemented.
         for opt in self.options:
             if opt.text in words:
                 remaining_words = words.replace(opt.text, "").strip().split()
@@ -94,28 +93,21 @@ class Show(Options):
             gameplay.gui.write(text = "You can only view Shrine contents from within your Shrine.")
 
 class Hide(Options):
-    """Hides the options and output screens."""
-    def __init__(self, options):
-        self.options = options
+    """Hides/Unhides the options and output screens."""
+    def __init__(self):
         self.visible = True
         self.text = "hide"
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
-        gameplay.gui.options_frame.lower()
-        gameplay.gui.output_text.lower()
-        
-class Unhide(Options):
-    """Unhides the options and output screens."""
-    def __init__(self, options):
-        self.options = options
-        self.visible = True
-        self.text = "unhide"
-    def useable(self, player, gameplay, words):
-        return True
-    def use(self, player, gameplay, words):
-        gameplay.gui.options_frame.lift()
-        gameplay.gui.output_text.lift()
+        if self.text == "hide":
+            gameplay.gui.options_frame.lower()
+            gameplay.gui.output_text.lower()
+            self.text = "unhide"
+        elif self.text == "unhide":
+            gameplay.gui.options_frame.lift()
+            gameplay.gui.output_text.lift()
+            self.text = "hide"
         
 class Clear_Output(Options):
     """Clears the output screen.  Mainly used, as an Option, for debugging."""
