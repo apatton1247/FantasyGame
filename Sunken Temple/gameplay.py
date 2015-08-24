@@ -41,7 +41,7 @@ class New_Game():
         #Note: no provision currently made for the corner-case of there being only one
         # player who subsequently removes themself.
         #Maybe something to the effect of:
-        #if not self.players:
+        #if len(self.players) == 1:
         #    self.gui.char_shown = Character("", color = "white")
         self.players.remove(player)
 

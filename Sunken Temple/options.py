@@ -3,7 +3,7 @@ class Options():
     def __init__(self, gameplay):
         self.gameplay = gameplay
         self.options = {Show(self), Clear_Output(), End_Turn(), Strength_Up(), Spirit_Up(), Intellect_Up(),
-                        Level_Up(), Xp_Up(), Add_Player(), Remove_Player(), Enter(), Use(), Loot(self),
+                        Level_Up(), Xp_Up(), Add_Player(self), Remove_Player(), Enter(), Use(), Loot(self),
                         Place(), Hide()}
         self.last_shown = ""
 
@@ -47,6 +47,12 @@ class Show(Options):
             self.show_options(player, gameplay)
         elif words == "hidden options":
             self.show_hidden_options(player, gameplay)
+        elif words == "players":
+            self.show_players(player, gameplay)
+        elif words == "next":
+            self.show_next(player, gameplay)
+        elif words == "me":
+            self.show_me(player, gameplay)
         elif words == "backpack":
             self.show_backpack(player, gameplay)
         elif words == "shrine":
@@ -71,7 +77,24 @@ class Show(Options):
         opts = [option.text for option in gameplay.opt.get_options() if option.visible == False and option.useable(player, gameplay, "")]
         gameplay.gui.options_text.set("Hidden Options:\n" + "\n".join(opts))
         self.options.last_shown = "hidden options".split()
-        
+
+    #Shows all players' names, in the order they joined the game.
+    def show_players(self, player, gameplay):
+        gameplay.gui.options_text.set("Players:\n" + "\n".join([player.name for player in gameplay.players]))
+        self.options.last_shown = "players".split()
+
+    #Shows the player that comes next in the play order after the one currently shown.
+    def show_next(self, player, gameplay):
+        shown_player = gameplay.gui.char_shown
+        for index, player_obj in enumerate(gameplay.players):
+            if player_obj == shown_player:
+                gameplay.gui.show_char_stats(gameplay.players[index - len(gameplay.players) + 1])
+                break
+
+    #Shows the current player; players don't have to remember/exactly correctly type their own name
+    def show_me(self, player, gameplay):
+        gameplay.gui.show_char_stats(player)
+
     #Shows the player's backpack in the Options widget.
     def show_backpack(self, player, gameplay):
         backpack_items = [(item.name + "   x" + str(qty)) for item, qty in player.backpack]
@@ -215,10 +238,11 @@ class Xp_Up(Options):
 
 class Add_Player(Options):
     """Adds a player to the game."""
-    def __init__(self):
+    def __init__(self, options):
         self.visible = False
         self.text = "add player"
         self.err_text = "Option should be of the form 'Add player (player name)'."
+        self.options = options
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
@@ -227,6 +251,7 @@ class Add_Player(Options):
         name = " ".join(words)
         gameplay.add_player(name)
         gameplay.gui.write(text = "Player " + name + " has joined the game!")
+        self.options.last_shown = ["players"]
 
 class Remove_Player(Options):
     """Removes a player from the game. May only be used by the player who wishes to be removed."""
