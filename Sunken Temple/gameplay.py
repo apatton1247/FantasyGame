@@ -60,6 +60,7 @@ class New_Game():
         self.whose_action = self.players[index - len(self.players) + 1]
         self.gui.show_char_stats(self.whose_action)
         self.gui.clear_output()
+        self.opt.last_shown = ""
 
     def get_dim(self, dim_name):
         for dimension in self.all_dimensions:

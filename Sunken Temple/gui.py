@@ -175,6 +175,8 @@ class Gui(Tk):
         self.xp_bar.yaxis.set_label_coords(1.04, -.3)
         self.xp_bar.set_xlim(0, self.p_xp_for_level.get())
         self.xp_bar.set_ylim(0, 0.8)
+        #### UPDATE OPTIONS TEXTBOX ####
+        self.game.opt.show_last()
 
 ######## ADD OPTIONS FRAME ########
     def add_options_frame(self):

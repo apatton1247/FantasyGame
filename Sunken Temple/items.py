@@ -1,6 +1,5 @@
 import gameplay
-from races import Human, Dwarf, Elf, Golem, Reptilian, Phantasm, Alien, Cyborg
-from classes import Classless, Sorceror, Necromancer, Shaman, Druid, Telepath, Assassin, Warrior
+from races_and_classes import Human, Dwarf, Elf, Golem, Reptilian, Phantasm, Alien, Cyborg, Classless, Sorceror, Necromancer, Shaman, Druid, Telepath, Assassin, Warrior
 
 class Items(object):
     """An overarching class for all item objects."""
@@ -26,98 +25,112 @@ class Enchanted_Flask_Of_Ale(Class_Race_Items):
     def __init__(self):
         Class_Race_Items(self, "Enchanted Flask Of Ale")
     def use(self, character, gameplay, words):
-        character.change_race(Dwarf)
+        err_text = character.change_race(Dwarf)
+        return err_text
 
 class Magical_Flute(Class_Race_Items):
     """The Magical_Flute changes a player into an Elf."""
     def __init__(self):
         Class_Race_Items(self, "Magical Flute")
     def use(self, character, gameplay, words):
-        character.change_race(Elf)
+        err_text = character.change_race(Elf)
+        return err_text
         
 class Obsidian_Shard(Class_Race_Items):
     """The Obsidian Shard changes a player into a Golem."""
     def __init__(self):
         Class_Race_Items(self, "Obsidian Shard")
     def use(self, character, gameplay, words):
-        character.change_race(Golem)
+        err_text = character.change_race(Golem)
+        return err_text
         
 class Petrified_Egg(Class_Race_Items):
     """The Petrified Egg changes a player into a Reptilian."""
     def __init__(self):
         Class_Race_Items(self, "Petrified Egg")
     def use(self, character, gameplay, words):
-        character.change_race(Reptilian)
+        err_text = character.change_race(Reptilian)
+        return err_text
         
 class Dark_Orb(Class_Race_Items):
     """The Dark Orb changes a player into a Phantasm."""
     def __init__(self):
         Class_Race_Items(self, "Dark Orb")
     def use(self, character, gameplay, words):
-        character.change_race(Phantasm)
+        err_text = character.change_race(Phantasm)
+        return err_text
         
 class Strange_Moon_Rock(Class_Race_Items):
     """The Strange Moon Rock changes a player into an Alien."""
     def __init__(self):
         Class_Race_Items(self, "Strange Moon Rock")
     def use(self, character, gameplay, words):
-        character.change_race(Alien)
+        err_text = character.change_race(Alien)
+        return err_text
         
 class Vial_Of_Quicksilver(Class_Race_Items):
     """The Vial of Quicksilver changes a player into a Cyborg."""
     def __init__(self):
         Class_Race_Items(self, "Vial Of Quicksilver")
     def use(self, character, gameplay, words):
-        character.change_race(Cyborg)
+        err_text = character.change_race(Cyborg)
+        return err_text
         
 class Sorceror_Tome(Class_Race_Items):
     """The Sorceror Tome changes a player into a Sorceror."""
     def __init__(self):
         Class_Race_Items(self, "Sorceror Tome")
     def use(self, character, gameplay, words):
-        character.change_class(Sorceror)
+        err_text = character.change_class(Sorceror)
+        return err_text
         
 class Cursed_Skull(Class_Race_Items):
     """The Cursed Skull changes a player into a Necromancer."""
     def __init__(self):
         Class_Race_Items(self, "Cursed Skull")
     def use(self, character, gameplay, words):
-        character.change_class(Necromancer)
+        err_text = character.change_class(Necromancer)
+        return err_text
 
 class Ceremonial_Mask(Class_Race_Items):
     """The Ceremonial Mask changes a player into a Shaman."""
     def __init__(self):
         Class_Race_Items(self, "Ceremonial Mask")
     def use(self, character, gameplay, words):
-        character.change_class(Shaman)
+        err_text = character.change_class(Shaman)
+        return err_text
 
 class Herbal_Potion(Class_Race_Items):
     """The Herbal Potion changes a player into a Druid."""
     def __init__(self):
         Class_Race_Items(self, "Herbal Potion")
     def use(self, character, gameplay, words):
-        character.change_class(Druid)
+        err_text = character.change_class(Druid)
+        return err_text
 
 class Mystic_Crystal(Class_Race_Items):
     """The Mystic Crystal changes a player into a Telepath."""
     def __init__(self):
         Class_Race_Items(self, "Mystic Crystal")
     def use(self, character, gameplay, words):
-        character.change_class(Telepath)
+        err_text = character.change_class(Telepath)
+        return err_text
 
 class Blood_Oath_Contract(Class_Race_Items):
     """The Blood Oath Contract changes a player into an Assassin."""
     def __init__(self):
         Class_Race_Items(self, "Blood Oath Contract")
     def use(self, character, gameplay, words):
-        character.change_class(Assassin)
+        err_text = character.change_class(Assassin)
+        return err_text
 
 class War_Horn(Class_Race_Items):
     """The War Horn changes a player into a Warrior."""
     def __init__(self):
         Class_Race_Items(self, "War Horn")
     def use(self, character, gameplay, words):
-        character.change_class(Warrior)
+        err_text = character.change_class(Warrior)
+        return err_text
 
 class Bone(Items):
     """A bone earned from defeating a monster in combat."""

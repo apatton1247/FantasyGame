@@ -3,8 +3,9 @@ class Options():
     def __init__(self, gameplay):
         self.gameplay = gameplay
         self.options = {Show(self), Clear_Output(), End_Turn(), Strength_Up(), Spirit_Up(), Intellect_Up(),
-                        Level_Up(), Xp_Up(), Add_Player(), Remove_Player(), Enter(), Use(), Loot(),
+                        Level_Up(), Xp_Up(), Add_Player(), Remove_Player(), Enter(), Use(), Loot(self),
                         Place(), Hide(self), Unhide(self)}
+        self.last_shown = ""
 
     def get_options(self):
         return self.options
@@ -20,6 +21,11 @@ class Options():
         else:
             #Only executes if the words you typed don't contain a valid option.
             self.gameplay.gui.write(text = "Not a valid option.")
+
+    def show_last(self):
+        player = self.gameplay.whose_action
+        Show(self).use(player, self.gameplay, self.last_shown)
+        
         
 #################### Options Subclasses ####################
 
@@ -31,11 +37,14 @@ class Show(Options):
         self.visible = True
         self.text = "show"
         self.err_text = "Option should be of the form 'Show (character name/battle/options)'."
+        self.options = options
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
         words = " ".join(words)
-        if words == "options":
+        if not words:
+            self.show_none(player, gameplay)
+        elif words == "options":
             self.show_options(player, gameplay)
         elif words == "hidden options":
             self.show_hidden_options(player, gameplay)
@@ -49,30 +58,38 @@ class Show(Options):
         else:
             gameplay.gui.write(text = self.err_text)
 
+    def show_none(self, player, gameplay):
+        gameplay.gui.options_text.set("")
+        self.options.last_shown = ""
+        
     def show_options(self, player, gameplay):
         opts = [option.text for option in gameplay.opt.get_options() if option.visible == True and option.useable(player, gameplay, "")]
-        gameplay.gui.options_text.set("\n".join(opts))
+        gameplay.gui.options_text.set("Options:\n" + "\n".join(opts))
+        self.options.last_shown = "options".split()
 
     #Secret method for displaying all "hidden" options to the player
     def show_hidden_options(self, player, gameplay):
         opts = [option.text for option in gameplay.opt.get_options() if option.visible == False and option.useable(player, gameplay, "")]
-        gameplay.gui.options_text.set("\n".join(opts))
-
+        gameplay.gui.options_text.set("Hidden Options:\n" + "\n".join(opts))
+        self.options.last_shown = "hidden options".split()
+        
     #Shows the player's backpack in the Options widget.
     def show_backpack(self, player, gameplay):
         backpack_items = [(item.name + "   x" + str(qty)) for item, qty in player.backpack]
         for index, item in enumerate(backpack_items):
             if item[-2:] == "x1":
                 backpack_items[index] = item[:-5]
-        gameplay.gui.options_text.set("\n".join(backpack_items))
-
+        gameplay.gui.options_text.set("Backpack:\n" + "\n".join(backpack_items))
+        self.options.last_shown = "backpack".split()
+        
     def show_shrine(self, player, gameplay):
         if player.dimension == player.shrine:
             shrine_items = [(item.name + "   x" + str(qty)) for item, qty in player.shrine]
             for index, item in enumerate(shrine_items):
                 if item[-2:] == "x1":
                     shrine_items[index] = item[:-5]
-            gameplay.gui.options_text.set("\n".join(shrine_items))
+            gameplay.gui.options_text.set("Shrine:\n" + "\n".join(shrine_items))
+            self.options.last_shown = "shrine".split()
         else:
             gameplay.gui.write(text = "You can only view Shrine contents from within your Shrine.")
 
@@ -274,13 +291,15 @@ class Use(Options):
         words = " ".join(words)
         items_to_search = [item for item, qty in player.backpack]
         if "Shrine" in player.dimension.name:
-            items_to_search += [item for item in player.shrine]
+            items_to_search += [item for item, qty in player.shrine]
         for item in items_to_search:
             if item.name.lower() in words:
                 words = words.replace(item.name.lower(), "")
                 if item.useable(player, gameplay, words):
-                    item.use(player, gameplay, words)
-                    if item.name in player.backpack:
+                    err_text = item.use(player, gameplay, words)
+                    if err_text:
+                        gameplay.gui.write(text = err_text)
+                    elif item.name in player.backpack:
                         player.backpack.remove(item)
                     else:
                         player.shrine.remove(item)
@@ -295,11 +314,12 @@ class Use(Options):
             pass
 
 class Loot(Options):
-    def __init__(self):
+    def __init__(self, options):
         self.visible = True
         self.text = "loot"
         #This may need to change, right now just relies on "loot".
         self.err_text = "Option should be of the form 'Loot monster'."
+        self.options = options
     def useable(self, player, gameplay, words):
         #TODO: determine when this is useable.  For now, it always is, for the purpose of the OP use-case below.
         return True
@@ -311,7 +331,7 @@ class Loot(Options):
             item = gameplay.item_initialize(words)
             if item:
                 player.backpack.add(item)
-                Show().show_backpack(player, gameplay)
+                self.options.last_shown = ["backpack"]
         #If no words other than "loot" are entered, there's nothing to say what to loot
         else:
             gameplay.gui.write(text = self.err_text)

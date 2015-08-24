@@ -1,6 +1,5 @@
 from dimensions import Shrine
-from races import Human, Dwarf, Elf, Golem, Reptilian, Phantasm, Alien, Cyborg
-from classes import Classless, Sorceror, Necromancer, Shaman, Druid, Telepath, Assassin, Warrior
+from races_and_classes import *
 
 class Character():
     def __init__(self, name, color, level=1, strength=5, spirit=5, intellect=5):
@@ -79,11 +78,17 @@ class Character():
         self.recalc_attr()
 
     def change_race(self, new_race):
-        self.char_race = new_race()
-        self.recalc_attr()
+        if new_race in self.char_class.race_combos:
+            self.char_race = new_race()
+            self.recalc_attr()
+        else:
+            return "The " + str(new_race()) + " race is incompatible with the player's " + str(self.char_class) + " class."
 
     def change_class(self, new_class):
-        self.char_class = new_class()
+        if new_class in self.char_race.class_combos:
+            self.char_class = new_class()
+        else:
+            return "The " + str(new_class()) + " class is incompatible with the player's " + str(self.char_race) + " race."
     
     def xp_up(self, amount):
         while (self.xp + amount) >= self.xp_for_level:
