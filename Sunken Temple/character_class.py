@@ -92,7 +92,7 @@ class Character():
     
     def xp_up(self, amount):
         while (self.xp + amount) >= self.xp_for_level:
-            amount -= self.xp_for_level
+            amount -= (self.xp_for_level - self.xp)
             self.level_up(1)
         else:
             self.xp += amount
@@ -112,8 +112,13 @@ class Character():
     def move_item(self, found_item_loc, new_item_loc):
     #Adds an item from the player's equipment or backpack to the shrine.
         item = found_item_loc.last_item
-        found_item_loc.remove(item)
-        new_item_loc.add(item)
+        #If an item can't be added successfully, for whatever reason, an error message gets
+        # generated and passed up.  Only if addition is successful is removal done.
+        err_text = new_item_loc.add(item)
+        if err_text:
+            return err_text
+        else:
+            found_item_loc.remove(item)
 
     def drop_item(self, item):
     #Removes an item from the player's backpack; the equivalent of a player throwing

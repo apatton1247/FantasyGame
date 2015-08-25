@@ -7,6 +7,14 @@ class Items(object):
         item.name = name
     def __str__(self):
         return self.name
+    def useable(self, character, gameplay, words):
+        pass
+    def use(self, character, gameplay, words):
+        return "Item is not of a type that can be used"
+    def equip(self, character, gameplay, words):
+        return "Item is not of a type that can be equipped or unequipped"
+    def unequip(self, character, gameplay, words):
+        return "Item is not of a type that can be equipped or unequipped"
 
 class Class_Race_Items(Items):
     """Items whose function is to change the player's race or class."""
@@ -156,3 +164,53 @@ class Bone(Items):
             character.xp_up(75)
         else:
             character.xp_up(50)
+
+class Equipment(Items):
+    """Items, like armor and headgear, that a player can equip onto their body, and have constant/continuous effects."""
+    def __init__(self, item, name):
+        Items(self, item, name)
+
+class Base_Headgear(Equipment):
+    """Generic headgear, off of which all specialized headgear is based."""
+    def __init__(self):
+        Equipment(self, "Base Headgear")
+    def equip(self):
+        pass
+    def unequip(self):
+        pass
+
+class Base_Armor(Equipment):
+    """Generic armor, off of which all specialized armor is based."""
+    def __init__(self):
+        Equipment(self, "Base Armor")
+    def equip(self):
+        pass
+    def unequip(self):
+        pass
+
+class Base_Footgear(Equipment):
+    """Generic footgear, off of which all specialized footgear is based."""
+    def __init__(self):
+        Equipment(self, "Base Footgear")
+    def equip(self):
+        pass
+    def unequip(self):
+        pass
+
+class Base_Weapon(Equipment):
+    """Generic weapon, off of which all specialized weapon is based."""
+    def __init__(self):
+        Equipment(self, "Base Weapon")
+    def equip(self):
+        pass
+    def unequip(self):
+        pass
+
+class Base_Slotless(Equipment):
+    """Generic slotless equipment, off of which all specialized slotless equipment is based."""
+    def __init__(self):
+        Equipment(self, "Base Slotless")
+    def equip(self):
+        pass
+    def unequip(self):
+        pass

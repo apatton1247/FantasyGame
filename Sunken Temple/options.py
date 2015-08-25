@@ -1,3 +1,5 @@
+from string import capwords
+
 class Options():
     """Provides the user input options and basic ways to interact with it."""
     def __init__(self, gameplay):
@@ -12,7 +14,10 @@ class Options():
 
     def text_parse(self, player, words):
         for opt in self.options:
-            if opt.text in words:
+            #Makes sure that each individual word is a separate word in the initial input, but also that the
+            # keystring is present in its entirety, as expected.  This eliminates misspellings like "add playert"
+            # and any confusion between options like "equip" and "unequip".
+            if opt.text in words and all(keyword in words.split() for keyword in opt.text.split()):
                 remaining_words = words.replace(opt.text, "").strip().split()
                 if opt.useable(player, self.gameplay, remaining_words):
                     opt.use(player, self.gameplay, remaining_words)
@@ -246,9 +251,8 @@ class Add_Player(Options):
     def useable(self, player, gameplay, words):
         return True
     def use(self, player, gameplay, words):
-        for index, word in enumerate(words):
-            words[index] = word[0].upper() + word[1:]
         name = " ".join(words)
+        name = capwords(name)
         gameplay.add_player(name)
         gameplay.gui.write(text = "Player " + name + " has joined the game!")
         self.options.last_shown = ["players"]
@@ -260,9 +264,8 @@ class Remove_Player(Options):
         self.text = "remove player"
         self.err_text = "Option should be of the form 'Remove player (own name)'."
     def useable(self, player, gameplay, words):
-        for index, word in enumerate(words):
-            words[index] = word[0].upper() + word[1:]
         rem_name = " ".join(words)
+        rem_name = capwords(rem_name)
         if player.name == rem_name:
             gameplay.gui.write(text = self.err_text)
             return True
@@ -282,10 +285,8 @@ class Enter(Options):
         #We'll need some advanced criteria so that a player can enter the temple after a battle is over, but not during.  For now,
         return True
     def use(self, player, gameplay, words):
-        dim_name = []
-        for word in words:
-            dim_name.append(word[0].upper() + word[1:])
         dim_name = " ".join(dim_name)
+        dim_name = capwords(dim_name)
         if dim_name == "Shrine":
             dim_name = player.name + " Shrine"
         dim = gameplay.get_dim(dim_name)
@@ -313,6 +314,8 @@ class Use(Options):
             if item.name.lower() in words:
                 words = words.replace(item.name.lower(), "")
                 if item.useable(player, gameplay, words):
+                    #If there's anything that goes wrong with using a particular item, it doesn't get used up, but an error
+                    # message is returned.  If everything goes right, the "use" method returns nothing, and just works.
                     err_text = item.use(player, gameplay, words)
                     if err_text:
                         gameplay.gui.write(text = err_text)
@@ -368,17 +371,13 @@ class Place(Options):
     def use(self, player, gameplay, words):
         #TODO: enable the "place (item name) in (shrine/backpack)" syntax.
         if " ".join(words[-2:]) == "in backpack":
-            words = words[:-2]
-            for index, word in enumerate(words):
-                words[index] = word[0].upper() + word[1:]
-            target_item_name = " ".join(words)
+            words = " ".join(words[:-2])
+            target_item_name = capwords(words)
             if target_item_name in player.shrine:
                 player.move_item(player.shrine, player.backpack)
         elif " ".join(words[-2:]) == "in shrine":
-            words = words[:-2]
-            for index, word in enumerate(words):
-                words[index] = word[0].upper() + word[1:]
-            target_item_name = " ".join(words)
+            words = " ".join(words[:-2])
+            target_item_name = capwords(words)
             if target_item_name in player.backpack:
                 player.move_item(player.backpack, player.shrine)
             elif target_item_name in player.equipment:
@@ -386,13 +385,32 @@ class Place(Options):
         else:
             gameplay.gui.write(text = self.err_text)
 
-
-        
-
-
 class Equip(Options):
     """Players not in battle may put on their equipment from their backpack, or directly from in their Shrine."""
-    pass
+    #TODO: write an equip and unequip option that uses the player's move_item method to interact with the player's backpack and equipment.
+    def __init__(self):
+        self.visible = True
+        self.text = "equip"
+        self.err_text = "Option should be of the form 'Equip (item name)'."
+    def useable(self, player, gameplay, words):
+        #TODO: will need to review the "useable" rules
+        if str(player.dimension) in ["The Shrine", "The Temple"]:
+            return True
+        else:
+            return False
+    def use(self, player, gameplay, words):
+        items_to_search = [item for item, qty in player.backpack]
+        if "Shrine" in player.dimension.name:
+            items_to_search += [item for item, qty in player.shrine]
+        for item in items_to_search:
+            if item.name.lower() in words and item.name in player.backpack:
+                player.move_item(player.backpack, player.equipment)
+                break
+            elif item.name.lower() in words and item.name in player.shrine:
+                player.move_item(player.shrine, player.equipment)
+                break
+        else:
+            gameplay.gui.write(text = "You do not have the item '" + capwords(words) + "'.")
 
 class Unequip(Options):
     """Players not in battle may take off their equipment and store it in their backpack, or directly in their Shrine."""
