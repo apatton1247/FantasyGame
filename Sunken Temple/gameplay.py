@@ -31,9 +31,9 @@ class New_Game():
         if not self.players:
             #That is, if this player is the first to be added to self.players
             self.whose_action = player
+            self.gui.char_shown = player
         self.players.append(player)
         self.all_dimensions.add(player.shrine)
-        self.gui.char_shown = player
 
     def remove_player(self, name):
         player = get_player(name)

@@ -374,7 +374,9 @@ class Place(Options):
             words = " ".join(words[:-2])
             target_item_name = capwords(words)
             if target_item_name in player.shrine:
-                player.move_item(player.shrine, player.backpack)
+                error_text = player.move_item(player.shrine, player.backpack)
+                if error_text:
+                    gameplay.gui.write(text = error_text)
         elif " ".join(words[-2:]) == "in shrine":
             words = " ".join(words[:-2])
             target_item_name = capwords(words)
@@ -387,7 +389,8 @@ class Place(Options):
 
 class Equip(Options):
     """Players not in battle may put on their equipment from their backpack, or directly from in their Shrine."""
-    #TODO: write an equip and unequip option that uses the player's move_item method to interact with the player's backpack and equipment.
+    #TODO: write an equip and unequip option that uses the player's move_item method to
+    # interact with the player's backpack and equipment.
     def __init__(self):
         self.visible = True
         self.text = "equip"
@@ -399,15 +402,19 @@ class Equip(Options):
         else:
             return False
     def use(self, player, gameplay, words):
-        items_to_search = [item for item, qty in player.backpack]
+        items_to_search = [item for item, qty in player.backpack if item.type == "equipment"]
         if "Shrine" in player.dimension.name:
-            items_to_search += [item for item, qty in player.shrine]
+            items_to_search += [item for item, qty in player.shrine if item.type == "equipment"]
         for item in items_to_search:
             if item.name.lower() in words and item.name in player.backpack:
-                player.move_item(player.backpack, player.equipment)
+                error_text = player.move_item(player.backpack, player.equipment)
+                if error_text:
+                    gameplay.gui.write(text = error_text)
                 break
             elif item.name.lower() in words and item.name in player.shrine:
-                player.move_item(player.shrine, player.equipment)
+                error_text = player.move_item(player.shrine, player.equipment)
+                if error_text:
+                    gameplay.gui.write(text = error_text)
                 break
         else:
             gameplay.gui.write(text = "You do not have the item '" + capwords(words) + "'.")

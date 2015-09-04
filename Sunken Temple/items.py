@@ -8,7 +8,7 @@ class Items(object):
     def __str__(self):
         return self.name
     def useable(self, character, gameplay, words):
-        pass
+        return True
     def use(self, character, gameplay, words):
         return "Item is not of a type that can be used"
     def equip(self, character, gameplay, words):
@@ -21,6 +21,7 @@ class Class_Race_Items(Items):
     def __init__(self, item, name):
         Items.__init__(self, item, name)
         item.dimension = "Shrine"
+        item.type = "class race item"
 
     def useable(self, character, game, words):
         if self.dimension in character.dimension.name:
@@ -168,7 +169,8 @@ class Bone(Items):
 class Equipment(Items):
     """Items, like armor and headgear, that a player can equip onto their body, and have constant/continuous effects."""
     def __init__(self, item, name):
-        Items(self, item, name)
+        Items(item, name)
+        item.type = "equipment"
 
 class Base_Headgear(Equipment):
     """Generic headgear, off of which all specialized headgear is based."""

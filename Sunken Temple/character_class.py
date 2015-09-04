@@ -152,10 +152,9 @@ class Backpack():
             #If item already exists in backpack, just increment quantity.
             self.contents[existing_item] += 1
         elif len(self.contents) >= self.size:
-            #TODO: This is where we want to check to see if the player's backpack can
-            # hold more items, or if they have to choose which items to leave behind.
-            #What should happen at this point?  Some error message?
-            pass
+            #Leaves an error message?  So they have to drop something first to pick up
+            # the new thing?
+            return "There is no more room in the backpack for the " + item.name + "."
         else:
             #If it doesn't already exist but there's room, add item as a qty 1.
             self.contents[item] = 1
@@ -201,6 +200,8 @@ class Equipment():
     def __next__(self):
         pass
     def add(self, item):
+        item_bases = item.__class__.__bases__
+        #TODO:figure out if this is helpful.
         #If item.type == "headgear", and len(self.headgear) < self.headgear_slots: self.headgear.append(item)
         pass
     def remove(self, item):
